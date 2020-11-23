@@ -1,12 +1,12 @@
 package Film;
 
 public class ReviewDTO {
-	private String rev_id; //�Ի��id varchar2
-	private String cus_id; //����id varchar2
-	private String film_id; //��ȭid varchar2
-	private int rev_starPoint; //���� number
-	private String rev_content; //���䳻�� varchar2
-	private String rev_date; //�Խó�¥ date
+	private String rev_id; //리뷰번호 varchar2
+	private String cus_id; //고객id varchar2
+	private String film_id; //영화id varchar2
+	private int rev_starPoint; //별점 number
+	private String rev_content; //리뷰내용 varchar2
+	private String rev_date; //리뷰날짜 date
 	
 	public String getRev_id() {
 		return rev_id;
