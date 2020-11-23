@@ -26,32 +26,52 @@ public class LoginClient {
 				case Protocol.PT_REQ_LOGIN:
 					System.out.println("서버가 로그인 정보 요청");
 					BufferedReader userIn = new BufferedReader(new InputStreamReader(System.in));
-					System.out.print("아이디 : ");
-					String id = userIn.readLine();
-					System.out.print("암호 : ");
-					String pwd = userIn.readLine();
+						//아이디 받아옴
+
+					String id = userIn.readLine();  	  //아이디 지정
+						//비밀번호 받아옴
+				
+					String pwd = userIn.readLine();   //비밀번호 지정
 					// 로그인 정보 생성 및 패킷 전송
-					protocol = new Protocol(Protocol.PT_RES_LOGIN);
-					protocol.setId(id);
-					protocol.setPassword(pwd);
-					System.out.println("로그인 정보 전송");
+					if(id.equals("")){	//id
+						if(pwd.equals("")){	//로그인 성공        비밀번호
+							protocol = new Protocol(Protocol.PT_RES_LOGIN);
+							protocol.setLoginResult("1");
+						 }else{	//암호 틀림
+							protocol = new Protocol(Protocol.PT_RES_LOGIN);
+							protocol.setLoginResult("2");
+						 }
+					}else{	//아이디 존재 안함
+						protocol = 	new Protocol(Protocol.PT_RES_LOGIN);
+						protocol.setLoginResult("2");
+					}
+					System.out.println("로그인 결과 전송");
 					os.write(protocol.getPacket());
 					break;
 
-				case Protocol.PT_LOGIN_RESULT:
-					System.out.println("서버가 로그인 결과 전송.");
-					String result = protocol.getLoginResult();
-					if(result.equals("1")){
-						System.out.println("로그인 성공");
-					}else if(result.equals("2")){	
-						System.out.println("암호 틀림");
-					}else if(result.equals("3")){
-						System.out.println("아이디가 존재하지 않음");
-					}
-					protocol = new Protocol(Protocol.PT_EXIT);
-					System.out.println("종료 패킷 전송");
-					os.write(protocol.getPacket());
-					break;
+				// case Protocol.PT_LOGIN_RESULT:
+				// 	System.out.println("서버가 로그인 결과 전송.");
+				// 	String result = protocol.getLoginResult();
+				// 	if(result.equals("1")){
+				// 		System.out.println("로그인 성공");
+				// 	}else if(result.equals("2")){	
+				// 		System.out.println("암호 틀림");
+				// 	}else if(result.equals("3")){
+				// 		System.out.println("아이디가 존재하지 않음");
+				// 	}
+				// 	protocol = new Protocol(Protocol.PT_EXIT);
+				// 	System.out.println("종료 패킷 전송");
+				// 	os.write(protocol.getPacket());
+				// 	break;
+
+				case Protocol.PT_REQ_SIGNUP :
+				break;
+
+				case Protocol.PT_REQ_LOOKUP :
+				break;
+
+				case Protocol.PT_REQ_UPDATE :
+				break;
 			}			
 	    }
  	    os.close();
