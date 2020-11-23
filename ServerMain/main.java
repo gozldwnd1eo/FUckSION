@@ -13,7 +13,7 @@ public class main {
 //		dto.setCus_id("hg");
 //		dto.setFilm_id("4");
 //		dto.setrev_date("202011101700");
-//		dto.setrev_content("���ó����̴� ���ְ� ���������� ����");
+//		dto.setrev_content("123");
 //		dto.setrev_starPoint(1);
 		// FilmDAO dao=new FilmDAO();
 		// FilmDTO dto =new FilmDTO();
