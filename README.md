@@ -6,3 +6,5 @@ work hard please
 
 fuck you guchuer
 im jinsung
+
+im hyeongeun hi zz
