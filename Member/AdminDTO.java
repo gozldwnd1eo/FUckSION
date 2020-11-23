@@ -1,12 +1,12 @@
 package Member;
 
 public class AdminDTO {
-	private String ad_id; // varchar2(10)
-	private String ad_password; // varchar2(20)
-	private String ad_name; // varchar2(20)
-	private String ad_account; // varchar2(50)
-	private String ad_phoneNum; // varchar2(20)
-	private int ad_money; // number
+	private String ad_id; // varchar2(10)			담당자ID
+	private String ad_password; // varchar2(20)		담당자비밀번호
+	private String ad_name; // varchar2(20)			담당자이름
+	private String ad_account; // varchar2(50)		담당자계좌번호
+	private String ad_phoneNum; // varchar2(20)		담당자핸드폰번호
+	private int ad_money; // number					담당자잔액
 	
 	public int getAd_money() {
 		return ad_money;

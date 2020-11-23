@@ -15,7 +15,7 @@ public class FilmDAO {
 	private Connection conn = null;
 	private ResultSet rs = null;
 
-	public boolean insertFilm(FilmDTO dto) {
+	public boolean insertFilm(FilmDTO dto) { //영화 추가
 
 		String SQL = "INSERT INTO FILMS(FILM_NAME,FILM_TEASER,FILM_INFO,FILM_GENRE,FILM_OPENINGDATE,FILM_SUMMARY,FILM_POSTER)" + "VALUES (?,?,?,?,?,?,?,?)";
 		try {
@@ -28,25 +28,21 @@ public class FilmDAO {
 			pstmt.setString(5, dto.getFilm_openingDate());
 			pstmt.setString(6, dto.getFilm_summary());
 			pstmt.setByte(7, dto.getFilm_poster());
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("INSERT������ ���� �߻�");
+			System.out.println("INSERT문에서 예외 발생");
 			sqle.printStackTrace();
 			insertResult = false;
 			return insertResult;
 		} finally {
-			try {
-				pstmt.close();
-				conn.close();
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
+			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
 		}
 		insertResult = true;
 		return insertResult;
 	}
 
-	public ArrayList<FilmDTO> displayMovie() {
+	public ArrayList<FilmDTO> displayMovie() {  //영화 조회
 		ArrayList<FilmDTO> arr = new ArrayList<FilmDTO>();
 		FilmDTO dto = new FilmDTO();
 		String SQL = "SELECT * FROM FILMS WHERE (FILM_OPENINGDATE<SYSDATE) AND (FILM_OPENINGDATE+30>SYSDATE) ORDER BY FILM_OPENINGDATE DESC";
@@ -66,29 +62,39 @@ public class FilmDAO {
 				arr.add(dto);
 			}
 		} catch (SQLException sqle) {
-			System.out.println("SELECT������ ���� �߻�");
+			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
+			if(rs!=null) try{rs.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
 		}
 		return arr;
 	}
+	
+	public boolean deleteFilm(String title) {  //영화 삭제
+		String SQL = "DELETE FROM FILMS WHERE FILM_NAME = ?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, title);
+			pstmt.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("DELETE문에서 예외 발생");
+			sqle.printStackTrace();
+			deleteResult = false;
+			return deleteResult;
+		} finally {
+			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+		}
+		deleteResult = true;
+		return deleteResult;
+	}
+	
+	public boolean insertReview(ReviewDTO dto) {  //리뷰 추가
 
-	public boolean insertReview(ReviewDTO dto) {
-
-		String SQL = "INSERT INTO REVIEWS(CUS_ID,FILM_ID,REV_rev_starPoint,REV_CONTENT,REV_DATE)" + "VALUES (?,?,?,?,?)";
+		String SQL = "INSERT INTO REVIEWS(CUS_ID,FILM_ID,REV_STARPOINT,REV_CONTENT,REV_DATE)" + "VALUES (?,?,?,?,?)";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
@@ -97,25 +103,21 @@ public class FilmDAO {
 			pstmt.setInt(3, dto.getRev_starPoint());
 			pstmt.setString(4, dto.getRev_content());
 			pstmt.setString(5, dto.getRev_date());
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("INSERT������ ���� �߻�");
+			System.out.println("INSERT문에서 예외 발생");
 			sqle.printStackTrace();
 			insertResult = false;
 			return insertResult;
 		} finally {
-			try {
-				pstmt.close();
-				conn.close();
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
+			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
 		}
 		insertResult = true;
 		return insertResult;
 	}
 
-	public ArrayList<ReviewDTO> displayReview(String movid) {
+	public ArrayList<ReviewDTO> displayReview(String movid) {  //리뷰 조회
 
 		ArrayList<ReviewDTO> arr = new ArrayList<ReviewDTO>();
 		ReviewDTO dto = new ReviewDTO();
@@ -134,53 +136,17 @@ public class FilmDAO {
 				arr.add(dto);
 			}
 		} catch (SQLException sqle) {
-			System.out.println("SELECT������ ���� �߻�");
+			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
+			if(rs!=null) try{rs.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
 		}
 		return arr;
 	}
 
-	public boolean deleteFilm(String title) {
-		String SQL = "DELETE FROM FILMS WHERE FILM_NAME = ?";
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, title);
-			pstmt.executeQuery();
-		} catch (SQLException sqle) {
-			System.out.println("DELETE������ ���� �߻�");
-			sqle.printStackTrace();
-			deleteResult = false;
-			return deleteResult;
-		} finally {
-			// if
-			try {
-				pstmt.close();
-				conn.close();
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
-		}
-		deleteResult = true;
-		return deleteResult;
-	}
-
-//REVIEWS����
-	public boolean deleteReview(String id) {
+	public boolean deleteReview(String id) {  //리뷰 삭제
 		String SQL = "DELETE FROM REVIEWS WHERE REV_ID = ?";
 
 		try {
@@ -188,19 +154,15 @@ public class FilmDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, id);
 
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("DELETE������ ���� �߻�");
+			System.out.println("DELETE문에서 예외 발생");
 			sqle.printStackTrace();
 			deleteResult = false;
 			return deleteResult;
 		} finally {
-			try {
-				pstmt.close();
-				conn.close();
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
+			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
 		}
 		deleteResult = true;
 		return deleteResult;
@@ -209,19 +171,17 @@ public class FilmDAO {
 	public static Connection getConnection() {
 		Connection conn = null;
 		try {
-			// String user = "movieAdmin";
-			// String pw = "movieadmin";
-			String user = "test1";
-			String pw ="1234";
+			String user = "movieAdmin";
+			String pw = "movieadmin";
 			String url = "jdbc:oracle:thin:@localhost:1521:xe";
 
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, pw);
 
 		} catch (ClassNotFoundException cnfe) {
-			System.out.println("DB ����̹� �ε� ���� :" + cnfe.toString());
+			System.out.println("DB 드라이버 로딩 실패 :" + cnfe.toString());
 		} catch (SQLException sqle) {
-			System.out.println("DB ���ӽ��� : " + sqle.toString());
+			System.out.println("DB 접속실패 : " + sqle.toString());
 		} catch (Exception e) {
 			System.out.println("Unkonwn error");
 			e.printStackTrace();

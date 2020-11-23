@@ -1,11 +1,11 @@
 package Cinema;
 
 public class TheaterDTO {
-	private String theater_id; // varchar2(5)
-	private String theater_name; // varchar2(50)
-	private String theater_area; // varchar2(10)
-	private String theater_address; // varchar2(100)
-	private String ad_id;
+	private String theater_id; // varchar2(5)	영화관ID
+	private String theater_name; // varchar2(50)	영화관명칭
+	private String theater_area; // varchar2(10)	지역       구미  구미역
+	private String theater_address; // varchar2(100) 	주소
+	private String ad_id;			// varchar2(10) 	담당자ID
 	
 	public String getAd_id() {
 		return ad_id;

@@ -1,14 +1,14 @@
 package Cinema;
 
 public class ResvDTO {
-	private String resv_num; //���Ź�ȣ varchar2
-	private String screen_id; //�󿵿�ȭ id varchar2
-	private String cus_id; //����id varchar2
-	private int resv_peopleNum; //�ο���       number
-	private String resv_seatNum; //�¼���ȣ varchar2
-	private String resv_depositDate; //�Ա��� date
-	private int resv_depositAmount; //�Աݾ� number
-	private String resv_cancelDate; //����� date
+	private String resv_num; // varchar2  예약번호
+	private String screen_id; // id varchar2 영화ID
+	private String cus_id; // varchar2  고객ID
+	private int resv_peopleNum; //      number 인원수
+	private String resv_seatNum; // varchar2   좌석번호     B12~B13~B14
+	private String resv_depositDate; // date  입금일
+	private int resv_depositAmount; // number  입금액
+	private String resv_cancelDate; // date   취소일
 	
 	public String getResv_num() {
 		return resv_num;

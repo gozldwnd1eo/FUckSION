@@ -1,13 +1,13 @@
 package Member;
 
 public class CustomerDTO {
-	private String cus_id; // varchar2(10)
-	private String cus_password; // varchar2(20)
-	private String cus_name; // varchar2(20)
-	private String cus_account; // varchar2(50)
-	private String cus_phoneNum; // varchar2(20)
-	private String cus_gender; // boolean
-	private int cus_money; // number
+	private String cus_id; // varchar2(10)    			°í°´ID
+	private String cus_password; // varchar2(20)		°í°´ºñ¹Ğ¹øÈ£
+	private String cus_name; // varchar2(20)			°í°´ÀÌ¸§
+	private String cus_account; // varchar2(50)			°í°´°èÁÂ¹øÈ£
+	private String cus_phoneNum; // varchar2(20)		°í°´ÈŞ´ëÀüÈ­¹øÈ£
+	private String cus_gender; // boolean				°í°´¼ºº°    F/M
+	private int cus_money; // number					°í°´ÀÜ¾×
 	
 	public int getCus_money() {
 		return cus_money;

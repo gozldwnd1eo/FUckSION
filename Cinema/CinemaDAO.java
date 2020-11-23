@@ -1,5 +1,6 @@
 package Cinema;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,11 +11,37 @@ import java.util.ArrayList;
 public class CinemaDAO {
 	private boolean insertResult = false;
 	private boolean deleteResult = false;
-	private PreparedStatement pstmt = null;
+	private PreparedStatement pstmt = null;  //
+	private CallableStatement cstmt = null;  //프로시저, 함수 쿼리를 사용할 때 쓰는 용
 	private Connection conn = null;
 	private ResultSet rs = null;
 
-	public boolean insertScreen(ScreenDTO dto) {
+	public boolean insertResvation(ResvDTO dto) { // 예매 실행
+		
+		String SQL = "{call RESERV_EXEC(?,?,?,?,?)}";
+		try {
+			conn = getConnection();
+			cstmt = conn.prepareCall(SQL);
+			cstmt.setString(1, dto.getScreen_id());
+			cstmt.setString(2, dto.getCus_id());
+			cstmt.setInt(3, dto.getResv_peopleNum());
+			cstmt.setString(4, dto.getResv_seatNum());
+			cstmt.setInt(5, dto.getResv_depositAmount());
+			cstmt.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("프로시저문에서 예외 발생");
+			sqle.printStackTrace();
+			insertResult = false;
+			return insertResult;
+		} finally {
+			if(cstmt!=null) try{cstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+		}
+		insertResult = true;
+		return insertResult;
+	}
+	
+	public boolean insertScreen(ScreenDTO dto) { //상영영화 추가
 		
 		String SQL = "INSERT INTO SCREENS(AUDI_ID,FILM_ID,SCREEN_RESIDUALSEAT,SCREEN_STARTTIME,SCREEN_FINALTIME)" + "VALUES (?,?,?,?,?)";
 		try {
@@ -25,9 +52,9 @@ public class CinemaDAO {
 			pstmt.setInt(3, dto.getScreen_residualSeat());
 			pstmt.setString(4, dto.getScreen_startTime());
 			pstmt.setString(5, dto.getScreen_finalTime());
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("SELECT������ ���� �߻�");
+			System.out.println("INSERT문에서 예외 발생");
 			sqle.printStackTrace();
 			insertResult = false;
 			return insertResult;
@@ -39,7 +66,7 @@ public class CinemaDAO {
 		return insertResult;
 	}
 
-	public ArrayList<ScreenDTO> displayScreen(String movid, String theater_id) {
+	public ArrayList<ScreenDTO> displayScreen(String movid, String theater_id) { //상영영화 조회
 
 		ArrayList<ScreenDTO> arr = new ArrayList<ScreenDTO>();
 
@@ -60,7 +87,7 @@ public class CinemaDAO {
 				arr.add(dto);
 			}
 		} catch (SQLException sqle) {
-			System.out.println("SELECT������ ���� �߻�");
+			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 		} finally {
 			if(rs!=null) try{rs.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
@@ -70,8 +97,7 @@ public class CinemaDAO {
 		return arr;
 	}
 
-	//
-	public boolean insertTheater(TheaterDTO dto) {
+	public boolean insertTheater(TheaterDTO dto) { //영화관 추가
 		String SQL = "INSERT INTO THEATERS(THEATER_NAME,THEATER_AREA,THEATER_ADDRESS,AD_ID)" + "VALUES (?,?,?,?)";
 
 		try {
@@ -81,9 +107,9 @@ public class CinemaDAO {
 			pstmt.setString(2, dto.getTheater_area());
 			pstmt.setString(3, dto.getTheater_address());
 			pstmt.setNString(4, dto.getAd_id());
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("INSERT������ ���� �߻�");
+			System.out.println("INSERT문에서 예외 발생");
 			sqle.printStackTrace();
 			insertResult = false;
 			return insertResult;
@@ -95,7 +121,7 @@ public class CinemaDAO {
 		return insertResult;
 	}
 
-	public ArrayList<TheaterDTO> displayTheater() {
+	public ArrayList<TheaterDTO> displayTheater() {  //영화관 조회
 		ArrayList<TheaterDTO> arr = new ArrayList<TheaterDTO>();
 		TheaterDTO dto = new TheaterDTO();
 		String SQL = "SELECT * FROM THEATERS";
@@ -113,7 +139,7 @@ public class CinemaDAO {
 				arr.add(dto);
 			}
 		} catch (SQLException sqle) {
-			System.out.println("SELECT������ ���� �߻�");
+			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 		} finally {
 			if(rs!=null) try{rs.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
@@ -123,9 +149,8 @@ public class CinemaDAO {
 		return arr;
 	}
 
-	//
 
-	public boolean insertAuditorium(AuditoriumDTO dto) {
+	public boolean insertAuditorium(AuditoriumDTO dto) { //상영관 추가
 		String SQL = "INSERT INTO AUDITORIUMS(THEATER_ID, AUDI_NUM, AUDI_SEATCNT)" + "VALUES (?,?,?,?)";
 		try {
 			conn = getConnection();
@@ -134,9 +159,9 @@ public class CinemaDAO {
 			pstmt.setInt(2, dto.getAudi_num());
 			pstmt.setInt(3, dto.getAudi_seatCnt());
 
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("INSERT������ ���� �߻�");
+			System.out.println("INSERT문에서 예외 발생");
 			sqle.printStackTrace();
 			insertResult = false;
 			return insertResult;
@@ -149,7 +174,7 @@ public class CinemaDAO {
 		return insertResult;
 	}
 
-	public ArrayList<AuditoriumDTO> displayAuditorium(String inputID) {
+	public ArrayList<AuditoriumDTO> displayAuditorium(String inputID) {//상영관 조회
 		ArrayList<AuditoriumDTO> arr = new ArrayList<AuditoriumDTO>();
 		AuditoriumDTO dto = new AuditoriumDTO();
 		String SQL = "SELECT * FROM AUDITORUMS WHERE " + inputID + " = AUDITORUMS.THEATER_ID";
@@ -166,7 +191,7 @@ public class CinemaDAO {
 				arr.add(dto);
 			}
 		} catch (SQLException sqle) {
-			System.out.println("SELECT������ ���� �߻�");
+			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 		} finally {
 			if(rs!=null) try{rs.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
@@ -177,7 +202,7 @@ public class CinemaDAO {
 		return arr;
 	}
 
-	public boolean deleteAuditorium(String audi_id) {
+	public boolean deleteAuditorium(String audi_id) { //상영관 삭제
 		String SQL = "DELETE FROM AUDITORUMS WHERE AUDI_ID = ?";
 
 		try {
@@ -186,7 +211,7 @@ public class CinemaDAO {
 			pstmt.setString(1, audi_id);
 			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("DELETE������ ���� �߻�");
+			System.out.println("DELETE문에서 예외 발생");
 			sqle.printStackTrace();
 			deleteResult = false;
 			return deleteResult;
@@ -199,8 +224,7 @@ public class CinemaDAO {
 		return deleteResult;
 	}
 
-//SCREENS ����
-	public boolean deleteScreen(String id) {
+	public boolean deleteScreen(String id) { //상영영화 삭제
 		String SQL = "DELETE FROM SCREENS WHERE SCREENS_ID = ?";
 
 		try {
@@ -208,9 +232,9 @@ public class CinemaDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, id);
 
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("DELETE������ ���� �߻�");
+			System.out.println("DELETE문에서 예외 발생");
 			sqle.printStackTrace();
 			deleteResult = false;
 			return deleteResult;
@@ -223,7 +247,7 @@ public class CinemaDAO {
 		return deleteResult;
 	}
 
-	public boolean deleteTheater(String id) {
+	public boolean deleteTheater(String id) { //영화관 삭제
 		String SQL = "DELETE FROM THEATERS WHERE THEATER_ID = ?";
 
 		try {
@@ -231,9 +255,9 @@ public class CinemaDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, id);
 
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("DELETE������ ���� �߻�");
+			System.out.println("DELETE문에서 예외 발생");
 			sqle.printStackTrace();
 			deleteResult = false;
 			return deleteResult;
@@ -245,23 +269,20 @@ public class CinemaDAO {
 		return deleteResult;
 	}
 
-	//
 	public static Connection getConnection() {
 		Connection conn = null;
 		try {
-			// String user = "movieAdmin";
-			// String pw = "movieadmin";
-			String user = "test1";
-			String pw = "1234";
+			String user = "movieAdmin";
+			String pw = "movieadmin";
 			String url = "jdbc:oracle:thin:@localhost:1521:xe";
 
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, pw);
 
 		} catch (ClassNotFoundException cnfe) {
-			System.out.println("DB ����̹� �ε� ���� :" + cnfe.toString());
+			System.out.println("DB 드라이버 로딩 실패 : " + cnfe.toString());
 		} catch (SQLException sqle) {
-			System.out.println("DB ���ӽ��� : " + sqle.toString());
+			System.out.println("DB 접속실패 : " + sqle.toString());
 		} catch (Exception e) {
 			System.out.println("Unkonwn error");
 			e.printStackTrace();

@@ -1,10 +1,10 @@
 package Cinema;
 
 public class AuditoriumDTO {
-	private String audi_id; // varchar2(5)
-	private int audi_num; // number(2,0)
-	private String theater_id; // varchar2(5)
-	private int audi_seatCnt; // number(4,0)
+	private String audi_id; // varchar2(5) 		상영관ID
+	private int audi_num; // number(2,0)   		상영관번호
+	private String theater_id; // varchar2(5)	영화관ID
+	private int audi_seatCnt; // number(4,0)	총좌석수
 	
 	public String getAudi_id() {
 		return audi_id;

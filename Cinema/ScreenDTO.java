@@ -1,12 +1,12 @@
 package Cinema;
 
 public class ScreenDTO {
-	private String screen_id; // varchar2(5)
-	private String audi_id; // varchar2(5)
-	private String film_id; // varchar2(5)
-	private int screen_residualSeat; // number(4,0)
-	private String screen_startTime; // time
-	private String screen_finalTime; // time
+	private String screen_id; // varchar2(5)    상영영화ID
+	private String audi_id; // varchar2(5)		상영관ID
+	private String film_id; // varchar2(5)		영화ID
+	private int screen_residualSeat; // number(4,0) 잔여좌석수
+	private String screen_startTime; // time	시작시각
+	private String screen_finalTime; // time	종료시각
 	
 	public String getScreen_id() {
 		return screen_id;

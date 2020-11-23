@@ -1,16 +1,16 @@
 package Film;
 
 public class FilmDTO {
-	private String film_id; // varchar2(5)
-	private String film_name; // varchar2(50)
-	private String film_teaser; // varchar2(100)
-	private String film_info; // varchar2(50)
-	// (��ȭ����~�⿬��1~�⿬��2~�⿬��3~�󿵽ð�)
-	private String film_genre; // varchar2(20)
-	private String film_openingDate; // date
-	private String film_summary; // clob
-	private byte film_poster; // blob
-	private double film_resvRate;
+	private String film_id; // varchar2(5)     영화ID
+	private String film_name; // varchar2(50)	영화이름
+	private String film_teaser; // varchar2(100)영화티저
+	private String film_info; // varchar2(50)	영화 정보
+	// (감독~출연진1~출연진2~출연진3~런타임)
+	private String film_genre; // varchar2(20)	영화장르
+	private String film_openingDate; // date	개봉일
+	private String film_summary; // 			영화줄거리
+	private byte film_poster; // 				영화포스터
+	private double film_resvRate;			//  영화예매율
 	
 	public String getFilm_id() {
 		return film_id;

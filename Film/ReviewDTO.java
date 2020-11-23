@@ -1,12 +1,12 @@
 package Film;
 
 public class ReviewDTO {
-	private String rev_id; //ë¦¬ë·°ë²ˆí˜¸ varchar2
-	private String cus_id; //ê³ ê°id varchar2
-	private String film_id; //ì˜í™”id varchar2
-	private int rev_starPoint; //ë³„ì  number
-	private String rev_content; //ë¦¬ë·°ë‚´ìš© varchar2
-	private String rev_date; //ë¦¬ë·°ë‚ ì§œ date
+	private String rev_id; // varchar2			¸®ºäID
+	private String cus_id; // varchar2			°í°´ID
+	private String film_id; // varchar2			¿µÈ­ID
+	private int rev_starPoint; // number		º°Á¡
+	private String rev_content; // varchar2		¸®ºä³»¿ë
+	private String rev_date; // date			¸®ºä°Ô½Ã³¯Â¥
 	
 	public String getRev_id() {
 		return rev_id;

@@ -13,7 +13,7 @@ public class MemberDAO {
 	PreparedStatement pstmt = null;
 	Connection conn = null;
 
-	public boolean insertMember(CustomerDTO dto) {
+	public boolean insertCustomer(CustomerDTO dto) {   		//고객 추가
 
 		String SQL = "INSERT INTO CUSTOMERS(CUS_ID,CUS_PASSWORD,CUS_NAME,CUS_PHONENUM,CUS_ACCOUNT,CUS_GENDER,CUS_MONEY)" + "VALUES (?,?,?,?,?,?,?)";
 		try {
@@ -26,25 +26,21 @@ public class MemberDAO {
 			pstmt.setString(5, dto.getCus_account());
 			pstmt.setString(6, dto.getCus_gender());
 			pstmt.setInt(7, dto.getCus_money());
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("INSERT������ ���� �߻�");
+			System.out.println("INSERT문에서 예외 발생");
 			sqle.printStackTrace();
 			insertResult = false;
 			return insertResult;
 		} finally {
-			try {
-				pstmt.close();
-				conn.close();
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
+			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
 		}
 		insertResult = true;
 		return insertResult;
 	}
 
-	public boolean loginRequest(String inputID, String inputPWD) {
+	public boolean loginRequest(String inputID, String inputPWD) {   //로그인 요청
 		PreparedStatement adstmt = null;
 		PreparedStatement custmt = null;
 		ResultSet rsAdmin = null;
@@ -65,23 +61,19 @@ public class MemberDAO {
 			}
 
 		} catch (SQLException sqle) {
-			System.out.println("SELECT������ ���� �߻�");
+			System.out.println("SQL문에서 예외 발생");
 			sqle.printStackTrace();
 		} finally {
-			try {
-				rsAdmin.close();
-				rsCusto.close();
-				adstmt.close();
-				custmt.close();
-				conn.close();
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
+			if(rsAdmin!=null) try{rsAdmin.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(rsCusto!=null) try{rsCusto.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(adstmt!=null) try{adstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(custmt!=null) try{custmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
 		}
 		return loginResult;
 	}
 
-	public boolean deleteCustomer(String id) {
+	public boolean deleteCustomer(String id) {      //고객삭제
 		String SQL = "DELETE FROM CUSTOMERS WHERE CUS_ID = ?";
 
 		try {
@@ -89,20 +81,15 @@ public class MemberDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, id);
 
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("DELETE������ ���� �߻�");
+			System.out.println("DELETE문에서 예외 발생");
 			sqle.printStackTrace();
 			deleteResult = false;
 			return deleteResult;
 		} finally {
-			// if
-			try {
-				pstmt.close();
-				conn.close();
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
+			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
 		}
 		deleteResult = true;
 		return deleteResult;
@@ -112,17 +99,17 @@ public class MemberDAO {
 		Connection conn = null;
 
 		try {
-			String user = "test1";
-			String pw = "1234";
+			String user = "movieAdmin";
+			String pw = "movieadmin";
 			String url = "jdbc:oracle:thin:@localhost:1521:xe";
 
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, pw);
 
 		} catch (ClassNotFoundException cnfe) {
-			System.out.println("DB ����̹� �ε� ���� :" + cnfe.toString());
+			System.out.println("DB 드라이버 로딩 실패 :" + cnfe.toString());
 		} catch (SQLException sqle) {
-			System.out.println("DB ���ӽ��� : " + sqle.toString());
+			System.out.println("DB 접속실패 : " + sqle.toString());
 		} catch (Exception e) {
 			System.out.println("Unkonwn error");
 			e.printStackTrace();
