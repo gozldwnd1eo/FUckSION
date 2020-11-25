@@ -14,7 +14,7 @@ public class Protocol implements Serializable{
 	public static final int PT_RES_LOOKUP = 6;	// 	조회 응답
 	public static final int PT_REQ_UPDATE = 7; 	// 	갱신 요청
 	public static final int PT_RES_UPDATE = 8; 	//	갱신 응답
-	public static final int LEN_LOGIN_ID=20;	// ID 길이
+	public static final int LEN_LOGIN_ID=10;	// ID 길이
 	public static final int LEN_LOGIN_PASSWORD=20;	// PWD 길이
 	public static final int LEN_LOGIN_RESULT=2;	// 로그인 인증 값 길이
 	public static final int LEN_PROTOCOL_TYPE=1;	// 프로토콜 타입 길이

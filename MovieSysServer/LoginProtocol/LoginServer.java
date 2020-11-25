@@ -36,13 +36,13 @@ public class LoginServer{
 					break;
 				
 				case Protocol.PT_RES_LOGIN:		// 로그인 정보 수신 
-					System.out.println("클라이언트가 " + "로그인 정보를 보냈습니다");
+					System.out.println("클라이언트가 로그인 정보를 보냈습니다");
 					String id = protocol.getId();
 					String password = protocol.getPassword();
 					System.out.println(id+password);
 
-					if(id.equals("software")){
-						if(password.equals("1234")){	//로그인 성공
+					if(id.equals("")){
+						if(password.equals("")){	//대충 로그인 성공
 							protocol = new Protocol(Protocol.PT_LOGIN_RESULT);
 							protocol.setLoginResult("1");
 							System.out.println("로그인 성공");
