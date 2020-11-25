@@ -24,7 +24,7 @@ public class Protocol implements Serializable{
 
 	public Protocol(){					// 생성자
 		this(PT_UNDEFINED);
-	}
+	}      
 
 	public Protocol(int protocolType){	// 생성자
 		this.protocolType = protocolType;
