@@ -1,4 +1,4 @@
-package Member;
+package MovieSysServer.Member;
 
 public class AdminDTO {
 	private String ad_id; // varchar2(10)			담당자ID

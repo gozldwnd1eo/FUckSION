@@ -1,4 +1,4 @@
-package Cinema;
+package MovieSysServer.Cinema;
 
 public class AuditoriumDTO {
 	private String audi_id; // varchar2(5) 		상영관ID

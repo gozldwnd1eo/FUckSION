@@ -1,4 +1,4 @@
-package Film;
+package MovieSysServer.Film;
 
 public class FilmDTO {
 	private String film_id; // varchar2(5)     영화ID

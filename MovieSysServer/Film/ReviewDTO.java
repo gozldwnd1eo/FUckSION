@@ -1,12 +1,12 @@
-package Film;
+package MovieSysServer.Film;
 
 public class ReviewDTO {
-	private String rev_id; // varchar2			¸®ºäID
-	private String cus_id; // varchar2			°í°´ID
-	private String film_id; // varchar2			¿µÈ­ID
-	private int rev_starPoint; // number		º°Á¡
-	private String rev_content; // varchar2		¸®ºä³»¿ë
-	private String rev_date; // date			¸®ºä°Ô½Ã³¯Â¥
+	private String rev_id; // varchar2			ï¿½ï¿½ï¿½ï¿½ID
+	private String cus_id; // varchar2			ï¿½ï¿½ï¿½ï¿½ID
+	private String film_id; // varchar2			ï¿½ï¿½È­ID
+	private int rev_starPoint; // number		ï¿½ï¿½ï¿½ï¿½
+	private String rev_content; // varchar2		ï¿½ï¿½ï¿½ä³»ï¿½ï¿½
+	private String rev_date; // date			ï¿½ï¿½ï¿½ï¿½Ô½Ã³ï¿½Â¥
 	
 	public String getRev_id() {
 		return rev_id;
