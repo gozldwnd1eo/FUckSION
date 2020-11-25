@@ -1,4 +1,4 @@
-package LoginProtocol;
+package MovieSysServer.LoginProtocol;
 
 import java.net.*;
 import java.io.*;
@@ -35,50 +35,30 @@ public class LoginServer{
 					System.out.println("서버종료");
 					break;
 				
-				case Protocol.PT_RES_LOGIN:		// 로그인 결과 수신
-					System.out.println("클라이언트가 로그인 결과를 보냈습니다");
-					String result = protocol.getLoginResult();
-					if(result.equals("1")){ // 고객 인증 성공
+				case Protocol.PT_RES_LOGIN:		// 로그인 정보 수신 
+					System.out.println("클라이언트가 " + "로그인 정보를 보냈습니다");
+					String id = protocol.getId();
+					String password = protocol.getPassword();
+					System.out.println(id+password);
 
+					if(id.equals("software")){
+						if(password.equals("1234")){	//로그인 성공
+							protocol = new Protocol(Protocol.PT_LOGIN_RESULT);
+							protocol.setLoginResult("1");
+							System.out.println("로그인 성공");
+						 }else{	//암호 틀림
+							protocol = new Protocol(Protocol.PT_LOGIN_RESULT);
+							protocol.setLoginResult("2");
+							System.out.println("암호 틀림");
+						 }
+					}else{	//아이디 존재 안함
+						protocol = 	new Protocol(Protocol.PT_LOGIN_RESULT);
+						protocol.setLoginResult("3");
+						System.out.println("아이디 존재안함");
 					}
-					else if(result.equals("2")){ // 담당자 인증 성공
-
-					}
-					else if(result.equals("3")){ // 인증 실패
-
-					}
-					else if(result.equals("4")){ // 5회 인증 실패
-
-					}
-					
-					// String id = protocol.getId();
-					// String password = protocol.getPassword();
-					// System.out.println(id+password);
-
-// 					if(id.equals("")){	//id
-// 						if(password.equals("")){	//로그인 성공        비밀번호
-// //							protocol = new Protocol(Protocol.PT_LOGIN_RESULT);
-// 							protocol.setLoginResult("1");
-// 							System.out.println("로그인 성공");
-// 						 }else{	//암호 틀림
-// //							protocol = new Protocol(Protocol.PT_LOGIN_RESULT);
-// 							protocol.setLoginResult("2");
-// 							System.out.println("암호 틀림");
-// 						 }
-// 					}else{	//아이디 존재 안함
-// //						protocol = 	new Protocol(Protocol.PT_LOGIN_RESULT);
-// 						protocol.setLoginResult("3");
-// 						System.out.println("아이디 존재안함");
-// 					}
 
 					System.out.println("로그인 처리 결과 전송");
 					os.write(protocol.getPacket());
-					break;
-				case Protocol.PT_RES_SIGNUP :
-					break;
-				case Protocol.PT_RES_LOOKUP :
-					break;
-				case Protocol.PT_RES_UPDATE :
 					break;
 			}//end switch
 			if(program_stop) break;

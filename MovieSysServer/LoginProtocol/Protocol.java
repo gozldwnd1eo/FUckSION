@@ -1,4 +1,4 @@
-package LoginProtocol;
+package MovieSysServer.LoginProtocol;
 
 import java.io.*;
 public class Protocol implements Serializable{
@@ -7,14 +7,7 @@ public class Protocol implements Serializable{
 	public static final int PT_EXIT = 0;		// 프로그램 종료
 	public static final int PT_REQ_LOGIN = 1;	// 로그인 요청
 	public static final int PT_RES_LOGIN = 2;	// 로그인 응답
-//	public static final int PT_LOGIN_RESULT=3;	// 인증 결과
-	public static final int PT_REQ_SIGNUP = 3;	// 회원가입 요청
-	public static final int PT_RES_SIGNUP = 4;	// 회원가입 응답
-	public static final int PT_REQ_LOOKUP = 5;	// 조회 요청
-	public static final int PT_RES_LOOKUP = 6; 	// 조회 응답
-	public static final int PT_REQ_UPDATE = 7;	// 갱신 요청
-	public static final int PT_RES_UPDATE = 8; 	// 갱신 응답
-
+	public static final int PT_LOGIN_RESULT=3;	// 인증 결과
 	public static final int LEN_LOGIN_ID=20;	// ID 길이
 	public static final int LEN_LOGIN_PASSWORD=20;	// PWD 길이
 	public static final int LEN_LOGIN_RESULT=2;	// 로그인 인증 값 길이
@@ -40,30 +33,14 @@ public class Protocol implements Serializable{
 					packet = new byte[LEN_PROTOCOL_TYPE];
 					break;
 				case PT_RES_LOGIN :
-					packet = new byte[LEN_PROTOCOL_TYPE+LEN_LOGIN_RESULT];
-//					packet = new byte[LEN_PROTOCOL_TYPE+LEN_LOGIN_ID+LEN_LOGIN_PASSWORD];
+					packet = new byte[LEN_PROTOCOL_TYPE+LEN_LOGIN_ID+LEN_LOGIN_PASSWORD];
 					break;
 				case PT_UNDEFINED : 
 					packet = new byte[LEN_MAX];
 					break;
-				case PT_REQ_SIGNUP : 
-					//packet = new byte[LEN_PROTOCOL_TYPE];
+				case PT_LOGIN_RESULT : 
+					packet = new byte[LEN_PROTOCOL_TYPE+LEN_LOGIN_RESULT];
 					break;
-				case PT_RES_SIGNUP :
-					//packet = new byte[LEN_PROTOCOL_TYPE+LEN_LOGIN_ID+LEN_LOGIN_PASSWORD];
-					break;
-				case PT_REQ_LOOKUP :
-					//packet = new byte[LEN_PROTOCOL_TYPE];
-					break;
-				case PT_RES_LOOKUP :
-					//packet = new byte[LEN_PROTOCOL_TYPE+LEN_LOGIN_ID+LEN_LOGIN_PASSWORD];
-					break;
-				case PT_REQ_UPDATE :
-					//packet = new byte[LEN_PROTOCOL_TYPE];
-					break;
-				case PT_RES_UPDATE :
-					//packet = new byte[LEN_PROTOCOL_TYPE+LEN_LOGIN_ID+LEN_LOGIN_PASSWORD];
-					break;	
 				case PT_EXIT : 
 					packet = new byte[LEN_PROTOCOL_TYPE];
 					break;
