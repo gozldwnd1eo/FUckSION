@@ -7,7 +7,13 @@ public class Protocol implements Serializable{
 	public static final int PT_EXIT = 0;		// 프로그램 종료
 	public static final int PT_REQ_LOGIN = 1;	// 로그인 요청
 	public static final int PT_RES_LOGIN = 2;	// 로그인 응답
-	public static final int PT_LOGIN_RESULT=3;	// 인증 결과
+//	public static final int PT_LOGIN_RESULT=3;	// 인증 결과
+	public static final int PT_REQ_SIGNUP = 3;	//	회원가입 요청
+	public static final int PT_RES_SIGNUP = 4;	//	회원가입 응답
+	public static final int PT_REQ_LOOKUP = 5; 	//	조회 요청
+	public static final int PT_RES_LOOKUP = 6;	// 	조회 응답
+	public static final int PT_REQ_UPDATE = 7; 	// 	갱신 요청
+	public static final int PT_RES_UPDATE = 8; 	//	갱신 응답
 	public static final int LEN_LOGIN_ID=20;	// ID 길이
 	public static final int LEN_LOGIN_PASSWORD=20;	// PWD 길이
 	public static final int LEN_LOGIN_RESULT=2;	// 로그인 인증 값 길이
@@ -24,7 +30,8 @@ public class Protocol implements Serializable{
 		this.protocolType = protocolType;
 		getPacket(protocolType);
 	}
-
+/////////////////////////////////////////////////////////일단 조회는 LOOKUP에 갱신은 UPDATE라고 했습니다 행님들
+// 그리고 밑에도 추가해야함
 	// 프로토콜 타입에 따라 바이트 배열 packet의 length가 다름
 	public byte[] getPacket(int protocolType){
 	    if(packet==null){
@@ -38,8 +45,24 @@ public class Protocol implements Serializable{
 				case PT_UNDEFINED : 
 					packet = new byte[LEN_MAX];
 					break;
-				case PT_LOGIN_RESULT : 
-					packet = new byte[LEN_PROTOCOL_TYPE+LEN_LOGIN_RESULT];
+//				case PT_LOGIN_RESULT : 
+				case PT_REQ_SIGNUP :
+					packet = new byte[LEN_PROTOCOL_TYPE]; //일단 new byte[type]만 함 나중에 [type+...] 해야함
+					break;
+				case PT_RES_SIGNUP :
+					packet = new byte[LEN_PROTOCOL_TYPE];
+					break;
+				case PT_REQ_LOOKUP :
+					packet = new byte[LEN_PROTOCOL_TYPE];
+					break;
+				case PT_RES_LOOKUP :
+					packet = new byte[LEN_PROTOCOL_TYPE];
+					break;
+				case PT_REQ_UPDATE :
+					packet = new byte[LEN_PROTOCOL_TYPE];
+					break;
+				case PT_RES_UPDATE :
+					packet = new byte[LEN_PROTOCOL_TYPE];
 					break;
 				case PT_EXIT : 
 					packet = new byte[LEN_PROTOCOL_TYPE];
