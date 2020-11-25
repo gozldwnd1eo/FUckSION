@@ -18,6 +18,11 @@ public class Protocol implements Serializable{
 	public static final int LEN_LOGIN_PASSWORD=20;	// PWD 길이
 	public static final int LEN_LOGIN_RESULT=2;	// 로그인 인증 값 길이
 	public static final int LEN_PROTOCOL_TYPE=1;	// 프로토콜 타입 길이
+	public static final int LEN_TYPE_CODE=1;	// 타입 코드 길이
+	public static final int LEN_PROTOCOL_BODYLEN=2;	// 프로토콜 바디 길이 길이
+	public static final int LEN_PROTOCOL_FRAG=1;	// 프로토콜 분할여부 길이
+	public static final int LEN_PROTOCOL_LAST=1;	// 프로토콜 마지막여부 길이
+	public static final int LEN_PROTOCOL_SEQNUM=2;	// 프로토콜 분할 순서번호 길이
 	public static final int LEN_MAX = 1000;		//최대 데이터 길이
 	protected int protocolType;
 	private byte[] packet;	// 프로토콜과 데이터의 저장공간이 되는 바이트 배열
