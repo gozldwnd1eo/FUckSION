@@ -1,4 +1,4 @@
-package Cinema;
+package MovieSysServer.Cinema;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;

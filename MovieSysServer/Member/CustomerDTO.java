@@ -1,14 +1,28 @@
-package Member;
+package MovieSysServer.Member;
 
 public class CustomerDTO {
-	private String cus_id; // varchar2(10)    			°í°´ID
-	private String cus_password; // varchar2(20)		°í°´ºñ¹Ð¹øÈ£
-	private String cus_name; // varchar2(20)			°í°´ÀÌ¸§
-	private String cus_account; // varchar2(50)			°í°´°èÁÂ¹øÈ£
-	private String cus_phoneNum; // varchar2(20)		°í°´ÈÞ´ëÀüÈ­¹øÈ£
-	private String cus_gender; // boolean				°í°´¼ºº°    F/M
-	private int cus_money; // number					°í°´ÀÜ¾×
+	private String cus_id; // varchar2(10)    			????ID
+	private String cus_password; // varchar2(20)		??????¬Û??
+	private String cus_name; // varchar2(20)			???????
+	private String cus_account; // varchar2(50)			???????©ö??
+	private String cus_phoneNum; // varchar2(20)		?????????????
+	private String cus_gender; // boolean				????????    F/M
+	private int cus_money; // number					???????
+	private String email; 	// varchar2
+	private String birthday;	
 	
+	public String getEmail(){
+		return email;
+	}
+	public void setEmail(String email){
+		this.email = email;
+	}
+	public String getBirthday(){
+		return birthday;
+	}
+	public void setBirthday(String birthday){
+		this.birthday=birthday;
+	}
 	public int getCus_money() {
 		return cus_money;
 	}

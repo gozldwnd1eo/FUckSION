@@ -1,4 +1,4 @@
-package Cinema;
+package MovieSysServer.Cinema;
 
 public class ScreenDTO {
 	private String screen_id; // varchar2(5)    상영영화ID

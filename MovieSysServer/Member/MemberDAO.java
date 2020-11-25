@@ -1,4 +1,4 @@
-package Member;
+package MovieSysServer.Member;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,4 +1,4 @@
-package Film;
+package MovieSysServer.Film;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

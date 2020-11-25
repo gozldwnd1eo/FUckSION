@@ -1,4 +1,4 @@
-package Cinema;
+package MovieSysServer.Cinema;
 
 public class ResvDTO {
 	private String resv_num; // varchar2  예약번호
