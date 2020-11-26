@@ -2,15 +2,24 @@ package MovieSysServer.Member;
 
 public class CustomerDTO {
 	private String cus_id; // varchar2(10)    			????ID
-	private String cus_password; // varchar2(20)		??????��??
+	private String cus_password; // varchar2(20)		??????��??
 	private String cus_name; // varchar2(20)			???????
-	private String cus_account; // varchar2(50)			???????��??
+	private String cus_account; // varchar2(50)			???????��??
 	private String cus_phoneNum; // varchar2(20)		?????????????
 	private String cus_gender; // boolean				????????    F/M
 	private int cus_money; // number					???????
 	private String email; 	// varchar2
-	private String birthday;	
+	private String birthday;//	생년월일
+	private String flag;	//	고객/담당자 플래그	
 	
+	public String getFlag(){
+		return flag;
+	}
+
+	public void setFlag(String flag){
+		this.flag=flag;
+	}
+
 	public String getEmail(){
 		return email;
 	}

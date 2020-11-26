@@ -10,9 +10,9 @@ public class LoginClient {
  	    OutputStream os = socket.getOutputStream();
 	    InputStream is = socket.getInputStream();
 
-  	    Protocol protocol = new Protocol();
+  	    Protocol protocol = new Protocol(Protocol.PT_REQ_LOGIN);
 	    byte[] buf = protocol.getPacket();
-
+		
 
 		String id;				//아이디
 		String password;		//비밀번호
@@ -23,14 +23,17 @@ public class LoginClient {
 		String birthday;		//생년월일
 
 		while(true){
+//			protocol = new Protocol();
+//			byte[] buf = protocol.getPacket();
 			is.read(buf);
 			int packetType = buf[0];
+			int packetCode = buf[1];
 			protocol.setPacket(packetType,buf);
 			if(packetType == Protocol.PT_EXIT){
 				System.out.println("클라이언트 종료");
 				break;
 			}
-		
+			
 			switch(packetType){
 				case Protocol.PT_REQ_LOGIN:
 //					System.out.println("서버가 로그인 정보 요청");
