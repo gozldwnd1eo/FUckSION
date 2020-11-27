@@ -73,7 +73,10 @@ public class Protocol implements Serializable {
 	public static final int LEN_REV_STARPOINT=3;		// 리뷰 별점 길이
 	public static final int LEN_REV_CONTENT=220;		// 리뷰 내용 길이
 	public static final int LEN_REV_DATE=20;		// 리뷰 게시날짜 길이
-	
+//TYPE 1 CODE
+	public static final int CODE_PT_RES_LOGIN_CUS_SUCCESS =1;		// 고객 아이디 찾기 요청 코드번호	
+	public static final int CODE_PT_RES_LOGIN_ADMIN_SUCCESS =2;		// 고객 아이디 찾기 요청 코드번호
+	public static final int CODE_PT_RES_LOGIN_FAIL =3;			// 고객 아이디 찾기 요청 코드번호
 //TYPE 5 CODE
 	public static final int CODE_PT_REQ_LOOKUP_FIND_CUS_ID =0;		// 고객 아이디 찾기 요청 코드번호       //관리자 도 아이디 여기서 찾아내는가?
 	public static final int CODE_PT_REQ_LOOKUP_FIND_CUS_PASSWORD =1;	// 고객 비밀번호 찾기 요청 코드번호
@@ -232,7 +235,13 @@ public class Protocol implements Serializable {
 					packet = new byte[LEN_PROTOCOL_TYPE+LEN_LOGIN_ID+LEN_LOGIN_PASSWORD];
 					break;
 				case PT_RES_LOGIN :
+				switch(typeCode){
+					case CODE_PT_RES_LOGIN_CUS_SUCCESS:
+					case CODE_PT_RES_LOGIN_ADMIN_SUCCESS:
+					case CODE_PT_RES_LOGIN_FAIL:
 					packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE];
+					break;
+				}
 					break;
 				case PT_UNDEFINED : 
 					packet = new byte[LEN_MAX];
