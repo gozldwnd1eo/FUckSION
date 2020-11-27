@@ -18,7 +18,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import Protocol;
+import MovieSysServer.LoginProtocol.*;
 
 public class RootContreoller implements Initializable {
 
@@ -43,6 +43,9 @@ public class RootContreoller implements Initializable {
                 String id=idfield.getText();
                 String pw=pwfield.getText();
                 
+                // Protocol protocol=new Protocol(Protocol.PT_REQ_LOGIN);
+                // protocol.setId(id);
+
                 Parent second=FXMLLoader.load(getClass().getResource("customerMain.fxml"));
                 Scene scene = new Scene(second);
                 Stage primaryStage=(Stage) loginbtn.getScene().getWindow();
