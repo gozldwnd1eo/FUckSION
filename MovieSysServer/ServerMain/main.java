@@ -1,10 +1,8 @@
-package ServerMain;
+package MovieSysServer.ServerMain;
 
 import java.util.ArrayList;
 
-import Cinema.*;
-import Film.*;
-import Member.*;
+import MovieSysServer.Member.*;
 
 public class main {
 	public static void main(String[] args) {
@@ -30,7 +28,12 @@ public class main {
 		dto.setCus_account("1234");
 		dto.setCus_gender("m");
 		dto.setCus_money(1111);
-		boolean result = dao.insertMember(dto);
+		dto.setEmail("1111");
+		dto.setBirthday("1111");
+		dto.setFlag("C");
+
+
+		boolean result = dao.insertCustomer(dto);
 		System.out.println(result);
 //		
 //		dto=new ReviewDTO();
