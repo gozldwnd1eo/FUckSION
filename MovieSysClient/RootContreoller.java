@@ -42,14 +42,33 @@ public class RootContreoller implements Initializable {
             try{
                 String id=idfield.getText();
                 String pw=pwfield.getText();
-                
-                // Protocol protocol=new Protocol(Protocol.PT_REQ_LOGIN);
-                // protocol.setId(id);
 
-                Parent second=FXMLLoader.load(getClass().getResource("customerMain.fxml"));
-                Scene scene = new Scene(second);
-                Stage primaryStage=(Stage) loginbtn.getScene().getWindow();
-                primaryStage.setScene(scene);
+                Protocol protocol=new Protocol(Protocol.PT_REQ_LOGIN);
+                byte[] buf=protocol.getPacket();
+                protocol.setID(id);
+                protocol.setPassword(pw);
+                Myconn.setSessUserID(id);
+                Myconn.setSessUserPW(pw);
+                Myconn.os.write(protocol.getPacket());
+    
+                Myconn.is.read(buf);
+                int packetType=buf[0];
+
+                protocol.setPacket(packetType, buf);
+
+                String result=protocol.getLoginResult();
+                if(result.equals("1")){ // 고객 로그인
+                    Parent second=FXMLLoader.load(getClass().getResource("customerMain.fxml"));
+                    Scene scene = new Scene(second);
+                    Stage primaryStage=(Stage) loginbtn.getScene().getWindow();
+                    primaryStage.setScene(scene);
+                }
+                if(result.equals("2")){ // 담당자 로그인
+
+                }
+                if(result.equals("3")){ // 로그인 실패
+
+                }
             }catch(IOException e){
                 e.printStackTrace();
             }
