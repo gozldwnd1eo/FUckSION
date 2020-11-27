@@ -22,13 +22,13 @@ public class AppMain extends Application {
     }
 
     public static void main(String[] args) throws Exception {
-        Socket socket = new Socket();
+        Socket socket = new Socket("localhost", 7127);
         
         Myconn.setSocket(socket);
         Myconn.setConnect(socket.isConnected());
         Myconn.setOutputStream(socket.getOutputStream());
         Myconn.setInputStream(socket.getInputStream());
-        
+
         launch(args);
     }
 }
