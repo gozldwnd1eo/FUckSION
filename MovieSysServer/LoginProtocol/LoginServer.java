@@ -4,6 +4,7 @@ import java.net.*;
 import java.io.*;
 import MovieSysServer.Member.*;
 
+
 public class LoginServer{
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
 	    ServerSocket sSocket = new ServerSocket(3000);
@@ -33,6 +34,7 @@ public class LoginServer{
 		String region;			//지역
 
 	    while(true){
+			MemberDAO mdao= new MemberDAO();
 //			protocol = new Protocol();			// 새 Protocol 객체 생성 (기본 생성자)
 			byte[] buf = protocol.getPacket();	// 기본 생성자로 생성할 때에는 바이트 배열의 길이가 1000바이트로 지정됨
 			is.read(buf);						// 클라이언트로부터 로그인정보 (ID와 PWD) 수신
@@ -50,14 +52,14 @@ public class LoginServer{
 				
 				case Protocol.PT_REQ_LOGIN:		// 로그인 정보 수신 
 					System.out.println("클라이언트가 로그인 정보를 보냈습니다");
-					id = protocol.getId();
+					id = protocol.getID();
 					password = protocol.getPassword();
-					MemberDAO mdao= new MemberDAO();
+					
 					String result = mdao.loginRequest(id, password);
 					if(result.equals("false")){ //로그인 실패
 						//로그인 실패창이 클라이언트에서 뜨게해줌
 						
-						protocol = new Protocol(Protocol.PT_RES_LOGIN);//코드3   다시 로그인 요청
+						protocol = new Protocol(Protocol.PT_RES_LOGIN,Protocol.CODE_PT_RES_LOGIN_FAIL);//코드3   다시 로그인 요청
 						os.write(protocol.getPacket());
 						break;
 					}
@@ -71,7 +73,7 @@ public class LoginServer{
 						//고객          코드1
 						//영화/영화관/내정보 창 띄우기
 						if(result.equals("C")){
-							protocol = new Protocol(Protocol.PT_RES_LOGIN);//코드1 	고객 로그인 요청
+							protocol = new Protocol(Protocol.PT_RES_LOGIN,Protocol.CODE_PT_RES_LOGIN_CUS_SUCCESS);//코드1 	고객 로그인 요청
 							os.write(protocol.getPacket());
 							break;
 						}
@@ -80,70 +82,103 @@ public class LoginServer{
 						//관리자 		코드2
 						//영화관 관리/영화 관리/ 상영 관리/ 통계정보/계좌관리 창 띄우기
 						else if(result.equals("A")){
-							protocol = new Protocol(Protocol.PT_RES_LOGIN);//코드2	관리자 로그인 요청
+							protocol = new Protocol(Protocol.PT_RES_LOGIN,Protocol.CODE_PT_RES_LOGIN_ADMIN_SUCCESS);//코드2	관리자 로그인 요청
 							os.write(protocol.getPacket());
 							break;
 						}
-						
+
 					}
 
 					// System.out.println("로그인 처리 결과 전송");
 					// os.write(protocol.getPacket());
 					// break;
 					
-				case Protocol.PT_REQ_SIGNUP :	//회원가입 요청 수신
-					id = protocol.getId();
-					password = protocol.getPassword();
-					if(idCheck(id)==false){		//회원가입할 때 id 중복체크
-						protocol = new Protocol(Protocol.PT_RES_SIGNUP);//중복에 걸려서 다시 회원가입 요청
-						os.write(protocol.getPacket());
-						break;
-					}
-					//회원가입 성공
-					//dto에 회원들 정보들 넣어줘야 해용
-					break;
+		// 		case Protocol.PT_REQ_SIGNUP :	//회원가입 요청 수신
+		// 			// id = protocol.getId();
+		// 			// password = protocol.getPassword();
+		// 			// if(idCheck(id)==false){		//회원가입할 때 id 중복체크
+		// 			// 	protocol = new Protocol(Protocol.PT_RES_SIGNUP);//중복에 걸려서 다시 회원가입 요청
+		// 			// 	os.write(protocol.getPacket());
+		// 			// 	break;
+		// 			// }
+		// 			//회원가입 성공
+		// 			//dto에 회원들 정보들 넣어줘야 해용
+		// 			break;
 
-				case Protocol.PT_RES_LOOKUP :	//조회 요청 수신
+
+		//여부터 다시 시작하셈
+		// 		case Protocol.PT_REQ_LOOKUP :	//조회 요청 수신
 				
 			
-				id = protocol.getId();
-				name = protocol.getName();
-				email = protocol.getEmail();
-				region = protocol.getRegion();
-
-				String memberID = mdao.selectMemberID(name, email);
-					//id조회  0				
-					if(memberID.equals("false")){	
-						protocol = new Protocol(Protocol.PT_RES_LOOKUP);//가입된 아이디가 없어서 다시 조회 요청
-						os.write(protocol.getPacket());					//코드 2
-						break;
-					}
-					else{ // 아이디 보내줌
-						protocol = new Protocol(Protocol.PT_RES_LOOKUP); // 코드 1
-						protocol.setId(id);
-						os.write(protocol.getPacket());
-						break;
+		// 		id = protocol.getID();
 
 
-					}
-					
-					//비밀번호 조회 1
-
-					if(lookupPWD(id,name,email)==false){
-						protocol = new Protocol(Protocol.PT_REQ_LOOKUP);
-						os.write(protocol.getPacket());
-						break;
-					}
-					else{	//비밀번호 보내줌
-
-					}
-
-					//지역 조회 2
+		// 		// name = protocol.getName();
+		// 		// email = protocol.getEmail();
+		// 		// region = protocol.getRegion();
 
 
-					break;
+		// 			switch(packetCode){
+		// 			case Protocol.CODE_PT_REQ_LOOKUP_FIND_CUS_ID : //ID조회
+		// 				String memberID = mdao.selectMemberID(name, email);
 				
-				case Protocol.PT_REQ_UPDATE : 	//갱신 요청 수신
+						
+		// 				if(memberID.equals("false")){	
+		// 					protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FIND_CUS_ID_NO);//가입된 아이디가 없어서 다시 조회 요청
+		// 					os.write(protocol.getPacket());					//코드 2
+		// 					break;
+		// 				}
+		// 				else{ // 아이디 보내줌
+		// 					protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FIND_CUS_ID_OK); // 코드 1
+		// 					protocol.setID(id);
+		// 					os.write(protocol.getPacket());
+		// 					break;
+
+
+		// 				}
+					
+		// 			//비밀번호 조회 1
+		// 			case Protocol.CODE_PT_REQ_LOOKUP_FIND_CUS_PASSWORD : //비밀번호 조회
+		// 			if(lookupPWD(id,name,email)==false){
+		// 				protocol = new Protocol(Protocol.PT_REQ_LOOKUP);
+		// 				os.write(protocol.getPacket());
+		// 				break;
+		// 			}
+		// 			else{	//비밀번호 보내줌
+
+		// 			}
+
+		// 			//지역 조회 2
+		// 		}
+					
+		// 			break;
+				
+		// 		case Protocol.PT_REQ_UPDATE : 	//갱신 요청 수신
+		// 			switch(packetCode){
+		// 				case Protocol.CODE_PT_REQ_UPDATE_ADD_MEM : //회원 추가(가입) 요청
+
+		// 					if(idCheck(id)==false){		//회원가입할 때 id 중복체크
+		// 						protocol = new Protocol(Protocol.PT_RES_SIGNUP,Protocol.CODE_PT_RES_UPDATE_ADD_MEM_NO);//중복에 걸려서 다시 회원가입 요청
+		// 						os.write(protocol.getPacket());
+		// 						break;
+		// 					}
+		// 					else{
+		// 						CustomerDTO dto= new CustomerDTO();
+							
+							
+		// 						dto.setCus_id(protocol.getID());
+		// 						dto.setCus_password(protocol.getPassword());
+		// //						dto.setCus_name();
+		// 						//~~~~
+		// 						//~
+		// 						mdao.insertCustomer(dto);
+
+		// 						protocol= new Protocol(Protocol.PT_RES_SIGNUP,Protocol.CODE_PT_RES_UPDATE_ADD_MEM_OK);
+		// 						os.write(protocol.getPacket());
+
+		// 						break;
+		// 					}
+			//			}
 					break;
 
 			}//end switch
@@ -153,7 +188,8 @@ public class LoginServer{
 
 	    is.close();
 	    os.close();
-	    socket.close();
+		socket.close();
+	
 	}
 
 	public static boolean idCheck(String id){			//회원가입할 때 id중복확인/////////////
