@@ -18,6 +18,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import Protocol;
+
 public class RootContreoller implements Initializable {
 
     @FXML
@@ -40,7 +42,7 @@ public class RootContreoller implements Initializable {
             try{
                 String id=idfield.getText();
                 String pw=pwfield.getText();
-
+                
                 Parent second=FXMLLoader.load(getClass().getResource("customerMain.fxml"));
                 Scene scene = new Scene(second);
                 Stage primaryStage=(Stage) loginbtn.getScene().getWindow();
