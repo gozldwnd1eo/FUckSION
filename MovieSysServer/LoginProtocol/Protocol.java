@@ -202,6 +202,7 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_RES_UPDATE_DELETE_FILM_OK =39;			// 영화 삭제 요청 승인 코드번호
 	public static final int CODE_PT_RES_UPDATE_DELETE_FILM_NO =40;			// 영화 삭제 요청 거절 코드번호
 	protected int protocolType;
+	protected int typeCode;
 	protected int protocolCode = -1; // 코드 추가..by 규철
 	private byte[] packet; // 프로토콜과 데이터의 저장공간이 되는 바이트 배열
 
@@ -280,8 +281,8 @@ public class Protocol implements Serializable {
 					break;
 				case PT_RES_LOOKUP :
 					switch(typeCode){
-					case  CODE_PT_RES_LOOKUP_FIND_CUS_ID_NO , 
-						CODE_PT_RES_LOOKUP_FIND_CUS_PASSWORD_OK , 
+					case  CODE_PT_RES_LOOKUP_FIND_CUS_ID_NO ,
+						 CODE_PT_RES_LOOKUP_FIND_CUS_PASSWORD_OK , 
 						CODE_PT_RES_LOOKUP_FIND_CUS_PASSWORD_NO , 
 						CODE_PT_RES_LOOKUP_THEATER_NO , 
 						CODE_PT_RES_LOOKUP_AUDI_NO , 
@@ -321,8 +322,8 @@ public class Protocol implements Serializable {
 						CODE_PT_RES_LOOKUP_SCREEN_TABLE_OK :
 						packet = new byte[LEN_MAX];
 						break;
-					case   CODE_PT_RES_LOOKUP_MY_INFO_OK:   //생년월일이 안보여요
-						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+8*LEN_BODY_SEPARATOR+LEN_LOGIN_ID+LEN_LOGIN_PASSWORD+LEN_MEM_NAME+LEN_MEM_PHONENUM+LEN_MEM_EMAIL+LEN_MEM_ACCOUNT+LEN_MEM_MONEY+LEN_MEM_GENDER+LEN_MEM_BIRTHDAY]
+					case   CODE_PT_RES_LOOKUP_MY_INFO_OK: 
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+8*LEN_BODY_SEPARATOR+LEN_LOGIN_ID+LEN_LOGIN_PASSWORD+LEN_MEM_NAME+LEN_MEM_PHONENUM+LEN_MEM_EMAIL+LEN_MEM_ACCOUNT+LEN_MEM_MONEY+LEN_MEM_GENDER+LEN_MEM_BIRTHDAY];
 						break;
 					case  CODE_PT_RES_LOOKUP_TOTAL_SALES_OK:
 						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_TOTAL_SALES];
@@ -330,7 +331,7 @@ public class Protocol implements Serializable {
 					case  CODE_PT_RES_LOOKUP_ACCOUNT_OK:
 						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_BODY_SEPARATOR+LEN_MEM_ACCOUNT+LEN_MEM_MONEY];
 						break;
-					case  CODE_PT_RES_LOOKUP_FIND_CUS_ID_OK,:
+					case  CODE_PT_RES_LOOKUP_FIND_CUS_ID_OK:
 						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_LOGIN_ID];
 						break;
 					}
@@ -383,7 +384,7 @@ public class Protocol implements Serializable {
 						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_AUDI_ID];
 						break;
 					case  CODE_PT_REQ_UPDATE_ADD_SCREEN_TABLE:
-						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+4*LEN_BODY_SEPARATOR+LEN_AUDI_ID+LEN_FILM_ID+LEN_AUDI_SEATCNT(드가야 하는가?)+LEN_SCREEN_STARTTIME+LEN_SCREEN_FINALTIME];
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+4*LEN_BODY_SEPARATOR+LEN_AUDI_ID+LEN_FILM_ID+LEN_AUDI_SEATCNT+LEN_SCREEN_STARTTIME+LEN_SCREEN_FINALTIME];
 						break;
 					case  CODE_PT_REQ_UPDATE_CHANGE_SCREEN_TABLE:
 						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+5*LEN_BODY_SEPARATOR+LEN_SCREEN_ID+LEN_AUDI_ID+LEN_FILM_ID+LEN_SCREEN_RESIDUALSEAT+LEN_SCREEN_STARTTIME+LEN_SCREEN_FINALTIME];
@@ -398,9 +399,8 @@ public class Protocol implements Serializable {
 						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_FILM_ID];
 						break;
 					}
-					break;
 				case PT_RES_UPDATE :
-					case(typeCode){
+					switch(typeCode){
 					case CODE_PT_RES_UPDATE_ADD_MEM_OK ,
 						CODE_PT_RES_UPDATE_ADD_MEM_NO ,
 						CODE_PT_RES_UPDATE_CHANGE_MEM_INFO_OK ,
@@ -444,7 +444,7 @@ public class Protocol implements Serializable {
 						CODE_PT_RES_UPDATE_DELETE_FILM_OK ,
 						CODE_PT_RES_UPDATE_DELETE_FILM_NO :
 						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE];
-						break
+						break;
 					}
 					break;
 				case PT_EXIT : 
