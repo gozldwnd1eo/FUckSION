@@ -205,7 +205,6 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_RES_UPDATE_DELETE_FILM_OK = 39; // 영화 삭제 요청 승인 코드번호
 	public static final int CODE_PT_RES_UPDATE_DELETE_FILM_NO = 40; // 영화 삭제 요청 거절 코드번호
 	protected int protocolType;
-	protected int typeCode;
 	protected int protocolCode = -1; // 코드 추가..by 규철
 	private byte[] packet; // 프로토콜과 데이터의 저장공간이 되는 바이트 배열
 
@@ -215,13 +214,13 @@ public class Protocol implements Serializable {
 
 	public Protocol(int protocolType) { // 생성자
 		this.protocolType = protocolType;
-		getPacket(protocolType);
+		getPacket(protocolType, protocolCode);
 	}
 
 	public Protocol(int protocolType, int protocolCode) { // 코드가 있는 타입 생성자..by 규철
 		this.protocolType = protocolType;
 		this.protocolCode = protocolCode;
-		getPacket(protocolType);
+		getPacket(protocolType, protocolCode);
 	}
 
 	///////////////////////////////////////////////////////// 일단 조회는 LOOKUP에 갱신은
@@ -526,9 +525,9 @@ public class Protocol implements Serializable {
 	}
 
 	// Default 생성자로 생성한 후 Protocol 클래스의 packet 데이터를 바꾸기 위한 메서드
-	public void setPacket(int pt, byte[] buf) {
+	public void setPacket(int pt, int code, byte[] buf) {
 		packet = null;
-		packet = getPacket(pt);
+		packet = getPacket(pt, code);
 		protocolType = pt;
 		System.arraycopy(buf, 0, packet, 0, packet.length);
 	}
