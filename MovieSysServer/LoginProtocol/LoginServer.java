@@ -6,7 +6,7 @@ import MovieSysServer.Member.*;
 
 public class LoginServer {
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-		ServerSocket sSocket = new ServerSocket(3000);
+		ServerSocket sSocket = new ServerSocket(7127);
 		System.out.println("클라이언트 접속 대기중...");
 		Socket socket = sSocket.accept();
 		System.out.println("클라이언트 접속");
