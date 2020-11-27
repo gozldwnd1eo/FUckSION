@@ -547,7 +547,7 @@ public class Protocol implements Serializable {
 		return splited;
 	}
 
-	public void setID(String id) { // 조회응답코드1 조회요청코드D 조회요청코드13 조회요청코드9 조회요청코드A 조회요청코드B
+	public void setID(String id) { // 조회응답코드1 조회요청코드D 조회요청코드13 조회요청코드9 조회요청코드A 조회요청코드B 갱신요청코드3
 		System.arraycopy(id.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE, id.trim().getBytes().length);
 		packet[LEN_PROTOCOL_TYPE + id.trim().getBytes().length] = '\0';
 	}
@@ -559,28 +559,28 @@ public class Protocol implements Serializable {
 
 	// 패스워드는 byte[]에서 로그인 아이디 바로 뒤에 있음
 	public String getPassword() {
-		return new String(packet, LEN_PROTOCOL_TYPE + LEN_LOGIN_ID, LEN_LOGIN_PASSWORD).trim();
+		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_LOGIN_PASSWORD).trim();
 	}
 
-	public void setPassword(String password) {
-		System.arraycopy(password.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_LOGIN_ID,
+	public void setPassword(String password) { // 갱신요청코드4
+		System.arraycopy(password.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
 				password.trim().getBytes().length);
-		packet[LEN_PROTOCOL_TYPE + LEN_LOGIN_ID + password.trim().getBytes().length] = '\0';
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + password.trim().getBytes().length] = '\0';
 	}
 
 	public String getTheaterArea() {
 		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_THEATER_AREA).trim();
 	}
 
-	public void setID_Email(String id, String email) { // 조회요청코드0 아이디 찾기 요청시 id,email 입력..by 규철
+	public void setName_Email(String name, String email) { // 조회요청코드0 아이디 찾기 요청시 name,email 입력..by 규철
 		this.protocolCode = 0;
-		String finalStr = id + "\\" + email;
+		String finalStr = name + "\\" + email;
 		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
 				finalStr.trim().getBytes().length);
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getID_Email() { // 위에꺼 세트..by 규철
+	public String[] getName_Email() { // 위에꺼 세트..by 규철
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
@@ -659,7 +659,7 @@ public class Protocol implements Serializable {
 	public void setTheaterList(int cnt, String[] list) {// 조회응답코드5
 		String finalStr = "";// 사용시 쿼리문 받으면서 바로 넣던지 스트링배열로 받아서 cnt세서 여기서 넣을지 결정할것
 		for (int i = cnt; i > 0; i--) {
-			finalStr += (list[i - 1] + "~");
+			finalStr += (list[i - 1] + "|");
 		} ////////////////////////////////////////////////////
 
 		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
@@ -758,4 +758,32 @@ public class Protocol implements Serializable {
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
+
+	public void setMemberJoin(String[] data) {// 갱신요청코드1(아이디\비밀번호\성명\휴대전화번호\계좌번호\성별\이메일)
+		String finalStr = data[0] + "\\" + data[1] + "\\" + data[2] + "\\" + data[3] + "\\" + data[4] + "\\" + data[5]
+				+ "\\" + data[6];
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getMemberJoin()// 위에꺼 세트 by 규철
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setMember_Modify_Info(String[] data) {// 갱신요청코드2(비밀번호\휴대전화번호\이메일 주소\계좌번호)
+		String finalStr = data[0] + "\\" + data[1] + "\\" + data[2] + "\\" + data[3] + "\\" + data[4] + "\\" + data[5]
+				+ "\\" + data[6];
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public void setID_ResevID(String loginID, String resevID) {
+		String finalStr = loginID + "\\" + resevID;
+	}
+
 }
