@@ -502,7 +502,8 @@ public class Protocol implements Serializable {
 	// 로그인후 성공/실패의 결과 값을 프로토콜로부터 추출하여 문자열로 리턴
 	public String getLoginResult() {
 		// String의 다음 생성자를 사용 : String(byte[] bytes, int offset, int length)
-		return new String(packet, LEN_PROTOCOL_TYPE, LEN_LOGIN_RESULT).trim();
+		String result = new String(packet, LEN_PROTOCOL_TYPE, LEN_TYPE_CODE);
+		return result;
 	}
 
 	// String ok를 byte[]로 만들어서 packet의 프로토콜 타입 바로 뒤에 추가
@@ -529,6 +530,7 @@ public class Protocol implements Serializable {
 		packet = null;
 		packet = getPacket(pt, code);
 		protocolType = pt;
+		protocolCode = code;
 		System.arraycopy(buf, 0, packet, 0, packet.length);
 	}
 	// byte[] packet에 String ID를 byte[]로 만들어 프로토콜 타입 바로 뒤에 추가

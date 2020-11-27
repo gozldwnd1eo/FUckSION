@@ -54,18 +54,19 @@ public class RootContreoller implements Initializable {
                 int packetCode = buf[1];
 
                 protocol.setPacket(packetType, packetCode, buf);
-
+                
                 String result = protocol.getLoginResult();
-                if (result.equals("1")) { // 고객 로그인
+
+                if (packetCode==1) { // 고객 로그인
                     Parent second = FXMLLoader.load(getClass().getResource("customerMain.fxml"));
                     Scene scene = new Scene(second);
                     Stage primaryStage = (Stage) loginbtn.getScene().getWindow();
                     primaryStage.setScene(scene);
                 }
-                if (result.equals("2")) { // 담당자 로그인
+                if (packetCode==2) { // 담당자 로그인
 
                 }
-                if (result.equals("3")) { // 로그인 실패
+                if (packetCode==3) { // 로그인 실패
 
                 }
             } catch (IOException e) {

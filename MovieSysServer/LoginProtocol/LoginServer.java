@@ -95,7 +95,6 @@ public class LoginServer {
 					// System.out.println("로그인 처리 결과 전송");
 					// os.write(protocol.getPacket());
 					// break;
-
 					// case Protocol.PT_REQ_SIGNUP : //회원가입 요청 수신
 					// // id = protocol.getId();
 					// // password = protocol.getPassword();
