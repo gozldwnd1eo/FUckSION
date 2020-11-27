@@ -17,10 +17,6 @@ public class Protocol implements Serializable {
 	public static final int PT_RES_UPDATE = 8; // 갱신 응답
 	public static final int LEN_LOGIN_ID = 10; // ID 길이
 	public static final int LEN_LOGIN_PASSWORD = 20; // PWD 길이
-	public static final int LEN_THEATER_ID = 5; // 영화관ID
-	public static final int LEN_THEATER_NAME = 50; // 영화관명칭
-	public static final int LEN_THEATER_AREA = 10; // 영화관 지역
-	public static final int LEN_THEATER_ADDRESS = 100; // 주소
 	public static final int LEN_LOGIN_RESULT = 2; // 로그인 인증 값 길이
 	public static final int LEN_PROTOCOL_TYPE = 1; // 프로토콜 타입 길이
 	public static final int LEN_TYPE_CODE = 1; // 타입 코드 길이
@@ -29,6 +25,182 @@ public class Protocol implements Serializable {
 	public static final int LEN_PROTOCOL_LAST = 1; // 프로토콜 마지막여부 길이
 	public static final int LEN_PROTOCOL_SEQNUM = 2; // 프로토콜 분할 순서번호 길이
 	public static final int LEN_MAX = 1000; // 최대 데이터 길이
+	public static final int LEN_BODY_SEPARATOR=1;	// 바디 구분자 길이
+	public static final int LEN_TOTAL_SALES=4;	// 총 매출 길이
+	public static final int LEN_CANCEL_RATE=10;	// 취소율 길이(?????얼만지 몰라요 )
+//MEMBERS TABLE
+	public static final int LEN_MEM_NAME=20;		// 멤버 이름 길이
+	public static final int LEN_MEM_PHONENUM=20;	// 멤버 전화번호 길이
+	public static final int LEN_MEM_ACCOUNT=50;		// 멤버 계좌번호 길이
+	public static final int LEN_MEM_GENDER=1;		// 멤버 성별 길이
+	public static final int LEN_MEM_MONEY=4;		// 멤버 잔액 길이
+	public static final int LEN_MEM_EMAIL=50;		// 멤버 이메일 길이
+	public static final int LEN_MEM_BIRTHDAY=10;		// 멤버 생일 길이
+	public static final int LEN_MEM_FLAG=1;		// 멤버 구분 길이
+//THEATERS TABLE
+	public static final int LEN_THEATER_ID=5;		// 영화관 ID 길이
+	public static final int LEN_THEATER_NAME=50;		// 영화관 이름 길이
+	public static final int LEN_THEATER_AREA=10;		// 영화관 지역 길이
+	public static final int LEN_THEATER_ADDRESS=100;	// 영화관 주소 길이
+//AUDITORIUMS TABLE
+	public static final int LEN_AUDI_ID=5;			// 상영관 ID 길이
+	public static final int LEN_AUDI_NUM=2;		// 상영관 번호 길이
+	public static final int LEN_AUDI_SEATCNT=4;		// 상영관 좌석수 길이
+//FILM TABLE
+	public static final int LEN_FILM_ID=5;				// 영화 ID 길이
+	public static final int LEN_FILM_NAME=50;			// 영화 이름 길이
+	public static final int LEN_FILM_TEASER=100;			// 영화 예고편 영상 링크 길이
+	public static final int LEN_FILM_INFO=50;			// 영화 정보 길이
+	public static final int LEN_FILM_GENRE=20;			// 영화 장르 길이
+	public static final int LEN_FILM_OPENINGDATE=20;		// 영화 개봉일 길이
+	//public static final int LEN_FILM_SUMMARY=?;			// 영화 줄거리 길이
+	//public static final int LEN_FILM_POSTER=?;			// 영화 포스터 길이
+	public static final int LEN_FILM_RESVDATE=4;			// 영화 예매율 길이
+//RESV TABLE
+	public static final int LEN_RESV_NUM=10;			// 영화 예매번호 길이
+	public static final int LEN_RESV_PEOPLENUM=1; 		// 예매 인원수 길이
+	public static final int LEN_RESV_SEATNUM=50;			// 예매 좌석번호 길이
+	public static final int LEN_RESV_DEPOSITDATE=20;		// 예매 입금일 길이
+	public static final int LEN_RESV_DEPOSITAMOUNT=4;		// 예매 입금액 길이
+	public static final int LEN_RESV_CANCELDATE=20;		// 예매 취소일 길이
+//SCREEN TABLE
+	public static final int LEN_SCREEN_ID=5;		// 상영 영화 ID 길이
+	public static final int LEN_SCREEN_RESIDUALSEAT=4;	// 상영영화 잔여좌석수 길이
+	public static final int LEN_SCREEN_STARTTIME=20;	// 상영영화 시작시간 길이
+	public static final int LEN_SCREEN_FINALTIME=20;	// 상영영화 끝나는 시간 길이
+//REVIEW TABLE
+	public static final int LEN_REV_ID=10;			// 리뷰 ID 길이
+	public static final int LEN_REV_STARPOINT=3;		// 리뷰 별점 길이
+	public static final int LEN_REV_CONTENT=220;		// 리뷰 내용 길이
+	public static final int LEN_REV_DATE=20;		// 리뷰 게시날짜 길이
+	
+//TYPE 5 CODE
+	public static final int CODE_PT_REQ_LOOKUP_FIND_CUS_ID =0;		// 고객 아이디 찾기 요청 코드번호       //관리자 도 아이디 여기서 찾아내는가?
+	public static final int CODE_PT_REQ_LOOKUP_FIND_CUS_PASSWORD =1;	// 고객 비밀번호 찾기 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_AREA =2;			// 지역 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_THEATER =3;		// 영화관 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_SCREEN_TIME =4;		// 상영시간 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_ALL_THEATER =5;		// 모든 영화관 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_SCREEN_TABLE =6;		// 해당 영화관의 상영시간표 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_SEAT_SITUATION =7;		// 현재 좌석 상황 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_FILM_DETAIL =8;		// 영화의 상세정보 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_MY_INFO =9;		// 내 정보 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_MY_REVIEWS =10;		// 자신이 작성한 리뷰 리스트 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_RESV_LIST =11;		// 예매 내역 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_ALL_SCREEN =12;		// 현재 상영 중 영화 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_THEATER_FOR_ADMIN =13;	//담당자용 영화관 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_AUDI =14;			// 상영관 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_THEATER_SALES =15;		// 영화관별 매출 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_TOTAL_SALES =16;		// 총 매출 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_THEATER_CANCEL_RATE =17;	// 영화별 취소율 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_THEATER_RESV_RATE =18;	// 영화별 예매율 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_ACCOUNT =19;		// 계좌 조회 요청 코드번호
+//TYPE 6 CODE
+	public static final int CODE_PT_RES_LOOKUP_FIND_CUS_ID_OK =1;		// 고객 아이디 찾기 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_FIND_CUS_ID_NO =2;		// 고객 아이디 찾기 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_FIND_CUS_PASSWORD_OK =3;	// 고객 비밀번호 찾기 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_FIND_CUS_PASSWORD_NO =4;	// 고객 비밀번호 찾기 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_AREA_OK =33;		// 지역 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_AREA_NO =34;		// 지역 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_THEATER_OK =5;		// 영화관 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_THEATER_NO =6;		// 영화관 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_SCREEN_TIME_OK =35;	// 상영시간 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_SCREEN_TIME_NO =36;	// 상영시간 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ALL_THEATER_OK =37;	// 모든 영화관 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ALL_THEATER_NO =38;	// 모든 영화관 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_SCREEN_TABLE_OK =39;	// 해당 영화관의 상영시간표 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_SCREEN_TABLE_NO =40;	// 해당 영화관의 상영시간표 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_SEAT_SITUATION_OK =9;	// 현재 좌석 상황 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_SEAT_SITUATION_NO =10;	// 현재 좌석 상황 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_FILM_DETAIL_OK =11;		// 영화의 상세정보 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_FILM_DETAIL_NO =12;		// 영화의 상세정보 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_MY_INFO_OK =13;		// 내 정보 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_MY_INFO_NO =14;		// 내 정보 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_MY_REVIEWS_OK =15;		// 자신이 작성한 리뷰 리스트 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_MY_REVIEWS_NO =16;	// 자신이 작성한 리뷰 리스트 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_RESV_LIST_OK =17;		// 예매 내역 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_RESV_LIST_NO =18;		// 예매 내역 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ALL_SCREEN_OK =19;		// 현재 상영 중 영화 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ALL_SCREEN_NO =20;		// 현재 상영 중 영화 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_OK =21;		//담당자용 영화관 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_NO =22;		//담당자용 영화관 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_AUDI_OK =7;		// 상영관 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_AUDI_NO =8;		// 상영관 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_THEATER_SALES_OK =23;	// 영화관별 매출 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_THEATER_SALES_NO =24;	// 영화관별 매출 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_TOTAL_SALES_OK = 25;		// 총 매출 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_TOTAL_SALES_NO =26;		// 총 매출 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_OK =27;	// 영화별 취소율 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_NO =28;	// 영화별 취소율 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_OK =29;	// 영화별 예매율 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_NO =30;	// 영화별 예매율 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_OK =31;		// 계좌 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_NO =32;		// 계좌 조회 요청 거절 코드번호
+//TYPE 7 CODE
+	public static final int CODE_PT_REQ_UPDATE_ADD_MEM =1;		// 회원 추가 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_CHANGE_MEM_INFO =2;	// 회원 정보 수정 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_DELETE_MEM =3;		// 회원 삭제 요청 코드번호	
+	public static final int CODE_PT_REQ_UPDATE_CHANGE_PASSWORD =4;	// 비밀번호 재설정 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_ADD_PAY_RESV =5;		// 결제 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_DELETE_PAY_RESV =6;		// 예매 취소 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_ADD_REVIEW =7;		// 리뷰 추가 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_CHANGE_REVIEW =8;		// 리뷰 수정 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_DELETE_REVIEW =9;		// 리뷰 삭제 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_ADD_THEATER =10;		// 영화관 추가 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_CHANGE_THEATER =11;	// 영화관 수정 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_DELETE_THEATER =12;		// 영화관 삭제 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_ADD_AUDI =13;		// 상영관 추가 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_CHANGE_AUDI =14;		// 상영관 수정 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_DELETE_AUDI =15;		// 상영관 삭제 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_ADD_SCREEN_TABLE =16;	// 상영스케줄 추가 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_CHANGE_SCREEN_TABLE =17;	// 상영스케줄 수정 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_DELETE_SCREEN_TABLE =18;	// 상영스케줄 삭제 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_ADD_FILM =19;		// 영화 추가 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_CHANGE_FILM =20;		// 영화 수정 요청 코드번호
+	public static final int CODE_PT_REQ_UPDATE_DELETE_FILM =21;		// 영화 삭제 요청 코드번호
+//TYPE 8 CODE
+	public static final int CODE_PT_RES_UPDATE_ADD_MEM_OK =1;			// 회원 추가 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_MEM_NO =2;			// 회원 추가 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_MEM_INFO_OK =3;		// 회원 정보 수정 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_MEM_INFO_NO =4;		// 회원 정보 수정 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_MEM_OK =5;			// 회원 삭제 요청 승인 코드번호	
+	public static final int CODE_PT_RES_UPDATE_DELETE_MEM_NO =6;			// 회원 삭제 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_PASSWORD_OK =41;		// 비밀번호 재설정 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_PASSWORD_NO =42;		// 비밀번호 재설정 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_PAY_RESV_OK =7;		// 결제 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO =8;		// 결제 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_PAY_RESV_OK =15;		// 예매 취소 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_PAY_RESV_NO =16;		// 예매 취소 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_REVIEW_OK =9;			// 리뷰 추가 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_REVIEW_NO =10;			// 리뷰 추가 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_REVIEW_OK =11;		// 리뷰 수정 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_REVIEW_NO =12;		// 리뷰 수정 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_REVIEW_OK =13;		// 리뷰 삭제 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_REVIEW_NO =14;		// 리뷰 삭제 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_THEATER_OK =17;		// 영화관 추가 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_THEATER_NO =18;		// 영화관 추가 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_THEATER_OK =19;		// 영화관 수정 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_THEATER_NO =20;		// 영화관 수정 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_THEATER_OK =21;		// 영화관 삭제 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_THEATER_NO =22;		// 영화관 삭제 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_AUDI_OK =23;			// 상영관 추가 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_AUDI_NO =24;			// 상영관 추가 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_AUDI_OK =25;		// 상영관 수정 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_AUDI_NO =26;		// 상영관 수정 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_AUDI_OK =27;			// 상영관 삭제 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_AUDI_NO =28;			// 상영관 삭제 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_SCREEN_TABLE_OK =29;		// 상영스케줄 추가 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_SCREEN_TABLE_NO =30;		// 상영스케줄 추가 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_SCREEN_TABLE_OK =31;	// 상영스케줄 수정 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_SCREEN_TABLE_NO =32;	// 상영스케줄 수정 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_SCREEN_TABLE_OK =33;		// 상영스케줄 삭제 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_SCREEN_TABLE_NO =34;	// 상영스케줄 삭제 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_FILM_OK =35;			// 영화 추가 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_FILM_NO =36;			// 영화 추가 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_FILM_OK =37;		// 영화 수정 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_CHANGE_FILM_NO =38;		// 영화 수정 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_FILM_OK =39;			// 영화 삭제 요청 승인 코드번호
+	public static final int CODE_PT_RES_UPDATE_DELETE_FILM_NO =40;			// 영화 삭제 요청 거절 코드번호
 	protected int protocolType;
 	protected int protocolCode = -1; // 코드 추가..by 규철
 	private byte[] packet; // 프로토콜과 데이터의 저장공간이 되는 바이트 배열
@@ -52,51 +224,238 @@ public class Protocol implements Serializable {
 	///////////////////////////////////////////////////////// UPDATE라고 했습니다 행님들
 	// 그리고 밑에도 추가해야함
 	// 프로토콜 타입에 따라 바이트 배열 packet의 length가 다름
-	public byte[] getPacket(int protocolType) {
-		if (packet == null) {
-			switch (protocolType) {
-				case PT_REQ_LOGIN: {
-					if (protocolCode == 0) {
-
-					}
-					packet = new byte[LEN_PROTOCOL_TYPE];
+	public byte[] getPacket(int protocolType, int typeCode){
+	    if(packet==null){
+			switch(protocolType){
+				case PT_REQ_LOGIN :
+					packet = new byte[LEN_PROTOCOL_TYPE+LEN_LOGIN_ID+LEN_LOGIN_PASSWORD];
 					break;
-				}
-
-				case PT_RES_LOGIN:
-					packet = new byte[LEN_PROTOCOL_TYPE + LEN_LOGIN_ID + LEN_LOGIN_PASSWORD];
+				case PT_RES_LOGIN :
+					packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE];
 					break;
-				case PT_UNDEFINED:
+				case PT_UNDEFINED : 
 					packet = new byte[LEN_MAX];
 					break;
-				// case PT_LOGIN_RESULT :
-				case PT_REQ_SIGNUP:
-					packet = new byte[LEN_PROTOCOL_TYPE]; // 일단 new byte[type]만 함 나중에 [type+...] 해야함
+				case PT_REQ_LOOKUP :
+					switch(typeCode){
+					case CODE_PT_REQ_LOOKUP_ALL_THEATER , 
+						CODE_PT_REQ_LOOKUP_ALL_SCREEN , 
+						CODE_PT_REQ_LOOKUP_THEATER_SALES , 
+						CODE_PT_REQ_LOOKUP_TOTAL_SALES , 
+						CODE_PT_REQ_LOOKUP_THEATER_CANCEL_RATE , 
+						CODE_PT_REQ_LOOKUP_THEATER_RESV_RATE :
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE];
+						break;
+					case CODE_PT_REQ_LOOKUP_FIND_CUS_ID :
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_BODY_SEPARATOR+LEN_MEM_NAME+LEN_MEM_EMAIL];
+						break;
+					case CODE_PT_REQ_LOOKUP_FIND_CUS_PASSWORD :
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+2*LEN_BODY_SEPARATOR+LEN_LOGIN_ID+LEN_MEM_NAME+LEN_MEM_EMAIL];
+						break;
+					case CODE_PT_REQ_LOOKUP_THEATER :
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_BODY_SEPARATOR+LEN_THEATER_AREA+LEN_FILM_ID];
+						break;
+					case CODE_PT_REQ_LOOKUP_SCREEN_TIME :
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_BODY_SEPARATOR+LEN_THEATER_ID+LEN_FILM_ID];
+						break;
+					case CODE_PT_REQ_LOOKUP_SCREEN_TABLE , 
+						CODE_PT_REQ_LOOKUP_AUDI :
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_THEATER_ID];
+						break;
+					case CODE_PT_REQ_LOOKUP_SEAT_SITUATION:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_SCREEN_ID];
+						break;
+					case CODE_PT_REQ_LOOKUP_AREA , 
+						CODE_PT_REQ_LOOKUP_FILM_DETAIL:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_FILM_ID];
+						break;
+					case CODE_PT_REQ_LOOKUP_MY_INFO , 
+						CODE_PT_REQ_LOOKUP_MY_REVIEWS , 
+						CODE_PT_REQ_LOOKUP_RESV_LIST , 
+						CODE_PT_REQ_LOOKUP_THEATER_FOR_ADMIN , 
+						CODE_PT_REQ_LOOKUP_ACCOUNT:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_LOGIN_ID];
+						break;
+					}					
 					break;
-				case PT_RES_SIGNUP:
-					packet = new byte[LEN_PROTOCOL_TYPE];
+				case PT_RES_LOOKUP :
+					switch(typeCode){
+					case  CODE_PT_RES_LOOKUP_FIND_CUS_ID_NO , 
+						CODE_PT_RES_LOOKUP_FIND_CUS_PASSWORD_OK , 
+						CODE_PT_RES_LOOKUP_FIND_CUS_PASSWORD_NO , 
+						CODE_PT_RES_LOOKUP_THEATER_NO , 
+						CODE_PT_RES_LOOKUP_AUDI_NO , 
+						CODE_PT_RES_LOOKUP_SEAT_SITUATION_NO ,
+						CODE_PT_RES_LOOKUP_FILM_DETAIL_NO , 
+						CODE_PT_RES_LOOKUP_MY_INFO_NO , 
+						CODE_PT_RES_LOOKUP_MY_REVIEWS_NO , 
+						CODE_PT_RES_LOOKUP_RESV_LIST_NO , 
+						CODE_PT_RES_LOOKUP_ALL_SCREEN_NO , 
+						CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_NO ,
+						CODE_PT_RES_LOOKUP_THEATER_SALES_NO , 
+						CODE_PT_RES_LOOKUP_TOTAL_SALES_NO , 
+						CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_NO , 
+						CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_NO , 
+						CODE_PT_RES_LOOKUP_ACCOUNT_NO , 
+						CODE_PT_RES_LOOKUP_AREA_NO , 
+						CODE_PT_RES_LOOKUP_SCREEN_TIME_NO , 
+						CODE_PT_RES_LOOKUP_ALL_THEATER_NO , 
+						CODE_PT_RES_LOOKUP_SCREEN_TABLE_NO:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE];
+						break;
+					case CODE_PT_RES_LOOKUP_AUDI_OK:
+					case   CODE_PT_RES_LOOKUP_THEATER_OK , 
+						CODE_PT_RES_LOOKUP_AUDI_OK , 
+						CODE_PT_RES_LOOKUP_SEAT_SITUATION_OK , 
+						CODE_PT_RES_LOOKUP_FILM_DETAIL_OK , 
+						CODE_PT_RES_LOOKUP_MY_REVIEWS_OK ,
+						CODE_PT_RES_LOOKUP_RESV_LIST_OK , 
+						CODE_PT_RES_LOOKUP_ALL_SCREEN_OK , 
+						CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_OK , 
+						CODE_PT_RES_LOOKUP_THEATER_SALES_OK , 
+						CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_OK ,
+						CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_OK , 
+						CODE_PT_RES_LOOKUP_AREA_OK , 
+						CODE_PT_RES_LOOKUP_SCREEN_TIME_OK , 
+						CODE_PT_RES_LOOKUP_ALL_THEATER_OK , 
+						CODE_PT_RES_LOOKUP_SCREEN_TABLE_OK :
+						packet = new byte[LEN_MAX];
+						break;
+					case   CODE_PT_RES_LOOKUP_MY_INFO_OK:   //생년월일이 안보여요
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+8*LEN_BODY_SEPARATOR+LEN_LOGIN_ID+LEN_LOGIN_PASSWORD+LEN_MEM_NAME+LEN_MEM_PHONENUM+LEN_MEM_EMAIL+LEN_MEM_ACCOUNT+LEN_MEM_MONEY+LEN_MEM_GENDER+LEN_MEM_BIRTHDAY]
+						break;
+					case  CODE_PT_RES_LOOKUP_TOTAL_SALES_OK:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_TOTAL_SALES];
+						break;
+					case  CODE_PT_RES_LOOKUP_ACCOUNT_OK:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_BODY_SEPARATOR+LEN_MEM_ACCOUNT+LEN_MEM_MONEY];
+						break;
+					case  CODE_PT_RES_LOOKUP_FIND_CUS_ID_OK,:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_LOGIN_ID];
+						break;
+					}
 					break;
-				case PT_REQ_LOOKUP:
-					packet = new byte[LEN_PROTOCOL_TYPE];
+				case PT_REQ_UPDATE :
+					switch(typeCode){
+					case  CODE_PT_REQ_UPDATE_ADD_MEM :   
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+7*LEN_BODY_SEPARATOR+LEN_LOGIN_ID+LEN_LOGIN_PASSWORD+LEN_MEM_NAME+LEN_MEM_PHONENUM+LEN_MEM_GENDER+LEN_MEM_EMAIL+LEN_MEM_ACCOUNT+LEN_MEM_BIRTHDAY]; 
+						break;
+					case  CODE_PT_REQ_UPDATE_CHANGE_MEM_INFO:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+3*LEN_BODY_SEPARATOR+LEN_LOGIN_PASSWORD+LEN_MEM_PHONENUM+LEN_MEM_EMAIL+LEN_MEM_ACCOUNT]; 
+						break;
+					case  CODE_PT_REQ_UPDATE_DELETE_MEM:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_LOGIN_ID];
+						break;
+					case  CODE_PT_REQ_UPDATE_CHANGE_PASSWORD:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_LOGIN_PASSWORD];
+						break;
+					case  CODE_PT_REQ_UPDATE_ADD_PAY_RESV:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+4*LEN_BODY_SEPARATOR+LEN_LOGIN_ID+LEN_SCREEN_ID+LEN_RESV_SEATNUM+LEN_RESV_PEOPLENUM+LEN_RESV_DEPOSITAMOUNT];
+						break;
+					case  CODE_PT_REQ_UPDATE_DELETE_PAY_RESV:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_BODY_SEPARATOR+LEN_LOGIN_ID+LEN_RESV_NUM];
+						break;
+					case  CODE_PT_REQ_UPDATE_ADD_REVIEW:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+3*LEN_BODY_SEPARATOR+LEN_LOGIN_ID+LEN_FILM_ID+LEN_REV_CONTENT+LEN_REV_STARPOINT];
+						break;
+					case  CODE_PT_REQ_UPDATE_CHANGE_REVIEW:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+2*LEN_BODY_SEPARATOR+LEN_REV_ID+LEN_REV_CONTENT+LEN_REV_STARPOINT];
+						break;
+					case  CODE_PT_REQ_UPDATE_DELETE_REVIEW:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_REV_ID];
+						break;
+					case  CODE_PT_REQ_UPDATE_ADD_THEATER:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+3*LEN_BODY_SEPARATOR+LEN_LOGIN_ID+LEN_THEATER_NAME+LEN_THEATER_AREA+LEN_THEATER_ADDRESS];
+						break;
+					case  CODE_PT_REQ_UPDATE_CHANGE_THEATER:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+4*LEN_BODY_SEPARATOR+LEN_THEATER_ID+LEN_LOGIN_ID+LEN_THEATER_NAME+LEN_THEATER_AREA+LEN_THEATER_ADDRESS];
+						break;
+					case  CODE_PT_REQ_UPDATE_DELETE_THEATER:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_THEATER_ID];
+						break;
+					case  CODE_PT_REQ_UPDATE_ADD_AUDI:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+2*LEN_BODY_SEPARATOR+LEN_AUDI_NUM+LEN_THEATER_ID+LEN_AUDI_SEATCNT];
+						break;
+					case  CODE_PT_REQ_UPDATE_CHANGE_AUDI:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+3*LEN_BODY_SEPARATOR+LEN_AUDI_ID+LEN_AUDI_NUM+LEN_THEATER_ID+LEN_AUDI_SEATCNT];
+						break;
+					case  CODE_PT_REQ_UPDATE_DELETE_AUDI:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_AUDI_ID];
+						break;
+					case  CODE_PT_REQ_UPDATE_ADD_SCREEN_TABLE:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+4*LEN_BODY_SEPARATOR+LEN_AUDI_ID+LEN_FILM_ID+LEN_AUDI_SEATCNT(드가야 하는가?)+LEN_SCREEN_STARTTIME+LEN_SCREEN_FINALTIME];
+						break;
+					case  CODE_PT_REQ_UPDATE_CHANGE_SCREEN_TABLE:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+5*LEN_BODY_SEPARATOR+LEN_SCREEN_ID+LEN_AUDI_ID+LEN_FILM_ID+LEN_SCREEN_RESIDUALSEAT+LEN_SCREEN_STARTTIME+LEN_SCREEN_FINALTIME];
+						break;
+					case  CODE_PT_REQ_UPDATE_DELETE_SCREEN_TABLE:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_SCREEN_ID];
+						break;
+					case  CODE_PT_REQ_UPDATE_ADD_FILM , CODE_PT_REQ_UPDATE_CHANGE_FILM:
+						packet = new byte[LEN_MAX];
+						break;
+					case  CODE_PT_REQ_UPDATE_DELETE_FILM:
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_FILM_ID];
+						break;
+					}
 					break;
-				case PT_RES_LOOKUP:
-					packet = new byte[LEN_PROTOCOL_TYPE];
+				case PT_RES_UPDATE :
+					case(typeCode){
+					case CODE_PT_RES_UPDATE_ADD_MEM_OK ,
+						CODE_PT_RES_UPDATE_ADD_MEM_NO ,
+						CODE_PT_RES_UPDATE_CHANGE_MEM_INFO_OK ,
+						CODE_PT_RES_UPDATE_CHANGE_MEM_INFO_NO ,
+						CODE_PT_RES_UPDATE_DELETE_MEM_OK ,	 
+						CODE_PT_RES_UPDATE_DELETE_MEM_NO ,
+						CODE_PT_RES_UPDATE_CHANGE_PASSWORD_OK ,
+						CODE_PT_RES_UPDATE_CHANGE_PASSWORD_NO ,
+						CODE_PT_RES_UPDATE_ADD_PAY_RESV_OK ,
+						CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO ,
+						CODE_PT_RES_UPDATE_DELETE_PAY_RESV_OK ,
+						CODE_PT_RES_UPDATE_DELETE_PAY_RESV_NO ,
+						CODE_PT_RES_UPDATE_ADD_REVIEW_OK ,
+						CODE_PT_RES_UPDATE_ADD_REVIEW_NO ,
+						CODE_PT_RES_UPDATE_CHANGE_REVIEW_OK ,
+						CODE_PT_RES_UPDATE_CHANGE_REVIEW_NO ,
+						CODE_PT_RES_UPDATE_DELETE_REVIEW_OK ,
+						CODE_PT_RES_UPDATE_DELETE_REVIEW_NO ,
+						CODE_PT_RES_UPDATE_ADD_THEATER_OK , 
+						CODE_PT_RES_UPDATE_ADD_THEATER_NO ,
+						CODE_PT_RES_UPDATE_CHANGE_THEATER_OK ,
+						CODE_PT_RES_UPDATE_CHANGE_THEATER_NO ,
+						CODE_PT_RES_UPDATE_DELETE_THEATER_OK ,
+						CODE_PT_RES_UPDATE_DELETE_THEATER_NO ,
+						CODE_PT_RES_UPDATE_ADD_AUDI_OK ,
+						CODE_PT_RES_UPDATE_ADD_AUDI_NO ,
+						CODE_PT_RES_UPDATE_CHANGE_AUDI_OK ,
+						CODE_PT_RES_UPDATE_CHANGE_AUDI_NO ,
+						CODE_PT_RES_UPDATE_DELETE_AUDI_OK ,
+						CODE_PT_RES_UPDATE_DELETE_AUDI_NO ,
+						CODE_PT_RES_UPDATE_ADD_SCREEN_TABLE_OK ,
+						CODE_PT_RES_UPDATE_ADD_SCREEN_TABLE_NO ,
+						CODE_PT_RES_UPDATE_CHANGE_SCREEN_TABLE_OK ,
+						CODE_PT_RES_UPDATE_CHANGE_SCREEN_TABLE_NO ,
+						CODE_PT_RES_UPDATE_DELETE_SCREEN_TABLE_OK ,
+						CODE_PT_RES_UPDATE_DELETE_SCREEN_TABLE_NO ,
+						CODE_PT_RES_UPDATE_ADD_FILM_OK ,
+						CODE_PT_RES_UPDATE_ADD_FILM_NO ,
+						CODE_PT_RES_UPDATE_CHANGE_FILM_OK ,
+						CODE_PT_RES_UPDATE_CHANGE_FILM_NO ,
+						CODE_PT_RES_UPDATE_DELETE_FILM_OK ,
+						CODE_PT_RES_UPDATE_DELETE_FILM_NO :
+						packet = new byte[LEN_PROTOCOL_TYPE+LEN_TYPE_CODE];
+						break
+					}
 					break;
-				case PT_REQ_UPDATE:
-					packet = new byte[LEN_PROTOCOL_TYPE];
-					break;
-				case PT_RES_UPDATE:
-					packet = new byte[LEN_PROTOCOL_TYPE];
-					break;
-				case PT_EXIT:
+				case PT_EXIT : 
 					packet = new byte[LEN_PROTOCOL_TYPE];
 					break;
 			} // end switch
-		} // end if
-		packet[0] = (byte) protocolType; // packet 바이트 배열의 첫 번째 바이트에 프로토콜 타입 설정
-		return packet;
+	    } // end if
+	    packet[0] = (byte)protocolType;	// packet 바이트 배열의 첫 번째 바이트에 프로토콜 타입 설정
+	    packet[1] = (byte)typeCode;
+	    return packet;
 	}
-
 	// 로그인후 성공/실패의 결과 값을 프로토콜로부터 추출하여 문자열로 리턴
 	public String getLoginResult() {
 		// String의 다음 생성자를 사용 : String(byte[] bytes, int offset, int length)
