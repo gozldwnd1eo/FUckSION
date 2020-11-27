@@ -48,16 +48,16 @@ public class LoginServer{
 					System.out.println("서버종료");
 					break;
 				
-				case Protocol.PT_RES_LOGIN:		// 로그인 정보 수신 
+				case Protocol.PT_REQ_LOGIN:		// 로그인 정보 수신 
 					System.out.println("클라이언트가 로그인 정보를 보냈습니다");
 					id = protocol.getId();
 					password = protocol.getPassword();
 					MemberDAO mdao= new MemberDAO();
 					String result = mdao.loginRequest(id, password);
 					if(result.equals("false")){ //로그인 실패
-						//로그인 실패창이 뜹니당
+						//로그인 실패창이 클라이언트에서 뜨게해줌
 						
-						protocol = new Protocol(Protocol.PT_REQ_LOGIN);//코드3   다시 로그인 요청
+						protocol = new Protocol(Protocol.PT_RES_LOGIN);//코드3   다시 로그인 요청
 						os.write(protocol.getPacket());
 						break;
 					}
@@ -71,28 +71,31 @@ public class LoginServer{
 						//고객          코드1
 						//영화/영화관/내정보 창 띄우기
 						if(result.equals("C")){
-							
+							protocol = new Protocol(Protocol.PT_RES_LOGIN);//코드1 	고객 로그인 요청
+							os.write(protocol.getPacket());
+							break;
 						}
 						
 
 						//관리자 		코드2
 						//영화관 관리/영화 관리/ 상영 관리/ 통계정보/계좌관리 창 띄우기
-						if(result.equals("A")){
-							
+						else if(result.equals("A")){
+							protocol = new Protocol(Protocol.PT_RES_LOGIN);//코드2	관리자 로그인 요청
+							os.write(protocol.getPacket());
+							break;
 						}
-
+						
 					}
 
-
-					System.out.println("로그인 처리 결과 전송");
-					os.write(protocol.getPacket());
-					break;
+					// System.out.println("로그인 처리 결과 전송");
+					// os.write(protocol.getPacket());
+					// break;
 					
-				case Protocol.PT_RES_SIGNUP :	//회원가입 요청 수신
+				case Protocol.PT_REQ_SIGNUP :	//회원가입 요청 수신
 					id = protocol.getId();
 					password = protocol.getPassword();
 					if(idCheck(id)==false){		//회원가입할 때 id 중복체크
-						protocol = new Protocol(Protocol.PT_REQ_SIGNUP);//중복에 걸려서 다시 회원가입 요청
+						protocol = new Protocol(Protocol.PT_RES_SIGNUP);//중복에 걸려서 다시 회원가입 요청
 						os.write(protocol.getPacket());
 						break;
 					}
@@ -108,14 +111,19 @@ public class LoginServer{
 				email = protocol.getEmail();
 				region = protocol.getRegion();
 
+				String memberID = mdao.selectMemberID(name, email);
 					//id조회  0				
-					if(lookupID(name, email)==false){	
-						protocol = new Protocol(Protocol.PT_REQ_LOOKUP);//가입된 아이디가 없어서 다시 조회 요청
-						os.write(protocol.getPacket());
+					if(memberID.equals("false")){	
+						protocol = new Protocol(Protocol.PT_RES_LOOKUP);//가입된 아이디가 없어서 다시 조회 요청
+						os.write(protocol.getPacket());					//코드 2
 						break;
 					}
 					else{ // 아이디 보내줌
-						
+						protocol = new Protocol(Protocol.PT_RES_LOOKUP); // 코드 1
+						protocol.setId(id);
+						os.write(protocol.getPacket());
+						break;
+
 
 					}
 					
@@ -135,7 +143,7 @@ public class LoginServer{
 
 					break;
 				
-				case Protocol.PT_RES_UPDATE : 	//갱신 요청 수신
+				case Protocol.PT_REQ_UPDATE : 	//갱신 요청 수신
 					break;
 
 			}//end switch
