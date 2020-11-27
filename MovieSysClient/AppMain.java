@@ -26,7 +26,9 @@ public class AppMain extends Application {
         
         Myconn.setSocket(socket);
         Myconn.setConnect(socket.isConnected());
-
+        Myconn.setOutputStream(socket.getOutputStream());
+        Myconn.setInputStream(socket.getInputStream());
+        
         launch(args);
     }
 }
