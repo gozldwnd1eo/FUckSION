@@ -784,6 +784,7 @@ public class Protocol implements Serializable {
 
 	public void setID_ResevID(String loginID, String resevID) {
 		String finalStr = loginID + "\\" + resevID;
+
 	}
 
 }
