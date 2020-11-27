@@ -22,7 +22,7 @@ public class AppMain extends Application {
     }
 
     public static void main(String[] args) throws Exception {
-        Socket socket = new Socket("localhost", 7127);
+        Socket socket = new Socket("192.168.0.5", 7127);
         
         Myconn.setSocket(socket);
         Myconn.setConnect(socket.isConnected());
