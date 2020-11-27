@@ -81,14 +81,15 @@ public class LoginServer{
 						//영화관 관리/영화 관리/ 상영 관리/ 통계정보/계좌관리 창 띄우기
 						else if(result.equals("A")){
 							protocol = new Protocol(Protocol.PT_RES_LOGIN);//코드2	관리자 로그인 요청
+							os.write(protocol.getPacket());
+							break;
 						}
-
+						
 					}
 
-
-					System.out.println("로그인 처리 결과 전송");
-					os.write(protocol.getPacket());
-					break;
+					// System.out.println("로그인 처리 결과 전송");
+					// os.write(protocol.getPacket());
+					// break;
 					
 				case Protocol.PT_REQ_SIGNUP :	//회원가입 요청 수신
 					id = protocol.getId();
