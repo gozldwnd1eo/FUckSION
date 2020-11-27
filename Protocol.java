@@ -1,4 +1,3 @@
-package MovieSysServer.LoginProtocol;
 
 import java.io.*;
 
