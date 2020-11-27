@@ -22,6 +22,7 @@ public class LoginServer {
 
 		boolean program_stop = false;
 
+		String[] idpw;
 		String id; // 아이디
 		String password; // 비밀번호
 		String name; // 이름
@@ -51,8 +52,9 @@ public class LoginServer {
 
 				case Protocol.PT_REQ_LOGIN: // 로그인 정보 수신
 					System.out.println("클라이언트가 로그인 정보를 보냈습니다");
-					id = protocol.getID();
-					password = protocol.getPassword();
+					idpw = protocol.getID_Password();
+					id = idpw[0];
+					password = idpw[1];
 
 					String result = mdao.loginRequest(id, password);
 					if (result.equals("false")) { // 로그인 실패

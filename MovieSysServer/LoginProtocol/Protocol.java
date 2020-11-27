@@ -231,7 +231,7 @@ public class Protocol implements Serializable {
 		if (packet == null) {
 			switch (protocolType) {
 				case PT_REQ_LOGIN:
-					packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_MAX];
+					packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_LOGIN_ID+LEN_LOGIN_PASSWORD+LEN_BODY_SEPARATOR];
 					break;
 				case PT_RES_LOGIN:
 					switch (typeCode) {
@@ -541,7 +541,7 @@ public class Protocol implements Serializable {
 	}
 
 	public String[] getID_Password() { // 로그인인증요청
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_LOGIN_ID+LEN_LOGIN_PASSWORD+LEN_BODY_SEPARATOR).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}

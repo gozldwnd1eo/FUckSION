@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\류형근\\Downloads\\sqldeveloper-20.2.0.175.1842-x64\\sqldeveloper\\jdbc\\lib\\ojdbc8.jar"
+    ]
+}
