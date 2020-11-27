@@ -1,3 +1,5 @@
+package MovieSysClient;
+
 import java.net.Socket;
 
 public class Myconn {

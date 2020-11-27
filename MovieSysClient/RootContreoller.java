@@ -1,3 +1,5 @@
+package MovieSysClient;
+
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
