@@ -45,8 +45,7 @@ public class RootContreoller implements Initializable {
 
                 Protocol protocol=new Protocol(Protocol.PT_REQ_LOGIN);
                 byte[] buf=protocol.getPacket();
-                protocol.setID(id);
-                protocol.setPassword(pw);
+                protocol.setID_Password(id,pw);
                 Myconn.setSessUserID(id);
                 Myconn.setSessUserPW(pw);
                 Myconn.os.write(protocol.getPacket());
