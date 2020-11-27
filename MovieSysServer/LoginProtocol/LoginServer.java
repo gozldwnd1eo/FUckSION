@@ -18,7 +18,7 @@ public class LoginServer{
 
 		// 로그인 정보 요청용 프로토콜 객체 생성 및 전송
 //		Protocol protocol = new Protocol(Protocol.PT_REQ_LOGIN);
-		Protocol protocol = new Protocol();
+//		Protocol protocol = new Protocol();
 //	    os.write(protocol.getPacket());
 
 		boolean program_stop = false;
@@ -35,7 +35,7 @@ public class LoginServer{
 
 	    while(true){
 			MemberDAO mdao= new MemberDAO();
-//			protocol = new Protocol();			// 새 Protocol 객체 생성 (기본 생성자)
+			Protocol protocol = new Protocol();			// 새 Protocol 객체 생성 (기본 생성자)
 			byte[] buf = protocol.getPacket();	// 기본 생성자로 생성할 때에는 바이트 배열의 길이가 1000바이트로 지정됨
 			is.read(buf);						// 클라이언트로부터 로그인정보 (ID와 PWD) 수신
 			int packetType = buf[0];			// 수신 데이터에서 패킷 타입 얻음
