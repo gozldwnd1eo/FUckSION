@@ -35,45 +35,44 @@ public class RootContreoller implements Initializable {
     @FXML
     private Button searchbtn;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loginbtn.setOnAction(event->{
-            try{
-                String id=idfield.getText();
-                String pw=pwfield.getText();
+        loginbtn.setOnAction(event -> {
+            try {
+                String id = idfield.getText();
+                String pw = pwfield.getText();
 
-                Protocol protocol=new Protocol(Protocol.PT_REQ_LOGIN);
-                byte[] buf=protocol.getPacket();
-                protocol.setID_Password(id,pw);
+                Protocol protocol = new Protocol(Protocol.PT_REQ_LOGIN);
+                byte[] buf = protocol.getPacket();
+                protocol.setID_Password(id, pw);
                 Myconn.setSessUserID(id);
                 Myconn.setSessUserPW(pw);
                 Myconn.os.write(protocol.getPacket());
-    
+
                 Myconn.is.read(buf);
-                int packetType=buf[0];
+                int packetType = buf[0];
+                int packetCode = buf[1];
 
-                protocol.setPacket(packetType, buf);
+                protocol.setPacket(packetType, packetCode, buf);
 
-                String result=protocol.getLoginResult();
-                if(result.equals("1")){ // 고객 로그인
-                    Parent second=FXMLLoader.load(getClass().getResource("customerMain.fxml"));
+                String result = protocol.getLoginResult();
+                if (result.equals("1")) { // 고객 로그인
+                    Parent second = FXMLLoader.load(getClass().getResource("customerMain.fxml"));
                     Scene scene = new Scene(second);
-                    Stage primaryStage=(Stage) loginbtn.getScene().getWindow();
+                    Stage primaryStage = (Stage) loginbtn.getScene().getWindow();
                     primaryStage.setScene(scene);
                 }
-                if(result.equals("2")){ // 담당자 로그인
+                if (result.equals("2")) { // 담당자 로그인
 
                 }
-                if(result.equals("3")){ // 로그인 실패
+                if (result.equals("3")) { // 로그인 실패
 
                 }
-            }catch(IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
-
 
     @FXML
     public void exitpush(ActionEvent event) {
@@ -82,11 +81,11 @@ public class RootContreoller implements Initializable {
 
     // @FXML
     // public void loginpush(ActionEvent event) throws IOException {
-    //     Stage customerStage=new Stage();
-    //     Parent root =FXMLLoader.load(getClass().getResource("customerMain.fxml"));
-    //     Scene scene = new Scene(root);
-    //     customerStage.setScene(scene);
-    //     customerStage.show();
-    //     return;
+    // Stage customerStage=new Stage();
+    // Parent root =FXMLLoader.load(getClass().getResource("customerMain.fxml"));
+    // Scene scene = new Scene(root);
+    // customerStage.setScene(scene);
+    // customerStage.show();
+    // return;
     // }
 }
