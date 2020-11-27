@@ -231,7 +231,7 @@ public class Protocol implements Serializable {
 		if (packet == null) {
 			switch (protocolType) {
 				case PT_REQ_LOGIN:
-					packet = new byte[LEN_PROTOCOL_TYPE + LEN_LOGIN_ID + LEN_LOGIN_PASSWORD];
+					packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_MAX];
 					break;
 				case PT_RES_LOGIN:
 					switch (typeCode) {
