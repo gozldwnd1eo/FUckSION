@@ -52,7 +52,7 @@ public class LoginClient {
 
 					// 로그인 정보 생성 및 패킷 전송
 					protocol = new Protocol(Protocol.PT_RES_LOGIN);
-					protocol.setId(id);
+					protocol.setID(id);
 					protocol.setPassword(password);
 					System.out.println("로그인 정보 전송");
 					os.write(protocol.getPacket());
