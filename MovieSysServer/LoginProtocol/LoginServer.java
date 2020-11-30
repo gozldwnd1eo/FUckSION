@@ -234,7 +234,7 @@ public class LoginServer {
 
 					  // 영화관별 매출 조회 요청 15
 					case Protocol.CODE_PT_REQ_LOOKUP_THEATER_SALES :
-					
+					theaterID = protocol.getTheaterID();
 					break;
 
 					// 총 매출 조회 요청 16
@@ -325,12 +325,23 @@ public class LoginServer {
 						
 						 // 회원 삭제 요청 3
 						 case Protocol.CODE_PT_REQ_UPDATE_DELETE_MEM :
-							
-						 break;
+							id = protocol.getID();
+							boolean deleteresult = mdao.deleteCustomer(id);
+							if(deleteresult==false){
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_MEM_NO);
+								os.write(protocol.getPacket());
+								break;
+							}
+							else{
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_MEM_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
+						
 
 						 //비밀번호 재설정 요청 4
 						 case Protocol.CODE_PT_REQ_UPDATE_CHANGE_PASSWORD :
-						 
+							
 						 break;
 
 						 //결제 요청 5
