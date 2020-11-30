@@ -15,6 +15,46 @@ public class FilmDAO {
 	private Connection conn = null;
 	private ResultSet rs = null;
 
+	// public String selectArea(String filmID) { //지역 조회
+	// 	String loginResult = "false";
+
+	// 	String SQLcu = "SELECT MEM_PASSWORD FROM MEMBERS WHERE MEM_ID = \'" + id + "\' AND MEM_NAME = \'" + name + "\' AND MEM_EMAIL = \'" + email + "\'";
+	// 	try {
+	// 		conn = getConnection();
+	// 		pstmt = conn.prepareStatement(SQLcu);
+	// 		rs = pstmt.executeQuery();
+
+	// 		if (rs.next()) {
+	// 			loginResult = rsCusto.getString("MEM_PASSWORD"); // 안되면 getString 1
+	// 		}
+
+	// 	} catch (SQLException sqle) {
+	// 		System.out.println("SQL문에서 예외 발생");
+	// 		sqle.printStackTrace();
+	// 	} finally {
+
+	// 		if (rsCusto != null)
+	// 			try {
+	// 				rsCusto.close();
+	// 			} catch (Exception e) {
+	// 				throw new RuntimeException(e.getMessage());
+	// 			}
+	// 		if (custmt != null)
+	// 			try {
+	// 				custmt.close();
+	// 			} catch (Exception e) {
+	// 				throw new RuntimeException(e.getMessage());
+	// 			}
+	// 		if (conn != null)
+	// 			try {
+	// 				conn.close();
+	// 			} catch (Exception e) {
+	// 				throw new RuntimeException(e.getMessage());
+	// 			}
+	// 	}
+	// 	return loginResult;
+	// }
+
 	public boolean insertFilm(FilmDTO dto) { //영화 추가
 
 		String SQL = "INSERT INTO FILMS(FILM_NAME,FILM_TEASER,FILM_INFO,FILM_GENRE,FILM_OPENINGDATE,FILM_SUMMARY,FILM_POSTER)" + "VALUES (?,?,?,?,?,?,?,?)";
