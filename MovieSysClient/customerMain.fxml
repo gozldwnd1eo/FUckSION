@@ -11,19 +11,19 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" fx.controller="MovieSysClient.CustomerMainController" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>
     <Tab text="영화">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <ListView layoutX="10.0" layoutY="14.0" prefHeight="500.0" prefWidth="200.0" />
-                  <Button layoutX="275.0" layoutY="332.0" mnemonicParsing="false" text="상세정보" />
-                  <Button layoutX="275.0" layoutY="366.0" mnemonicParsing="false" text="예매하기" />
+                  <ListView fx:id="film_list" layoutX="10.0" layoutY="14.0" prefHeight="500.0" prefWidth="200.0" />
+                  <Button fx:id="detail_btn" layoutX="275.0" layoutY="332.0" mnemonicParsing="false" text="상세정보" />
+                  <Button fx:id="rev_btn" layoutX="275.0" layoutY="366.0" mnemonicParsing="false" text="예매하기" />
                   <ImageView fitHeight="210.0" fitWidth="150.0" layoutX="232.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label layoutX="283.0" layoutY="231.0" text="영화제목" />
-                  <Label layoutX="293.0" layoutY="254.0" text="별점" />
-                  <Label layoutX="287.0" layoutY="279.0" text="예매율" />
+                  <Label fx:id="filmname" layoutX="283.0" layoutY="231.0" text="영화제목" />
+                  <Label fx:id="film_starpt" layoutX="293.0" layoutY="254.0" text="별점" />
+                  <Label fx:id="filmrevrate" layoutX="287.0" layoutY="279.0" text="예매율" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -31,11 +31,11 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <ComboBox layoutX="14.0" layoutY="14.0" prefHeight="22.0" prefWidth="90.0" promptText="영화관" />
-                  <TextArea editable="false" layoutX="117.0" layoutY="14.0" prefHeight="104.0" prefWidth="278.0" />
-                  <ListView layoutX="4.0" layoutY="118.0" prefHeight="345.0" prefWidth="200.0" />
-                  <ListView layoutX="204.0" layoutY="118.0" prefHeight="345.0" prefWidth="191.0" />
-                  <Button layoutX="322.0" layoutY="485.0" mnemonicParsing="false" text="예약하기" />
+                  <ComboBox fx:id="theaterCombox" layoutX="14.0" layoutY="14.0" prefHeight="22.0" prefWidth="90.0" promptText="영화관" />
+                  <TextArea fx:id="theaterDetailTxtfd" editable="false" layoutX="117.0" layoutY="14.0" prefHeight="104.0" prefWidth="278.0" />
+                  <ListView fx:id="theaterFilmName" layoutX="4.0" layoutY="118.0" prefHeight="345.0" prefWidth="200.0" />
+                  <ListView fx:id="theaterFilmSchdule" layoutX="204.0" layoutY="118.0" prefHeight="345.0" prefWidth="191.0" />
+                  <Button fx:id="theat_rev_btn" layoutX="322.0" layoutY="485.0" mnemonicParsing="false" text="예약하기" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -43,13 +43,13 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <PasswordField layoutX="131.0" layoutY="41.0" />
+                  <PasswordField fx:id="pwcheckfd" layoutX="131.0" layoutY="41.0" />
                   <Label layoutX="49.0" layoutY="45.0" text="비밀번호 확인" />
-                  <Button layoutX="305.0" layoutY="41.0" mnemonicParsing="false" text="확인" />
-                  <Button layoutX="49.0" layoutY="100.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내 정보 수정" />
-                  <Button layoutX="49.0" layoutY="135.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내가 작성한 리뷰" />
-                  <Button layoutX="49.0" layoutY="169.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내 예매 내역 확인" />
-                  <Button layoutX="49.0" layoutY="203.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="회원 탈퇴" />
+                  <Button fx:id="pwchek_btn" layoutX="305.0" layoutY="41.0" mnemonicParsing="false" text="확인" />
+                  <Button fx:id="change_imf_btn" layoutX="49.0" layoutY="100.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내 정보 수정" />
+                  <Button fx:id="myreview_btn" layoutX="49.0" layoutY="135.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내가 작성한 리뷰" />
+                  <Button fx:id="myrevhis_btn" layoutX="49.0" layoutY="169.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내 예매 내역 확인" />
+                  <Button fx:id="dropuser_btn" layoutX="49.0" layoutY="203.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="회원 탈퇴" />
                </children></AnchorPane>
         </content>
       </Tab>
