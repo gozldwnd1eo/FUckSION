@@ -71,7 +71,10 @@ public class CustomerMainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
         // 최초 로그인시 영화탭의 기본 정보 출력
         // 영화탭의 영화 리스트=담당자가 상영스케줄을 등록한 영화들만 출력됨(예약해야 하기 때문)
-        // select * from film where film_id=(select distinct film_id from screen)
+        // select *,avg(별점) 
+        // from film,review 
+        // where film_id=(select distinct film_id from screen)
+        // groupby film_id
         Protocol protocol = new Protocol(Protocol.PT_REQ_LOOKUP, Protocol.CODE_PT_REQ_LOOKUP_ALL_SCREEN);
         
     }

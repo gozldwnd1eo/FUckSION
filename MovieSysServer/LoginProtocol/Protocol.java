@@ -761,32 +761,305 @@ public class Protocol implements Serializable {
 		return splited;
 	}
 
-	public void setMemberJoin(String[] data) {// 갱신요청코드1(아이디\비밀번호\성명\휴대전화번호\계좌번호\성별\이메일)
+	public void setMemberJoin(String[] data) {// 갱신요청코드1(아이디\비밀번호\성명\휴대전화번호\계좌번호\성별\이메일\생년월일)
 		String finalStr = data[0] + "\\" + data[1] + "\\" + data[2] + "\\" + data[3] + "\\" + data[4] + "\\" + data[5]
-				+ "\\" + data[6];
-		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				+ "\\" + data[6]+"\\" + data[7];
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+		LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
 				finalStr.trim().getBytes().length);
-		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE +LEN_PROTOCOL_BODYLEN+7*LEN_BODY_SEPARATOR+ finalStr.trim().getBytes().length] = '\0';
 	}
 
 	public String[] getMemberJoin()// 위에꺼 세트 by 규철
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
 
 	public void setMember_Modify_Info(String[] data) {// 갱신요청코드2(비밀번호\휴대전화번호\이메일 주소\계좌번호)
-		String finalStr = data[0] + "\\" + data[1] + "\\" + data[2] + "\\" + data[3] + "\\" + data[4] + "\\" + data[5]
-				+ "\\" + data[6];
-		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+		String finalStr = data[0] + "\\" + data[1] + "\\" + data[2] + "\\" + data[3] ;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
 				finalStr.trim().getBytes().length);
-		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+3*LEN_BODY_SEPARATOR + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public void setID_ResevID(String loginID, String resevID) {
-		String finalStr = loginID + "\\" + resevID;
-
+	public String[] getMember_Modify_Inf()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
 	}
 
+	public void setID_ResevID(String loginID) {// 갱신요청코드3(아이디)
+		String finalStr = loginID ;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getID_ResevID()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setChangePwd(String newPwd) {// 갱신요청코드4(아이디)
+		String finalStr = newPwd ;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getChangePwd()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setAdd_Pay_Resv(String[] data) {// 갱신요청코드5(고객ID\상영영화ID\좌석번호\인원수\금액)
+		String finalStr = data[0] + "\\" + data[1] + "\\" + data[2] + "\\" + data[3] + "\\" + data[4]  ;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+4*LEN_BODY_SEPARATOR + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getAdd_Pay_Resv()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setDel_Pay_Resv(String[] data) {// 갱신요청코드6(고객ID\예매번호ID)
+		String finalStr = data[0] + "\\" + data[1]  ;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_BODY_SEPARATOR + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getDel_Pay_Resv()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+	public void setAdd_Review(String[] data) {// 갱신요청코드7(고객id\영화id\리뷰내용\별점)
+		String finalStr = data[0] + "\\" + data[1] + "\\" + data[2]+ "\\" + data[3] ;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+3*LEN_BODY_SEPARATOR + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getAdd_Review()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+	public void setChange_Review(String[] data) {// 갱신요청코드8(게시물id\리뷰내용\별점)
+		String finalStr = data[0] + "\\" + data[1] + "\\" + data[2] ;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+2*LEN_BODY_SEPARATOR + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getChange_Review()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+	public void setDel_Review(String reviewId) {// 갱신요청코드9(게시물id)
+		String finalStr = reviewId;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getDel_Review()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+	public void setAdd_Theater(String[] data) {// 갱신요청코드10(담당자id\영화관명\지역\주소)
+		String finalStr = data[0] + "\\" + data[1]+ "\\" + data[2]+ "\\" + data[3];
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + 3*LEN_BODY_SEPARATOR + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getAdd_Theater()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setChange_Theater(String[] data) {// 갱신요청코드11(영화관id\담당자id\영화관명\지역\주소)
+		String finalStr = data[0] + "\\" + data[1]+ "\\" + data[2]+ "\\" + data[3]+ "\\" + data[4];
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + 4*LEN_BODY_SEPARATOR + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getChange_Theater()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setDel_Theater(String theaterId) {// 갱신요청코드12(영화관id)
+		String finalStr = theaterId;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getDel_Theater()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setAdd_Audi(String[] data) {// 갱신요청코드13(상영관 번호\영화관id\좌석수)
+		String finalStr = data[0] + "\\" + data[1]+ "\\" + data[2];
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + 2*LEN_BODY_SEPARATOR + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getAdd_Audi()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setChange_Audi(String[] data) {// 갱신요청코드14(상영관ID\상영관번호\영화관ID\좌석수)
+		String finalStr = data[0] + "\\" + data[1]+ "\\" + data[2]+ "\\" + data[3];
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + 3*LEN_BODY_SEPARATOR + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getChange_Audi()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setDel_Audi(String audiId) {// 갱신요청코드15(상영관id)
+		String finalStr = audiId;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getDel_Audi()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setAdd_Screen(String[] data) {// 갱신요청코드16(상영관id\영화id\상영관 좌석수\상영시작시간\상영종료시간)
+		String finalStr = data[0] + "\\" + data[1]+ "\\" + data[2] + "\\" + data[3] + "\\" + data[4];
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + 4*LEN_BODY_SEPARATOR + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getAdd_Screen()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setChange_Screen(String[] data) {// 갱신요청코드17(상영영화ID\상영관ID\영화ID\잔여석\상영시작시각\상영종료시각)
+		String finalStr = data[0] + "\\" + data[1]+ "\\" + data[2]+ "\\" + data[3]+ "\\" + data[4]+ "\\" + data[5];
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + 5*LEN_BODY_SEPARATOR + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getChange_Screen()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
+	public void setDel_Screen(String screenId) {// 갱신요청코드18(상영영화ID)
+		String finalStr = screenId;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getDel_Screen()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+	// 갱신요청코드19(영화명\티저\정보(감독~출연진1~2~3)\장르\개봉일\줄거리\포스터\예매율)
+	// 갱신요청코드20(영화ID\영화명\티저\정보(감독~출연진1~2~3)\장르\개봉일\줄거리\포스터\예매율)
+	public void setDel_Film(String filmId) {// 갱신요청코드21(영화ID)
+		String finalStr = filmId;
+		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_PROTOCOL_BODYLEN);	
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getDel_Film()// 위에꺼 세트 
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
 }

@@ -64,10 +64,14 @@ public class RootContreoller implements Initializable {
                     primaryStage.setScene(scene);
                 }
                 if (packetCode==2) { // 담당자 로그인
-
+                    Parent third=FXMLLoader.load(getClass().getResource("adminMain.java"));
+                    Scene scene=new Scene(third);
+                    Stage primaryStage = (Stage)loginbtn.getScene().getWindow();
+                    primaryStage.setScene(scene);
                 }
                 if (packetCode==3) { // 로그인 실패
-
+                    idfield.clear();
+                    pwfield.clear();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

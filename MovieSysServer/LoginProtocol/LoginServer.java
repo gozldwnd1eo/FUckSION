@@ -3,6 +3,7 @@ package MovieSysServer.LoginProtocol;
 import java.net.*;
 import java.io.*;
 import MovieSysServer.Member.*;
+import MovieSysServer.Film.*;
 
 public class LoginServer {
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
@@ -31,7 +32,10 @@ public class LoginServer {
 		String email; // 이메일
 		String birthday; // 생년월일
 
-		String region; // 지역
+
+		String area; // 지역
+
+		String filmID;	//영화 아이디
 
 		while (true) {
 			MemberDAO mdao = new MemberDAO();
@@ -110,47 +114,96 @@ public class LoginServer {
 					// break;
 
 					// 여부터 다시 시작하셈
-					// case Protocol.PT_REQ_LOOKUP : //조회 요청 수신
+					 case Protocol.PT_REQ_LOOKUP : //조회 요청 수신
 
-					// id = protocol.getID();
+					 //id = protocol.getID();
 
 					// // name = protocol.getName();
 					// // email = protocol.getEmail();
 					// // region = protocol.getRegion();
 
-					// switch(packetCode){
-					// case Protocol.CODE_PT_REQ_LOOKUP_FIND_CUS_ID : //ID조회
-					// String memberID = mdao.selectMemberID(name, email);
+					 switch(packetCode){
+					 case Protocol.CODE_PT_REQ_LOOKUP_FIND_CUS_ID : //ID조회
+					 String[] name_email = protocol.getName_Email();
+					 name = name_email[0];
+					 email = name_email[1];
+					 String memberID = mdao.selectMemberID(name, email);
 
-					// if(memberID.equals("false")){
-					// protocol = new
-					// Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FIND_CUS_ID_NO);//가입된
+					 if(memberID.equals("false")){
+					 protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FIND_CUS_ID_NO);
+					 //가입된
 					// 아이디가 없어서 다시 조회 요청
-					// os.write(protocol.getPacket()); //코드 2
-					// break;
-					// }
-					// else{ // 아이디 보내줌
-					// protocol = new
-					// Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FIND_CUS_ID_OK);
+					 os.write(protocol.getPacket()); //코드 2
+					 break;
+					 }
+					 else{ // 아이디 보내줌
+					 protocol = new
+					 Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FIND_CUS_ID_OK);
 					// // 코드 1
-					// protocol.setID(id);
-					// os.write(protocol.getPacket());
-					// break;
+					 protocol.setID(memberID);
+					 os.write(protocol.getPacket());
+					 break;
 
-					// }
+					 }
 
 					// //비밀번호 조회 1
-					// case Protocol.CODE_PT_REQ_LOOKUP_FIND_CUS_PASSWORD : //비밀번호 조회
-					// if(lookupPWD(id,name,email)==false){
-					// protocol = new Protocol(Protocol.PT_REQ_LOOKUP);
-					// os.write(protocol.getPacket());
-					// break;
-					// }
-					// else{ //비밀번호 보내줌
+					 case Protocol.CODE_PT_REQ_LOOKUP_FIND_CUS_PASSWORD : //비밀번호 조회
+					 String[] id_name_email = protocol.getID_Name_Email();
+					 id = id_name_email[0];
+					 name = id_name_email[1];
+					 email = id_name_email[2];
 
-					// }
+					 password = mdao.selectMemberPassword(id, name, email);
+
+					 if(password.equals("false")){
+					 protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FIND_CUS_PASSWORD_NO);
+					 os.write(protocol.getPacket());
+					 break;
+					 }
+					 else{ //비밀번호 보내줌
+					protocol =new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FIND_CUS_PASSWORD_OK);
+					protocol.setPassword(password);
+					os.write(protocol.getPacket());
+					break;
+					 }
 
 					// //지역 조회 2
+					 ///////////////////////////////////////////////////////////
+					case Protocol.CODE_PT_REQ_LOOKUP_AREA :
+					 filmID = protocol.getFlimID();
+					 break;
+
+					 //영화관 조회 3
+					 /////////////////////////////////////////////////////////
+					case Protocol.CODE_PT_REQ_LOOKUP_THEATER : 
+
+					break;
+
+					 //상영시간 조회4
+					 ////////////////////////////////////////////////////////
+					 case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TIME :
+
+					 break;
+
+					 //모든 영화관 조회 5
+					 ///////////////////////////////////////////////////////
+					 case Protocol.CODE_PT_REQ_LOOKUP_ALL_THEATER :
+					 break;
+
+					 //해당 영화관의 상영시간표 조회 6
+					 ///////////////////////////////////////////////////////
+					 case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TABLE :
+					 break;
+					 
+					 // 현재 좌석 상황 조회 요청 7
+					 /////////////////////////////////////////////////////////
+					 case Protocol.CODE_PT_REQ_LOOKUP_SEAT_SITUATION :
+					 break;
+
+					 // 영화의 상세정보 조회 요청 8
+					 case Protocol.CODE_PT_REQ_LOOKUP_FILM_DETAIL :
+					 
+					 break;
 					// }
 
 					// break;
@@ -183,7 +236,7 @@ public class LoginServer {
 					// break;
 					// }
 					// }
-					break;
+					
 
 			}// end switch
 			if (program_stop)
@@ -193,7 +246,7 @@ public class LoginServer {
 
 		is.close();
 		os.close();
-		socket.close();
+		socket.close();}
 
 	}
 
