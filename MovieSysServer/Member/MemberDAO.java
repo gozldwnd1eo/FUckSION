@@ -196,12 +196,12 @@ public class MemberDAO {
 		return result;
 	}
 
-	public String selectMemberPassword(String id, String name, String email) {
+	public boolean selectMemberPassword(String id, String name, String email) {	//비밀번호 조회
 		PreparedStatement custmt = null;
 		ResultSet rsCusto = null;
-		String loginResult = "false";
+		boolean loginResult = false;
 
-		String SQLcu = "SELECT MEM_PASSWORD FROM MEMBERS WHERE MEM_ID = \'" + id + "\' AND MEM_NAME = \'" + name
+		String SQLcu = "SELECT * FROM MEMBERS WHERE MEM_ID = \'" + id + "\' AND MEM_NAME = \'" + name
 				+ "\' AND MEM_EMAIL = \'" + email + "\'";
 		try {
 			conn = getConnection();
@@ -209,7 +209,7 @@ public class MemberDAO {
 			rsCusto = custmt.executeQuery();
 
 			if (rsCusto.next()) {
-				loginResult = rsCusto.getString("MEM_PASSWORD"); // 안되면 getString 1
+				loginResult = true; // 안되면 getString 1
 			}
 
 		} catch (SQLException sqle) {
@@ -237,6 +237,43 @@ public class MemberDAO {
 				}
 		}
 		return loginResult;
+	}
+
+	public boolean updateMemInfo(String id, String password, String phone, String email, String account){	//회원정보 수정
+		String SQL = "UPDATE MEMBERS SET MEM_PASSWORD = \'" + password + "\' AND MEM_PHONENUM =\'" + phone + "\' AND MEM_EMAIL = \'" + email + "\' AMD MEM_ACCOUNT = \'" + account + 
+		"\' WHERE MEM_ID = \'" + id + "\''";
+
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, id);
+			pstmt.setString(2, password);
+			pstmt.setString(3, phone);
+			pstmt.setString(4, email);
+			pstmt.setString(5, account);
+
+			pstmt.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("UPDATE문에서 예외 발생");
+			sqle.printStackTrace();
+			deleteResult = false;
+			return deleteResult;
+		} finally {
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		deleteResult = true;
+		return deleteResult;
 	}
 
 	public boolean idCheck(String id){	//id중복

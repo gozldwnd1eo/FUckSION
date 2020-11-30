@@ -1,6 +1,9 @@
 package MovieSysServer.LoginProtocol;
 
 import java.net.*;
+
+import javax.swing.text.DefaultStyledDocument.ElementSpec;
+
 import java.io.*;
 import MovieSysServer.Member.*;
 import MovieSysServer.Film.*;
@@ -32,10 +35,18 @@ public class LoginServer {
 		String email; // 이메일
 		String birthday; // 생년월일
 
+		String cid="";  	//고객 아이디 로그인 후 저장될 아이디
 
 		String area; // 지역
 
 		String filmID;	//영화 아이디
+
+		String theaterID; 	//영화관 아이디
+
+		String screenID;	//상영관 아이디
+
+		String REVcontent; //리뷰내용
+		String starpoint; 	//별점
 
 		while (true) {
 			MemberDAO mdao = new MemberDAO();
@@ -59,10 +70,10 @@ public class LoginServer {
 				case Protocol.PT_REQ_LOGIN: // 로그인 정보 수신
 					System.out.println("클라이언트가 로그인 정보를 보냈습니다");
 					idpw = protocol.getID_Password();
-					id = idpw[0];
+					cid = idpw[0];
 					password = idpw[1];
 
-					String result = mdao.loginRequest(id, password);
+					String result = mdao.loginRequest(cid, password);
 					if (result.equals("false")) { // 로그인 실패
 						// 로그인 실패창이 클라이언트에서 뜨게해줌
 
@@ -135,16 +146,15 @@ public class LoginServer {
 					 name = id_name_email[1];
 					 email = id_name_email[2];
 
-					 password = mdao.selectMemberPassword(id, name, email);
+					 boolean resultpassword = mdao.selectMemberPassword(id, name, email);
 
-					 if(password.equals("false")){
+					 if(resultpassword==false){
 					 protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FIND_CUS_PASSWORD_NO);
 					 os.write(protocol.getPacket());
 					 break;
 					 }
-					 else{ //비밀번호 보내줌
+					 else{ //비밀번호 재설정 요청
 					protocol =new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FIND_CUS_PASSWORD_OK);
-					protocol.setPassword(password);
 					os.write(protocol.getPacket());
 					break;
 					 }
@@ -158,7 +168,9 @@ public class LoginServer {
 					 //영화관 조회 3
 					 /////////////////////////////////////////////////////////
 					case Protocol.CODE_PT_REQ_LOOKUP_THEATER : 
-
+					 String[] area_filmID = protocol.getTheaterArea_FlimID();
+					 area = area_filmID[0];
+					 filmID = area_filmID[1];
 					break;
 
 					 //상영시간 조회4
@@ -170,33 +182,40 @@ public class LoginServer {
 					 //모든 영화관 조회 5
 					 ///////////////////////////////////////////////////////
 					 case Protocol.CODE_PT_REQ_LOOKUP_ALL_THEATER :
+					
 					 break;
 
 					 //해당 영화관의 상영시간표 조회 6
 					 ///////////////////////////////////////////////////////
 					 case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TABLE :
+					 theaterID= protocol.getTheaterID();
 					 break;
 					 
 					 // 현재 좌석 상황 조회 요청 7
 					 /////////////////////////////////////////////////////////
 					 case Protocol.CODE_PT_REQ_LOOKUP_SEAT_SITUATION :
+					 screenID = protocol.getScreenID();
 					 break;
 
 					 // 영화의 상세정보 조회 요청 8
 					 ///////////////////////////////////////////////////////
 					 case Protocol.CODE_PT_REQ_LOOKUP_FILM_DETAIL :
+					 filmID = protocol.getFlimID();
 					 break;
 
 					 // 내 정보 조회 요청 9
 					 case Protocol.CODE_PT_REQ_LOOKUP_MY_INFO :
+					 id = protocol.getID();
 					break;
 
 					// 자신이 작성한 리뷰 리스트 조회 10
 					case Protocol.CODE_PT_REQ_LOOKUP_MY_REVIEWS :
+					id = protocol.getID();
 					break;
 
 					// 예매 내역 조회 요청 11
 					case Protocol.CODE_PT_REQ_LOOKUP_RESV_LIST :
+					id = protocol.getID();
 					break;
 
 					// 현재 상영 중 영화 조회 요청 12
@@ -205,14 +224,17 @@ public class LoginServer {
 
 					// 담당자용 영화관 조회 요청 13
 					case Protocol.CODE_PT_REQ_LOOKUP_THEATER_FOR_ADMIN :
+					id = protocol.getID();
 					break;
 
 					 // 상영관 조회 요청 14
 					 case Protocol.CODE_PT_REQ_LOOKUP_AUDI :
+					 theaterID= protocol.getTheaterID();
 					 break;
 
 					  // 영화관별 매출 조회 요청 15
 					case Protocol.CODE_PT_REQ_LOOKUP_THEATER_SALES :
+					
 					break;
 
 					// 총 매출 조회 요청 16
@@ -250,6 +272,13 @@ public class LoginServer {
 						email = id_password_name_phone_account_gender_money_email_birthday_flag[7];
 						birthday = id_password_name_phone_account_gender_money_email_birthday_flag[8];
 						flag = id_password_name_phone_account_gender_money_email_birthday_flag[9];
+
+						boolean resultIDCheck = mdao.idCheck(id);
+						if(resultIDCheck==true){		//아이디 중복
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_MEM_NO);
+							os.write(protocol.getPacket());
+							break;
+						}
 						
 						cdto.setCus_id(id);
 						cdto.setCus_password(password);
@@ -272,29 +301,65 @@ public class LoginServer {
 							os.write(protocol.getPacket());
 							break;
 						}
+
+						// 회원 정보 수정 요청 2
+						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_MEM_INFO :
+							String[] password_phone_email_account = protocol.getMember_Modify_Inf();
+							password = password_phone_email_account[0];
+							phone = password_phone_email_account[1];
+							email = password_phone_email_account[2];
+							account = password_phone_email_account[3];
+
+							boolean resultMemInfo = mdao.updateMemInfo(cid,password,phone,email,account);
+							if(resultMemInfo==false){//오류로 인한 실패
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_MEM_INFO_NO);
+								os.write(protocol.getPacket());
+								break;
+							}
+							else{	//성공
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_MEM_INFO_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
 						
-					// if(idCheck(id)==false){ //회원가입할 때 id 중복체크
-					// protocol = new
-					// Protocol(Protocol.PT_RES_SIGNUP,Protocol.CODE_PT_RES_UPDATE_ADD_MEM_NO);//중복에
-					// 걸려서 다시 회원가입 요청
-					// os.write(protocol.getPacket());
-					// break;
-					// }
-					// else{
-					// CustomerDTO dto= new CustomerDTO();
+						
+						 // 회원 삭제 요청 3
+						 case Protocol.CODE_PT_REQ_UPDATE_DELETE_MEM :
+							
+						 break;
 
-					// dto.setCus_id(protocol.getID());
-					// dto.setCus_password(protocol.getPassword());
-					// // dto.setCus_name();
-					// //~~~~
-					// //~
-					// mdao.insertCustomer(dto);
+						 //비밀번호 재설정 요청 4
+						 case Protocol.CODE_PT_REQ_UPDATE_CHANGE_PASSWORD :
+						 
+						 break;
 
-					// protocol= new
-					// Protocol(Protocol.PT_RES_SIGNUP,Protocol.CODE_PT_RES_UPDATE_ADD_MEM_OK);
-					// os.write(protocol.getPacket());
+						 //결제 요청 5
+						 case Protocol.CODE_PT_REQ_UPDATE_ADD_PAY_RESV :
+						 break;
+						 
+						 //예매 취소 요청 6
+						 case Protocol.CODE_PT_REQ_UPDATE_DELETE_PAY_RESV :
+						 break;
 
-					// break;
+						 //리뷰 추가 요청 7
+						 case Protocol.CODE_PT_REQ_UPDATE_ADD_REVIEW :
+						 String[] id_filmID_REVcontent_starpoint = protocol.getAdd_Review();
+						 id = id_filmID_REVcontent_starpoint[0];
+						 filmID = id_filmID_REVcontent_starpoint[1];
+						 REVcontent = id_filmID_REVcontent_starpoint[2];
+						 starpoint = id_filmID_REVcontent_starpoint[3];
+						
+
+						 break;
+							
+						 //리뷰 수정 요청 8
+						 case Protocol.CODE_PT_REQ_UPDATE_CHANGE_REVIEW :
+						 break;
+
+						 
+
+
+					
 					// }
 					 }
 					
