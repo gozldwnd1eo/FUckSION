@@ -20,7 +20,7 @@ public class Protocol implements Serializable {
 	public static final int LEN_LOGIN_PASSWORD = 20; // PWD 길이
 	public static final int LEN_LOGIN_RESULT = 2; // 로그인 인증 값 길이
 	public static final int LEN_PROTOCOL_TYPE = 1; // 프로토콜 타입 길이
-	public static final int LEN_TYPE_CODE = 1; // 타입 코드 길이
+	public static final int LEN_TYPE_CODE = 2; // 타입 코드 길이
 	public static final int LEN_PROTOCOL_BODYLEN = 2; // 프로토콜 바디 길이 길이
 	public static final int LEN_PROTOCOL_FRAG = 1; // 프로토콜 분할여부 길이
 	public static final int LEN_PROTOCOL_LAST = 1; // 프로토콜 마지막여부 길이
@@ -99,6 +99,7 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_REQ_LOOKUP_THEATER_CANCEL_RATE = 17; // 영화별 취소율 조회 요청 코드번호
 	public static final int CODE_PT_REQ_LOOKUP_THEATER_RESV_RATE = 18; // 영화별 예매율 조회 요청 코드번호
 	public static final int CODE_PT_REQ_LOOKUP_ACCOUNT = 19; // 계좌 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE = 20; // 모든 상영영화 조회 조회 요청 코드번호
 	// TYPE 6 CODE
 	public static final int CODE_PT_RES_LOOKUP_FIND_CUS_ID_OK = 1; // 고객 아이디 찾기 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_FIND_CUS_ID_NO = 2; // 고객 아이디 찾기 요청 거절 코드번호
@@ -140,6 +141,8 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_NO = 30; // 영화별 예매율 조회 요청 거절 코드번호
 	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_OK = 31; // 계좌 조회 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_NO = 32; // 계좌 조회 요청 거절 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE_OK = 41; // 모든 상영영화 조회 요청 승인 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE_NO = 42; // 모든 상영영화 조회 요청 거절 코드번호
 	// TYPE 7 CODE
 	public static final int CODE_PT_REQ_UPDATE_ADD_MEM = 1; // 회원 추가 요청 코드번호
 	public static final int CODE_PT_REQ_UPDATE_CHANGE_MEM_INFO = 2; // 회원 정보 수정 요청 코드번호
@@ -255,6 +258,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_REQ_LOOKUP_TOTAL_SALES:
 						case CODE_PT_REQ_LOOKUP_THEATER_CANCEL_RATE:
 						case CODE_PT_REQ_LOOKUP_THEATER_RESV_RATE:
+						case CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE:
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE];
 							break;
 						case CODE_PT_REQ_LOOKUP_FIND_CUS_ID:
@@ -317,6 +321,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_SCREEN_TIME_NO:
 						case CODE_PT_RES_LOOKUP_ALL_THEATER_NO:
 						case CODE_PT_RES_LOOKUP_SCREEN_TABLE_NO:
+						case CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE_NO:
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE];
 							break;
 						case CODE_PT_RES_LOOKUP_AUDI_OK:
@@ -334,6 +339,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_SCREEN_TIME_OK:
 						case CODE_PT_RES_LOOKUP_ALL_THEATER_OK:
 						case CODE_PT_RES_LOOKUP_SCREEN_TABLE_OK:
+						case CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE_OK:
 							packet = new byte[LEN_MAX];
 							break;
 						case CODE_PT_RES_LOOKUP_MY_INFO_OK:
@@ -545,7 +551,7 @@ public class Protocol implements Serializable {
 
 	public String[] getID_Password() { // 로그인인증요청
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
-				LEN_LOGIN_ID + LEN_BODY_SEPARATOR + LEN_LOGIN_PASSWORD).trim();
+				LEN_LOGIN_ID + LEN_LOGIN_PASSWORD + LEN_BODY_SEPARATOR).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -584,8 +590,7 @@ public class Protocol implements Serializable {
 	}
 
 	public String[] getName_Email() { // 위에꺼 세트..by 규철
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
-				LEN_MEM_NAME + LEN_BODY_SEPARATOR + LEN_MEM_EMAIL).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -836,14 +841,13 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getID_ResevID()// 위에꺼 세트
+	public String getID_ResevID()// 위에꺼 세트
 	{
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
-		String[] splited = origin.split("\\\\");
-		return splited;
+		return origin;
 	}
 
-	public void setChangePwd(String newPwd) {// 갱신요청코드4(아이디)
+	public void setChangePwd(String newPwd) {// 갱신요청코드4(비밀번호)
 		String finalStr = newPwd;
 		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
 				LEN_PROTOCOL_BODYLEN);
@@ -852,11 +856,10 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getChangePwd()// 위에꺼 세트
+	public String getChangePwd()// 위에꺼 세트
 	{
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
-		String[] splited = origin.split("\\\\");
-		return splited;
+		return origin;
 	}
 
 	public void setAdd_Pay_Resv(String[] data) {// 갱신요청코드5(고객ID\상영영화ID\좌석번호\인원수\금액)
@@ -936,11 +939,10 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getDel_Review()// 위에꺼 세트
+	public String getDel_Review()// 위에꺼 세트
 	{
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
-		String[] splited = origin.split("\\\\");
-		return splited;
+		return origin;
 	}
 
 	public void setAdd_Theater(String[] data) {// 갱신요청코드10(담당자id\영화관명\지역\주소)
@@ -986,11 +988,10 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getDel_Theater()// 위에꺼 세트
+	public String getDel_Theater()// 위에꺼 세트
 	{
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
-		String[] splited = origin.split("\\\\");
-		return splited;
+		return origin;
 	}
 
 	public void setAdd_Audi(String[] data) {// 갱신요청코드13(상영관 번호\영화관id\좌석수)
@@ -1036,11 +1037,10 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getDel_Audi()// 위에꺼 세트
+	public String getDel_Audi()// 위에꺼 세트
 	{
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
-		String[] splited = origin.split("\\\\");
-		return splited;
+		return origin;
 	}
 
 	public void setAdd_Screen(String[] data) {// 갱신요청코드16(상영관id\영화id\상영관 좌석수\상영시작시간\상영종료시간)
@@ -1086,15 +1086,15 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getDel_Screen()// 위에꺼 세트
+	public String getDel_Screen()// 위에꺼 세트
 	{
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
-		String[] splited = origin.split("\\\\");
-		return splited;
+		return origin;
 	}
 
 	// 갱신요청코드19(영화명\티저\정보(감독~출연진1~2~3)\장르\개봉일\줄거리\포스터\예매율)
 	// 갱신요청코드20(영화ID\영화명\티저\정보(감독~출연진1~2~3)\장르\개봉일\줄거리\포스터\예매율)
+
 	public void setDel_Film(String filmId) {// 갱신요청코드21(영화ID)
 		String finalStr = filmId;
 		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
@@ -1104,10 +1104,9 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getDel_Film()// 위에꺼 세트
+	public String getDel_Film()// 위에꺼 세트
 	{
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
-		String[] splited = origin.split("\\\\");
-		return splited;
+		return origin;
 	}
 }

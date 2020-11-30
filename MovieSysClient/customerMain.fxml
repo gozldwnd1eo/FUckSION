@@ -11,7 +11,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" fx.controller="MovieSysClient.CustomerMainController" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="MovieSysClient.CustomerMainController">
   <tabs>
     <Tab text="영화">
       <content>
