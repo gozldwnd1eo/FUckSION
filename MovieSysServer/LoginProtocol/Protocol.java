@@ -689,6 +689,24 @@ public class Protocol implements Serializable {
 		return splited;
 	}
 
+	public void setTheScreenList(int cnt, String[] list) {// 조회응답코드7
+		String finalStr = "";// 사용시 쿼리문을 스트링 배열로 받으면서 상영관과 상영시간 사이 ~ 를 넣고(상영관~상영시간)여기로 가져와서 \추가할것.
+		for (int i = cnt; i > 0; i--) {
+			finalStr += (list[i - 1] + "|");
+		} ////////////////////////////////////////////////////
+
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getTheScreenList()// 위에꺼 세트 by 규철
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;// (상영관~상영시간)이므로 한번 더 잘라야함
+	}
+
 	public void setSeatNumList(int cnt, String[] list) {// 조회응답코드9
 		String finalStr = "";// 사용시 쿼리문을 스트링 배열로 받으면서 상영관과 상영시간 사이 ~ 를 넣고(상영관~상영시간)여기로 가져와서 \추가할것.
 		for (int i = cnt; i > 0; i--) {

@@ -16,48 +16,50 @@ public class FilmDAO {
 	private ResultSet rs = null;
 
 	// public String selectArea(String filmID) { //지역 조회
-	// 	String loginResult = "false";
+	// String loginResult = "false";
 
-	// 	String SQLcu = "SELECT MEM_PASSWORD FROM MEMBERS WHERE MEM_ID = \'" + id + "\' AND MEM_NAME = \'" + name + "\' AND MEM_EMAIL = \'" + email + "\'";
-	// 	try {
-	// 		conn = getConnection();
-	// 		pstmt = conn.prepareStatement(SQLcu);
-	// 		rs = pstmt.executeQuery();
+	// String SQLcu = "SELECT MEM_PASSWORD FROM MEMBERS WHERE MEM_ID = \'" + id +
+	// "\' AND MEM_NAME = \'" + name + "\' AND MEM_EMAIL = \'" + email + "\'";
+	// try {
+	// conn = getConnection();
+	// pstmt = conn.prepareStatement(SQLcu);
+	// rs = pstmt.executeQuery();
 
-	// 		if (rs.next()) {
-	// 			loginResult = rsCusto.getString("MEM_PASSWORD"); // 안되면 getString 1
-	// 		}
-
-	// 	} catch (SQLException sqle) {
-	// 		System.out.println("SQL문에서 예외 발생");
-	// 		sqle.printStackTrace();
-	// 	} finally {
-
-	// 		if (rsCusto != null)
-	// 			try {
-	// 				rsCusto.close();
-	// 			} catch (Exception e) {
-	// 				throw new RuntimeException(e.getMessage());
-	// 			}
-	// 		if (custmt != null)
-	// 			try {
-	// 				custmt.close();
-	// 			} catch (Exception e) {
-	// 				throw new RuntimeException(e.getMessage());
-	// 			}
-	// 		if (conn != null)
-	// 			try {
-	// 				conn.close();
-	// 			} catch (Exception e) {
-	// 				throw new RuntimeException(e.getMessage());
-	// 			}
-	// 	}
-	// 	return loginResult;
+	// if (rs.next()) {
+	// loginResult = rsCusto.getString("MEM_PASSWORD"); // 안되면 getString 1
 	// }
 
-	public boolean insertFilm(FilmDTO dto) { //영화 추가
+	// } catch (SQLException sqle) {
+	// System.out.println("SQL문에서 예외 발생");
+	// sqle.printStackTrace();
+	// } finally {
 
-		String SQL = "INSERT INTO FILMS(FILM_NAME,FILM_TEASER,FILM_INFO,FILM_GENRE,FILM_OPENINGDATE,FILM_SUMMARY,FILM_POSTER)" + "VALUES (?,?,?,?,?,?,?,?)";
+	// if (rsCusto != null)
+	// try {
+	// rsCusto.close();
+	// } catch (Exception e) {
+	// throw new RuntimeException(e.getMessage());
+	// }
+	// if (custmt != null)
+	// try {
+	// custmt.close();
+	// } catch (Exception e) {
+	// throw new RuntimeException(e.getMessage());
+	// }
+	// if (conn != null)
+	// try {
+	// conn.close();
+	// } catch (Exception e) {
+	// throw new RuntimeException(e.getMessage());
+	// }
+	// }
+	// return loginResult;
+	// }
+
+	public boolean insertFilm(FilmDTO dto) { // 영화 추가
+
+		String SQL = "INSERT INTO FILMS(FILM_NAME,FILM_TEASER,FILM_INFO,FILM_GENRE,FILM_OPENINGDATE,FILM_SUMMARY,FILM_POSTER)"
+				+ "VALUES (?,?,?,?,?,?,?,?)";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
@@ -75,14 +77,68 @@ public class FilmDAO {
 			insertResult = false;
 			return insertResult;
 		} finally {
-			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
-			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
 		}
 		insertResult = true;
 		return insertResult;
 	}
 
-	public ArrayList<FilmDTO> displayMovie() {  //영화 조회
+	public String displayScreenList() { // 상영영화리스트 조회
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String result = "";
+
+		String SQLcu = "select *,avg(rev_starpoint) from film where film_id=(select distinct film_id from screen)";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQLcu);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				result += rs.getString("film_name") + "\\"; // 안되면 getString 1
+				result += rs.getString("film_poster") + "\\";
+				result += rs.getString("film_resvrate") + "\\";
+				result += rs.getString("rev_starpoint") + "|";
+			}
+		} catch (SQLException sqle) {
+			System.out.println("SQL문에서 예외 발생");
+			sqle.printStackTrace();
+		} finally {
+
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		return result;
+	}
+
+	public ArrayList<FilmDTO> displayMovie() { // 영화 조회
 		ArrayList<FilmDTO> arr = new ArrayList<FilmDTO>();
 		FilmDTO dto = new FilmDTO();
 		String SQL = "SELECT * FROM FILMS WHERE (FILM_OPENINGDATE<SYSDATE) AND (FILM_OPENINGDATE+30>SYSDATE) ORDER BY FILM_OPENINGDATE DESC";
@@ -105,14 +161,29 @@ public class FilmDAO {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 		} finally {
-			if(rs!=null) try{rs.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
-			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
-			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
 		}
 		return arr;
 	}
-	
-	public boolean deleteFilm(String title) {  //영화 삭제
+
+	public boolean deleteFilm(String title) { // 영화 삭제
 		String SQL = "DELETE FROM FILMS WHERE FILM_NAME = ?";
 		try {
 			conn = getConnection();
@@ -125,14 +196,24 @@ public class FilmDAO {
 			deleteResult = false;
 			return deleteResult;
 		} finally {
-			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
-			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
 		}
 		deleteResult = true;
 		return deleteResult;
 	}
-	
-	public boolean insertReview(ReviewDTO dto) {  //리뷰 추가
+
+	public boolean insertReview(ReviewDTO dto) { // 리뷰 추가
 
 		String SQL = "INSERT INTO REVIEWS(CUS_ID,FILM_ID,REV_STARPOINT,REV_CONTENT,REV_DATE)" + "VALUES (?,?,?,?,?)";
 		try {
@@ -150,14 +231,24 @@ public class FilmDAO {
 			insertResult = false;
 			return insertResult;
 		} finally {
-			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
-			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
 		}
 		insertResult = true;
 		return insertResult;
 	}
 
-	public ArrayList<ReviewDTO> displayReview(String movid) {  //리뷰 조회
+	public ArrayList<ReviewDTO> displayReview(String movid) { // 리뷰 조회
 
 		ArrayList<ReviewDTO> arr = new ArrayList<ReviewDTO>();
 		ReviewDTO dto = new ReviewDTO();
@@ -179,14 +270,29 @@ public class FilmDAO {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
 		} finally {
-			if(rs!=null) try{rs.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
-			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
-			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
 		}
 		return arr;
 	}
 
-	public boolean deleteReview(String id) {  //리뷰 삭제
+	public boolean deleteReview(String id) { // 리뷰 삭제
 		String SQL = "DELETE FROM REVIEWS WHERE REV_ID = ?";
 
 		try {
@@ -201,8 +307,18 @@ public class FilmDAO {
 			deleteResult = false;
 			return deleteResult;
 		} finally {
-			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
-			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
 		}
 		deleteResult = true;
 		return deleteResult;
