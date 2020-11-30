@@ -1,6 +1,7 @@
 package MovieSysServer.LoginProtocol;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Protocol implements Serializable {
 	// 프로토콜 타입에 관한 변수
@@ -676,10 +677,26 @@ public class Protocol implements Serializable {
 		return splited;
 	}
 
-	public void setScreenList(String list) {// 조회영회리스트
-		System.arraycopy(list.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
-				list.trim().getBytes().length);
-		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + list.trim().getBytes().length] = '\0';
+	public ArrayList<Protocol> setScreenList(String list) {// 조회영회리스트
+		ArrayList<Protocol> arr = new ArrayList<Protocol>();
+
+		int headLength = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
+				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM;
+		int dataLength = LEN_MAX - headLength;
+
+		int srcBegin = 0;
+		int srcEnd = 0;
+		String[] packetList = {};
+
+		for (int i = list.length(), j = 0; i < dataLength; i -= dataLength, j++) {
+			srcEnd += dataLength = 1;
+			packetList[j] = list.substring(srcBegin, srcEnd);
+			srcBegin += srcEnd;
+			System.arraycopy(packetList[j].getBytes(), 0, packet, headLength, packetList[j].getBytes().length);
+			packet[LEN_MAX] = '\0';
+			arr.add(this);
+		}
+		return arr;
 	}
 
 	public String[] getScreenList()// "영화제목\영화포스터\예매율\별점"
