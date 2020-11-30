@@ -239,8 +239,52 @@ public class MemberDAO {
 		return loginResult;
 	}
 
+	public boolean idCheck(String id){	//id중복
+		PreparedStatement custmt = null;
+		ResultSet rsCusto = null;
+		boolean loginResult = false;
+
+		String SQL = "SELECT * FROM MEMBERS WHERE MEM_ID = \'" + id + "\'";
+
+		try {
+			conn = getConnection();
+			custmt = conn.prepareStatement(SQL);
+			rsCusto = custmt.executeQuery();
+
+			if (rsCusto.next()) {
+				loginResult = true; 
+			}
+
+		} catch (SQLException sqle) {
+			System.out.println("SQL문에서 예외 발생");
+			sqle.printStackTrace();
+		} finally {
+
+			if (rsCusto != null)
+				try {
+					rsCusto.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (custmt != null)
+				try {
+					custmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		return loginResult;
+
+	}
+
 	public boolean deleteCustomer(String id) { // 고객삭제
-		String SQL = "DELETE FROM CUSTOMERS WHERE CUS_ID = ?";
+		String SQL = "DELETE FROM MEMBERS WHERE MEM_ID = ?";
 
 		try {
 			conn = getConnection();

@@ -16,19 +16,19 @@ public class LoginServer {
 		OutputStream os = socket.getOutputStream();
 		InputStream is = socket.getInputStream();
 
-		// 로그인 정보 요청용 프로토콜 객체 생성 및 전송
-		// Protocol protocol = new Protocol(Protocol.PT_REQ_LOGIN);
-		// Protocol protocol = new Protocol();
-		// os.write(protocol.getPacket());
+		
 
 		boolean program_stop = false;
-
+		
 		String[] idpw;
 		String id; // 아이디
 		String password; // 비밀번호
 		String name; // 이름
 		String gender; // 성별
-		String phoneNum; // 휴대전화번호
+		String phone; // 휴대전화번호
+		String account;	//계좌번호
+		String money; 	//잔액
+		String flag;	//고객 담당자 구분
 		String email; // 이메일
 		String birthday; // 생년월일
 
@@ -39,6 +39,8 @@ public class LoginServer {
 
 		while (true) {
 			MemberDAO mdao = new MemberDAO();
+			CustomerDTO cdto = new CustomerDTO();
+
 			Protocol protocol = new Protocol(); // 새 Protocol 객체 생성 (기본 생성자)
 			byte[] buf = protocol.getPacket(); // 기본 생성자로 생성할 때에는 바이트 배열의 길이가 1000바이트로 지정됨
 			is.read(buf); // 클라이언트로부터 로그인정보 (ID와 PWD) 수신
@@ -98,29 +100,9 @@ public class LoginServer {
 
 					}
 
-					// System.out.println("로그인 처리 결과 전송");
-					// os.write(protocol.getPacket());
-					// break;
-					// case Protocol.PT_REQ_SIGNUP : //회원가입 요청 수신
-					// // id = protocol.getId();
-					// // password = protocol.getPassword();
-					// // if(idCheck(id)==false){ //회원가입할 때 id 중복체크
-					// // protocol = new Protocol(Protocol.PT_RES_SIGNUP);//중복에 걸려서 다시 회원가입 요청
-					// // os.write(protocol.getPacket());
-					// // break;
-					// // }
-					// //회원가입 성공
-					// //dto에 회원들 정보들 넣어줘야 해용
-					// break;
+				
 
-					// 여부터 다시 시작하셈
 					 case Protocol.PT_REQ_LOOKUP : //조회 요청 수신
-
-					 //id = protocol.getID();
-
-					// // name = protocol.getName();
-					// // email = protocol.getEmail();
-					// // region = protocol.getRegion();
 
 					 switch(packetCode){
 					 case Protocol.CODE_PT_REQ_LOOKUP_FIND_CUS_ID : //ID조회
@@ -201,17 +183,96 @@ public class LoginServer {
 					 break;
 
 					 // 영화의 상세정보 조회 요청 8
+					 ///////////////////////////////////////////////////////
 					 case Protocol.CODE_PT_REQ_LOOKUP_FILM_DETAIL :
-					 
 					 break;
-					// }
 
-					// break;
+					 // 내 정보 조회 요청 9
+					 case Protocol.CODE_PT_REQ_LOOKUP_MY_INFO :
+					break;
 
-					// case Protocol.PT_REQ_UPDATE : //갱신 요청 수신
-					// switch(packetCode){
-					// case Protocol.CODE_PT_REQ_UPDATE_ADD_MEM : //회원 추가(가입) 요청
+					// 자신이 작성한 리뷰 리스트 조회 10
+					case Protocol.CODE_PT_REQ_LOOKUP_MY_REVIEWS :
+					break;
 
+					// 예매 내역 조회 요청 11
+					case Protocol.CODE_PT_REQ_LOOKUP_RESV_LIST :
+					break;
+
+					// 현재 상영 중 영화 조회 요청 12
+					case Protocol.CODE_PT_REQ_LOOKUP_ALL_SCREEN :
+					break;
+
+					// 담당자용 영화관 조회 요청 13
+					case Protocol.CODE_PT_REQ_LOOKUP_THEATER_FOR_ADMIN :
+					break;
+
+					 // 상영관 조회 요청 14
+					 case Protocol.CODE_PT_REQ_LOOKUP_AUDI :
+					 break;
+
+					  // 영화관별 매출 조회 요청 15
+					case Protocol.CODE_PT_REQ_LOOKUP_THEATER_SALES :
+					break;
+
+					// 총 매출 조회 요청 16
+					case Protocol.CODE_PT_REQ_LOOKUP_TOTAL_SALES :
+					break;
+
+					//영화별 취소율 조회 요청 17
+					case Protocol.CODE_PT_REQ_LOOKUP_THEATER_CANCEL_RATE :
+					break;
+
+					 //영화별 예매율 조회 요청 18
+					 case Protocol.CODE_PT_REQ_LOOKUP_THEATER_RESV_RATE :
+					 break;
+
+					 //계좌 조회 요청 19
+					 case Protocol.CODE_PT_REQ_LOOKUP_ACCOUNT :
+					 break;
+
+					 }
+
+					 break;
+
+					 case Protocol.PT_REQ_UPDATE : //갱신 요청 수신
+					 switch(packetCode){
+						 //회원 추가(가입) 요청 1
+					 case Protocol.CODE_PT_REQ_UPDATE_ADD_MEM : 
+						String[] id_password_name_phone_account_gender_money_email_birthday_flag = protocol.getMemberJoin();
+						id=id_password_name_phone_account_gender_money_email_birthday_flag[0];
+						password = id_password_name_phone_account_gender_money_email_birthday_flag[1];
+						name = id_password_name_phone_account_gender_money_email_birthday_flag[2];
+						phone = id_password_name_phone_account_gender_money_email_birthday_flag[3];
+						account = id_password_name_phone_account_gender_money_email_birthday_flag[4];
+						gender = id_password_name_phone_account_gender_money_email_birthday_flag[5];
+						money = id_password_name_phone_account_gender_money_email_birthday_flag[6];
+						email = id_password_name_phone_account_gender_money_email_birthday_flag[7];
+						birthday = id_password_name_phone_account_gender_money_email_birthday_flag[8];
+						flag = id_password_name_phone_account_gender_money_email_birthday_flag[9];
+						
+						cdto.setCus_id(id);
+						cdto.setCus_password(password);
+						cdto.setCus_name(name);
+						cdto.setCus_phoneNum(phone);
+						cdto.setCus_account(account);
+						cdto.setCus_gender(gender);
+						cdto.setCus_money(Integer.parseInt(money));
+						cdto.setEmail(email);
+						cdto.setBirthday(birthday);
+						cdto.setFlag(flag);
+						boolean signupresult = mdao.insertCustomer(cdto);
+						if(signupresult==false){ //회원가입 실패
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_MEM_NO);
+							os.write(protocol.getPacket());
+							break;
+						}
+						else{
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_MEM_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+						
 					// if(idCheck(id)==false){ //회원가입할 때 id 중복체크
 					// protocol = new
 					// Protocol(Protocol.PT_RES_SIGNUP,Protocol.CODE_PT_RES_UPDATE_ADD_MEM_NO);//중복에
@@ -235,7 +296,7 @@ public class LoginServer {
 
 					// break;
 					// }
-					// }
+					 }
 					
 
 			}// end switch
@@ -246,7 +307,7 @@ public class LoginServer {
 
 		is.close();
 		os.close();
-		socket.close();}
+		socket.close();
 
 	}
 
