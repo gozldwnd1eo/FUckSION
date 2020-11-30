@@ -231,7 +231,8 @@ public class Protocol implements Serializable {
 		if (packet == null) {
 			switch (protocolType) {
 				case PT_REQ_LOGIN:
-					packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_LOGIN_ID+LEN_LOGIN_PASSWORD+LEN_BODY_SEPARATOR];
+					packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_LOGIN_ID + LEN_LOGIN_PASSWORD
+							+ LEN_BODY_SEPARATOR];
 					break;
 				case PT_RES_LOGIN:
 					switch (typeCode) {
@@ -502,8 +503,7 @@ public class Protocol implements Serializable {
 	// 로그인후 성공/실패의 결과 값을 프로토콜로부터 추출하여 문자열로 리턴
 	public String getLoginResult() {
 		// String의 다음 생성자를 사용 : String(byte[] bytes, int offset, int length)
-		String result = new String(packet, LEN_PROTOCOL_TYPE, LEN_TYPE_CODE);
-		return result;
+		return new String(packet, LEN_TYPE_CODE, LEN_TYPE_CODE).trim();
 	}
 
 	// String ok를 byte[]로 만들어서 packet의 프로토콜 타입 바로 뒤에 추가
@@ -543,7 +543,8 @@ public class Protocol implements Serializable {
 	}
 
 	public String[] getID_Password() { // 로그인인증요청
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_LOGIN_ID+LEN_LOGIN_PASSWORD+LEN_BODY_SEPARATOR).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_LOGIN_ID + LEN_LOGIN_PASSWORD + LEN_BODY_SEPARATOR).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -555,7 +556,7 @@ public class Protocol implements Serializable {
 
 	public String getID() {
 		// String(byte[] bytes, int offset, int length)
-		return new String(packet, LEN_PROTOCOL_TYPE, LEN_LOGIN_ID).trim();
+		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_LOGIN_ID).trim();
 	}
 
 	// 패스워드는 byte[]에서 로그인 아이디 바로 뒤에 있음

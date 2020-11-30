@@ -39,7 +39,7 @@ public class LoginServer {
 			byte[] buf = protocol.getPacket(); // 기본 생성자로 생성할 때에는 바이트 배열의 길이가 1000바이트로 지정됨
 			is.read(buf); // 클라이언트로부터 로그인정보 (ID와 PWD) 수신
 			int packetType = buf[0]; // 수신 데이터에서 패킷 타입 얻음
-			int packetCode = buf[1]; // 수신 데이터에서 패킷 커드 얻음
+			int packetCode = buf[1]; // 수신 데이터에서 패킷 코드 얻음
 			protocol.setPacket(packetType, packetCode, buf); // 패킷 타입을 Protocol 객체의 packet 멤버변수에 buf를 복사
 
 			switch (packetType) {
