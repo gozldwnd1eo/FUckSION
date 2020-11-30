@@ -544,7 +544,7 @@ public class Protocol implements Serializable {
 
 	public String[] getID_Password() { // 로그인인증요청
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
-				LEN_LOGIN_ID + LEN_LOGIN_PASSWORD + LEN_BODY_SEPARATOR).trim();
+				LEN_LOGIN_ID + LEN_BODY_SEPARATOR + LEN_LOGIN_PASSWORD).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -583,7 +583,8 @@ public class Protocol implements Serializable {
 	}
 
 	public String[] getName_Email() { // 위에꺼 세트..by 규철
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_MEM_NAME + LEN_BODY_SEPARATOR + LEN_MEM_EMAIL).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
