@@ -107,7 +107,7 @@ public class FilmDAO {
 
 			if (rs.next()) {
 				result += rs.getString("film_name") + "\\"; // 안되면 getString 1
-				result += rs.getString("film_poster") + "\\";
+				result += rs.getByte("film_poster") + "\\";
 				result += rs.getString("film_resvrate") + "\\";
 				result += rs.getString("rev_starpoint") + "|";
 			}

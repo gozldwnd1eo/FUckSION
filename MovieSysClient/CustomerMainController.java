@@ -82,22 +82,22 @@ public class CustomerMainController implements Initializable {
             Protocol protocol = new Protocol(Protocol.PT_REQ_LOOKUP, Protocol.CODE_PT_REQ_LOOKUP_ALL_SCREEN);
             byte[] buf = protocol.getPacket();
             Myconn.os.write(protocol.getPacket());
-            ArrayList<String> data=new ArrayList<String>();
-            
-            byte last=0;
-            if(last!=1){
-            Myconn.is.read(buf);
-            int packetType=buf[0];
-            int packetCode=buf[1];
-            last=buf[5];
-            protocol.setPacket(packetType, packetCode, buf);
-            String temp = protocol.getScreenList();
-            data.add(temp);
+            ArrayList<String> data = new ArrayList<String>();
+
+            byte last = 0;
+            if (last != 1) {
+                Myconn.is.read(buf);
+                int packetType = buf[0];
+                int packetCode = buf[1];
+                last = buf[5];
+                protocol.setPacket(packetType, packetCode, buf);
+                String temp = protocol.getScreenList();
+                data.add(temp);
             }
             String body;
-            Iterator<String> it=data.iterator();
-            while(it.hasNext()){
-                body+=it.next();
+            Iterator<String> it = data.iterator();
+            while (it.hasNext()) {
+                body += it.next();
             }
             ObservableList<String> nowscreenlist;
 
