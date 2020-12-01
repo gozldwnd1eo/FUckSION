@@ -11,13 +11,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MovieSysClient.reservationController">
    <children>
       <ImageView fx:id="poster" fitHeight="176.0" fitWidth="139.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-      <ComboBox layoutX="182.0" layoutY="31.0" prefHeight="22.0" prefWidth="75.0" promptText="지역" />
-      <ComboBox layoutX="274.0" layoutY="31.0" prefHeight="22.0" prefWidth="115.0" promptText="영화관" />
-      <ComboBox layoutX="403.0" layoutY="31.0" prefHeight="22.0" prefWidth="182.0" promptText="상영관/상영시간" />
+      <ComboBox fx:id="localcombox" layoutX="182.0" layoutY="31.0" onAction="#selectarea" prefHeight="22.0" prefWidth="75.0" promptText="지역" />
+      <ComboBox fx:id="theatercombox" layoutX="274.0" layoutY="31.0" onAction="#selecttheater" prefHeight="22.0" prefWidth="115.0" promptText="영화관" />
+      <ComboBox fx:id="schedcombox" layoutX="403.0" layoutY="31.0" onAction="#selectschedule" prefHeight="22.0" prefWidth="182.0" promptText="상영관/상영시간" />
       <Line endX="346.0" layoutX="254.0" layoutY="78.0" startX="-85.0" />
       <Line endX="-62.5" endY="280.0" layoutX="231.0" layoutY="120.0" startX="-62.5" startY="-120.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="22.0" layoutX="266.0" layoutY="91.0" stroke="BLACK" strokeType="INSIDE" width="238.0" />
@@ -26,76 +25,76 @@
             <Font size="18.0" />
          </font>
       </Text>
-      <CheckBox layoutX="245.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="263.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="281.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="299.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="317.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="335.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="353.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="406.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="424.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="442.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="460.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="478.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="496.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="514.0" layoutY="136.0" mnemonicParsing="false" />
-      <CheckBox layoutX="245.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="263.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="281.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="299.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="317.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="335.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="353.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="406.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="424.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="442.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="460.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="478.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="496.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="514.0" layoutY="154.0" mnemonicParsing="false" />
-      <CheckBox layoutX="245.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="263.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="281.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="299.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="317.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="335.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="353.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="406.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="424.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="442.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="460.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="478.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="496.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="514.0" layoutY="172.0" mnemonicParsing="false" />
-      <CheckBox layoutX="245.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="263.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="281.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="299.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="317.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="335.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="353.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="406.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="424.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="442.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="460.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="478.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="496.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="514.0" layoutY="190.0" mnemonicParsing="false" />
-      <CheckBox layoutX="245.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="263.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="281.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="299.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="317.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="335.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="353.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="406.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="424.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="442.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="460.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="478.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="496.0" layoutY="208.0" mnemonicParsing="false" />
-      <CheckBox layoutX="514.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a1" layoutX="245.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a2" layoutX="263.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a3" layoutX="281.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a4" layoutX="299.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a5" layoutX="317.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a6" layoutX="335.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a7" layoutX="353.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a8" layoutX="406.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a9" layoutX="424.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a10" layoutX="442.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a11" layoutX="460.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a12" layoutX="478.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a13" layoutX="496.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="a14" layoutX="514.0" layoutY="136.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b1" layoutX="245.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b2" layoutX="263.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b3" layoutX="281.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b4" layoutX="299.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b5" layoutX="317.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b6" layoutX="335.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b7" layoutX="353.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b8" layoutX="406.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b9" layoutX="424.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b10" layoutX="442.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b11" layoutX="460.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b12" layoutX="478.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b13" layoutX="496.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="b14" layoutX="514.0" layoutY="154.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c1" layoutX="245.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c2" layoutX="263.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c3" layoutX="281.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c4" layoutX="299.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c5" layoutX="317.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c6" layoutX="335.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c7" layoutX="353.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c8" layoutX="406.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c9" layoutX="424.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c10" layoutX="442.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c11" layoutX="460.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c12" layoutX="478.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c13" layoutX="496.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="c14" layoutX="514.0" layoutY="172.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d1" layoutX="245.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d2" layoutX="263.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d3" layoutX="281.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d4" layoutX="299.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d5" layoutX="317.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d6" layoutX="335.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d7" layoutX="353.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d8" layoutX="406.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d9" layoutX="424.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d10" layoutX="442.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d11" layoutX="460.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d12" layoutX="478.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d13" layoutX="496.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="d14" layoutX="514.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e1" layoutX="245.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e2" layoutX="263.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e3" layoutX="281.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e4" layoutX="299.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e5" layoutX="317.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e6" layoutX="335.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e7" layoutX="353.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e8" layoutX="406.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e9" layoutX="424.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e10" layoutX="442.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e11" layoutX="460.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e12" layoutX="478.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e13" layoutX="496.0" layoutY="208.0" mnemonicParsing="false" />
+      <CheckBox fx:id="e14" layoutX="514.0" layoutY="208.0" mnemonicParsing="false" />
       <Text layoutX="249.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
          <font>
             <Font size="20.0" />
@@ -191,20 +190,20 @@
             <Font size="16.0" />
          </font>
       </Text>
-      <CheckBox layoutX="245.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="263.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="281.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="299.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="317.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="335.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="353.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="406.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="424.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="442.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="460.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="478.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="496.0" layoutY="226.0" mnemonicParsing="false" />
-      <CheckBox layoutX="514.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f1" layoutX="245.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f2" layoutX="263.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f3" layoutX="281.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f4" layoutX="299.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f5" layoutX="317.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f6" layoutX="335.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f7" layoutX="353.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f8" layoutX="406.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f9" layoutX="424.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f10" layoutX="442.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f11" layoutX="460.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f12" layoutX="478.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f13" layoutX="496.0" layoutY="226.0" mnemonicParsing="false" />
+      <CheckBox fx:id="f14" layoutX="514.0" layoutY="226.0" mnemonicParsing="false" />
       <Text layoutX="229.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="F">
          <font>
             <Font size="16.0" />

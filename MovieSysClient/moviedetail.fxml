@@ -5,19 +5,19 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+fx:controller="MovieSysClient.moviedetailController">
    <children>
       <ImageView fx:id="poster" fitHeight="248.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="moviename" layoutX="239.0" layoutY="34.0" text="영화제목출력" />
       <Label layoutX="241.0" layoutY="56.0" text="감독 : " />
       <Label fx:id="directorname" layoutX="283.0" layoutY="56.0" text="감독이름" />
       <Label layoutX="241.0" layoutY="77.0" text="출연진 : " />
-      <Label fx:id="출연진이름" layoutX="293.0" layoutY="77.0" text="출연진이름" />
+      <Label fx:id="actors" layoutX="293.0" layoutY="77.0" text="출연진이름" />
       <Label layoutX="241.0" layoutY="98.0" text="예매율" />
-      <Label fx:id="예매율" layoutX="293.0" layoutY="98.0" text="예매율출력" />
+      <Label fx:id="revrate" layoutX="293.0" layoutY="98.0" text="예매율출력" />
       <Label fx:id="genre" layoutX="238.0" layoutY="124.0" text="장르 출력" />
       <Label fx:id="duringtime" layoutX="315.0" layoutY="124.0" text="상영시간 출력" />
-      <ListView fx:id="review" layoutX="223.0" layoutY="151.0" prefHeight="242.0" prefWidth="370.0" />
+      <ListView fx:id="reviewlist" layoutX="223.0" layoutY="151.0" prefHeight="242.0" prefWidth="370.0" />
    </children>
 </AnchorPane>

@@ -9,8 +9,12 @@ import java.util.ResourceBundle;
 import MovieSysServer.LoginProtocol.Protocol;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -18,6 +22,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 
 public class CustomerMainController implements Initializable {
 
@@ -86,9 +93,9 @@ public class CustomerMainController implements Initializable {
             Myconn.os.write(protocol.getPacket());
             ArrayList<String> data = new ArrayList<String>();
 
-            protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
-            buf=protocol.getPacket();
-            
+            protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
+            buf = protocol.getPacket();
+
             byte last = 0;
             boolean stopread = false;
             while (!stopread) {
@@ -102,7 +109,7 @@ public class CustomerMainController implements Initializable {
                 if (last == 1)
                     stopread = true;
             }
-            String body=null;
+            String body = null;
             Iterator<String> it = data.iterator();
             while (it.hasNext()) {
                 body += it.next();
@@ -116,9 +123,9 @@ public class CustomerMainController implements Initializable {
             }
             ObservableList<filmList> nowscreenlist = FXCollections.observableArrayList();
 
-            for (int i = 0; i < filmliststring.size() ; i++) {
+            for (int i = 0; i < filmliststring.size(); i++) {
                 filmList newfilm = new filmList();
-                String[] line=filmliststring.get(i);
+                String[] line = filmliststring.get(i);
                 newfilm.setFilm_id(line[0]);
                 newfilm.setFilm_name(line[1]);
                 // newfilm.setFilm_poster(line[2]);
@@ -128,6 +135,40 @@ public class CustomerMainController implements Initializable {
             }
             film_list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             film_list.setItems(nowscreenlist);
+
+            film_list.setOnMouseClicked(event -> {
+                filmList selected = film_list.getSelectionModel().getSelectedItem();
+                filmname.setText(selected.film_id);
+                film_starpt.setText(selected.starpt);
+                filmrevrate.setText(selected.rev_rate);
+            });
+
+            detail_btn.setOnAction(event -> {
+                try {
+                    filmList selected = film_list.getSelectionModel().getSelectedItem();
+                    Userchoice.setFilmID(selected.film_id);
+                    Parent parent = FXMLLoader.load(getClass().getResource("moviedetail.fxml"));
+                    Scene scene = new Scene(parent);
+                    Stage primaryStage = (Stage) detail_btn.getScene().getWindow();
+                    primaryStage.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            rev_btn.setOnAction(event -> {
+                try{
+                    filmList selected=film_list.getSelectionModel().getSelectedItem();
+                    Userchoice.setFilmID(selected.film_id);
+                    Parent parent = FXMLLoader.load(getClass().getResource("reservation.fxml"));
+                    Scene scene = new Scene(parent);
+                    Stage primaryStage=(Stage)detail_btn.getScene().getWindow();
+                    primaryStage.setScene(scene);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            });
+
         } catch (IOException e) {
             e.printStackTrace();
         }
