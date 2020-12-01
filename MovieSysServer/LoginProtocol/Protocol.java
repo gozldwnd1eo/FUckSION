@@ -1,6 +1,8 @@
 package MovieSysServer.LoginProtocol;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Protocol implements Serializable {
 	// 프로토콜 타입에 관한 변수
@@ -208,7 +210,12 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_RES_UPDATE_DELETE_FILM_OK = 39; // 영화 삭제 요청 승인 코드번호
 	public static final int CODE_PT_RES_UPDATE_DELETE_FILM_NO = 40; // 영화 삭제 요청 거절 코드번호
 	protected int protocolType;
-	protected int protocolCode = -1; // 코드 추가..by 규철
+	protected int protocolCode = -1; // 코드 추가
+	protected int protocolBodyLen = 0;
+	protected int protocolFlag = 0; // 0 == false 1==true
+	protected int protocolLast = 0; // 0 == false 1==true
+	protected int protocolSeqNum = 0;
+
 	private byte[] packet; // 프로토콜과 데이터의 저장공간이 되는 바이트 배열
 
 	public Protocol() { // 생성자
@@ -253,6 +260,9 @@ public class Protocol implements Serializable {
 					switch (typeCode) {
 						case CODE_PT_REQ_LOOKUP_ALL_THEATER:
 						case CODE_PT_REQ_LOOKUP_ALL_SCREEN:
+							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
+									+ LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM];
+							break;
 						case CODE_PT_REQ_LOOKUP_THEATER_SALES:
 						case CODE_PT_REQ_LOOKUP_TOTAL_SALES:
 						case CODE_PT_REQ_LOOKUP_THEATER_CANCEL_RATE:
@@ -539,6 +549,27 @@ public class Protocol implements Serializable {
 		protocolCode = code;
 		System.arraycopy(buf, 0, packet, 0, packet.length);
 	}
+
+	public void setPacket(int pt, int code, int bodyLen, byte[] buf) {
+		packet = null;
+		packet = getPacket(pt, code);
+		protocolType = pt;
+		protocolCode = code;
+		protocolBodyLen = bodyLen;
+		System.arraycopy(buf, 0, packet, 0, packet.length);
+	}
+
+	public void setPacket(int pt, int code, int bodyLen, int flag, int last, int seqNum, byte[] buf) {
+		packet = null;
+		packet = getPacket(pt, code);
+		protocolType = pt;
+		protocolCode = code;
+		protocolBodyLen = bodyLen;
+		protocolFlag = flag;
+		protocolLast = last;
+		protocolSeqNum = seqNum;
+		System.arraycopy(buf, 0, packet, 0, packet.length);
+	}
 	// byte[] packet에 String ID를 byte[]로 만들어 프로토콜 타입 바로 뒤에 추가
 
 	public void setID_Password(String id, String pw) {
@@ -681,10 +712,61 @@ public class Protocol implements Serializable {
 		return splited;
 	}
 
-	public void setScreenList(String list) {// 조회영회리스트
-		System.arraycopy(list.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
-				list.trim().getBytes().length);
-		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + list.trim().getBytes().length] = '\0';
+	public ArrayList<Protocol> setScreenList(String list) {// 조회영회리스트
+		ArrayList<Protocol> arr = new ArrayList<Protocol>();
+
+		int headLength = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
+				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM;
+		int dataLength = LEN_MAX - headLength;
+
+		int srcBegin = 0;
+		int srcEnd = 0;
+		String packetList = "";
+
+		int i = list.length();
+		int seqNum = 0;
+		for (; dataLength < i; i -= dataLength, seqNum++) {
+
+			srcEnd += dataLength + 1;
+			packetList = list.substring(srcBegin, srcEnd);
+			srcBegin += srcEnd;
+
+			this.setPacket(PT_REQ_LOOKUP, CODE_PT_REQ_LOOKUP_ALL_SCREEN, dataLength, 1, 0, seqNum, this.packet);
+
+			System.arraycopy(packetList.getBytes(), 0, packet, headLength, dataLength);
+
+			packet[LEN_MAX] = '\0';
+			arr.add(this);
+		}
+		if (i < dataLength) {
+			srcEnd += dataLength + 1;
+			packetList = list.substring(srcBegin, srcEnd);
+			srcBegin += srcEnd;
+
+			this.setPacket(PT_REQ_LOOKUP, CODE_PT_REQ_LOOKUP_ALL_SCREEN, packetList.length(), 1, 1, seqNum,
+					this.packet);
+
+			System.arraycopy(packetList.getBytes(), 0, packet, headLength, packetList.length());
+
+			packet[LEN_MAX] = '\0';
+			arr.add(this);
+		}
+		return arr;
+	}
+
+	public String[] getScreenList(String list) {// 조회영회리스트// "영화제목\영화포스터\예매율\별점"
+		int srcBegin = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST
+				+ LEN_PROTOCOL_SEQNUM;
+		String resultStr = "";
+
+		for (int i = list.length(); LEN_MAX < i; i -= LEN_MAX) {
+			String tempStr = new String(list.getBytes(), srcBegin, arr.get(index).packet.length);
+			resultStr += tempStr;
+			arr.remove(index);
+		}
+		String[] splited = resultStr.split("|");
+		return splited;
+
 	}
 
 	public String[] getScreenList()// "영화제목\영화포스터\예매율\별점"
@@ -692,6 +774,24 @@ public class Protocol implements Serializable {
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
 		String[] splited = origin.split("|");
 		return splited;
+	}
+
+	public void setTheScreenList(int cnt, String[] list) {// 조회응답코드7
+		String finalStr = "";// 사용시 쿼리문을 스트링 배열로 받으면서 상영관과 상영시간 사이 ~ 를 넣고(상영관~상영시간)여기로 가져와서 \추가할것.
+		for (int i = cnt; i > 0; i--) {
+			finalStr += (list[i - 1] + "|");
+		} ////////////////////////////////////////////////////
+
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String[] getTheScreenList()// 위에꺼 세트 by 규철
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;// (상영관~상영시간)이므로 한번 더 잘라야함
 	}
 
 	public void setSeatNumList(int cnt, String[] list) {// 조회응답코드9
@@ -1073,5 +1173,45 @@ public class Protocol implements Serializable {
 	{
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
 		return origin;
+	}
+
+	public int getProtocolCode() {
+		return protocolCode;
+	}
+
+	public void setProtocolCode(int protocolCode) {
+		this.protocolCode = protocolCode;
+	}
+
+	public int getProtocolBodyLen() {
+		return protocolBodyLen;
+	}
+
+	public void setProtocolBodyLen(int protocolBodyLen) {
+		this.protocolBodyLen = protocolBodyLen;
+	}
+
+	public int getProtocolFlag() {
+		return protocolFlag;
+	}
+
+	public void setProtocolFlag(int protocolFlag) {
+		this.protocolFlag = protocolFlag;
+	}
+
+	public int getProtocolLast() {
+		return protocolLast;
+	}
+
+	public void setProtocolLast(int protocolLast) {
+		this.protocolLast = protocolLast;
+	}
+
+	public int getProtocolSeqNum() {
+		return protocolSeqNum;
+	}
+
+	public void setProtocolSeqNum(int protocolSeqNum) {
+		this.protocolSeqNum = protocolSeqNum;
 	}
 }
