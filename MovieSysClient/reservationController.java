@@ -19,7 +19,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
 
-public class reservationController implements Initializable{
+public class reservationController implements Initializable {
 
     @FXML
     private ImageView poster;
@@ -299,7 +299,7 @@ public class reservationController implements Initializable{
         Myconn.is.read(buf);
 
         // 프로토콜에 온 지역들을 스트링배열로 빼옴
-        protocol.
+        protocol.;
 
         String[] areas;
         localcombox.setItems(FXCollections.observableArrayList(areas)); // 되나?
@@ -311,20 +311,73 @@ public class reservationController implements Initializable{
 
 
     }
-    
+
     @FXML
     void selectarea(ActionEvent event) {
+        try{
+        Userchoice.setArea(localcombox.getValue());
+        Protocol protocol=new Protocol(Protocol.PT_REQ_LOOKUP,Protocol.CODE_PT_REQ_LOOKUP_THEATER);
+        byte[] buf=protocol.getPacket();
+        Myconn.os.write(protocol.getPacket());
+        protocol=new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_THEATER_OK);
+        buf=protocol.getPacket();
 
-    }
+        Myconn.is.read(buf);
 
-    @FXML
-    void selectschedule(ActionEvent event) {
+        // 프로토콜에 온 영화관들을 스트링배열로 빼옴
+        protocol.;
 
+        String[] theaters;
+        theatercombox.setItems(FXCollections.observableArrayList(theaters)); // 되나?
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void selecttheater(ActionEvent event) {
+        try{
+            Userchoice.setTheater(theatercombox.getValue());
+            Protocol protocol=new Protocol(Protocol.PT_REQ_LOOKUP,Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TIME);
+            byte[] buf=protocol.getPacket();
+            Myconn.os.write(protocol.getPacket());
+            protocol=new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_OK);
+            buf=protocol.getPacket();
 
+            Myconn.is.read(buf);
+
+            // 패킷에 온 상영시간과 상영관을 받음
+            protocol.get;
+
+            String[] audi_scheds;
+            schedcombox.setItems(FXCollections.observableArrayList(audi_scheds));//되냐고 ㅋㅋ
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void selectschedule(ActionEvent event) {
+        try {
+            Userchoice.setSchedule(schedcombox.getValue());
+            Protocol protocol=new Protocol(Protocol.PT_REQ_LOOKUP,Protocol.CODE_PT_REQ_LOOKUP_SEAT_SITUATION);
+            byte[] buf=protocol.getPacket();
+            Myconn.os.write(protocol.getPacket());
+            protocol=new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_SEAT_SITUATION_OK);
+            buf=protocol.getPacket();
+
+            Myconn.is.read(buf);
+
+            // 패킷에 온 좌석상황을 받음
+            String[] seatlist = protocol.getSeatNumList();
+
+            
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
