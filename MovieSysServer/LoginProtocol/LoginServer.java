@@ -39,6 +39,12 @@ public class LoginServer {
 
 		String filmID; // 영화 아이디
 
+		String screenID; // 상영영화 아이디
+		String residualSeat;	//잔여좌석수
+		String startTime;	//시작시각
+		String finalTime;	//종료시각
+
+		String audiID; 	//상영관 아이디
 		String audiNum;	//상영관 번호
 		String seatcnt;	//총좌석수
 
@@ -47,7 +53,6 @@ public class LoginServer {
 		String address;		//영화관 주소
 
 		String resvnum; // 예매번호
-		String screenID; // 상영영화 아이디
 		String seatNum; // 좌석번호
 		String peopleNum; // 인원수(예약)
 		String amount; // 금액
@@ -59,6 +64,8 @@ public class LoginServer {
 		while (true) {
 			MemberDAO mdao = new MemberDAO();
 			CinemaDAO cinemadao = new CinemaDAO();
+			ScreenDTO screendto = new ScreenDTO();
+			AuditoriumDTO audidto = new AuditoriumDTO();
 			TheaterDTO theaterdto = new TheaterDTO();
 			ResvDTO resvdto = new ResvDTO();
 			CustomerDTO cdto = new CustomerDTO();
@@ -188,7 +195,9 @@ public class LoginServer {
 						// 상영시간 조회4
 						////////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TIME:
-
+							String[] theaterID_filmID = protocol.getTheaterID_FlimID();
+							theaterID = theaterID_filmID[0];
+							filmID = theaterID_filmID[1];
 							break;
 
 						// 모든 영화관 조회 5
@@ -553,8 +562,140 @@ public class LoginServer {
 						audiNum = audiNum_theaterID_seatcnt[0];
 						theaterID = audiNum_theaterID_seatcnt[1];
 						seatcnt = audiNum_theaterID_seatcnt[2];
-							
-						boolean insertAudi = 
+
+						audidto.setAudi_num(Integer.parseInt(audiNum));
+						audidto.setTheater_id(theaterID);
+						audidto.setAudi_seatCnt(Integer.parseInt(seatcnt));
+						
+
+						boolean insertAudi = cinemadao.insertAuditorium(audidto);
+						if (insertAudi==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_AUDI_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_AUDI_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+
+						//상영관 변경 14
+						//////////////////////////////////////////////////dao 미완성
+						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_AUDI :
+						String[] audiID_audiNum_theaterID_seatcnt = protocol.getChange_Audi();
+						audiID = audiID_audiNum_theaterID_seatcnt[0];
+						audiNum = audiID_audiNum_theaterID_seatcnt[1];
+						theaterID = audiID_audiNum_theaterID_seatcnt[2];
+						seatcnt = audiID_audiNum_theaterID_seatcnt[3];
+
+						boolean updateAudi=true ;
+						if (updateAudi==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_AUDI_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_AUDI_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+
+						//상영관 삭제 15
+						case Protocol.CODE_PT_REQ_UPDATE_DELETE_AUDI :
+						audiID = protocol.getDel_Audi();
+						boolean deleteAudiID = cinemadao.deleteAuditorium(audiID);
+						if (deleteAudiID==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_AUDI_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_AUDI_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+
+						//상영스케줄 추가 16
+						case Protocol.CODE_PT_REQ_UPDATE_ADD_SCREEN_TABLE :
+						String[] audiID_filmID_residualSeat_startTime_finalTime = protocol.getAdd_Screen();
+						audiID = audiID_filmID_residualSeat_startTime_finalTime[0];
+						filmID = audiID_filmID_residualSeat_startTime_finalTime[1];
+						residualSeat = audiID_filmID_residualSeat_startTime_finalTime[2];
+						startTime = audiID_filmID_residualSeat_startTime_finalTime[3];
+						finalTime = audiID_filmID_residualSeat_startTime_finalTime[4];
+
+						screendto.setAudi_id(audiID);
+						screendto.setFilm_id(filmID);
+						screendto.setScreen_residualSeat(Integer.parseInt(residualSeat));
+						screendto.setScreen_startTime(startTime);
+						screendto.setScreen_finalTime(finalTime);
+
+						boolean insertScreen = cinemadao.insertScreen(screendto);
+						if (insertScreen==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_SCREEN_TABLE_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_SCREEN_TABLE_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+
+						//상영스케줄 변경 17
+						//////////////////////////////////////////////////////////
+						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_SCREEN_TABLE :
+						String[] screenID_audiID_filmID_residualSeat_startTime_finalTime = protocol.getChange_Screen();
+						screenID = screenID_audiID_filmID_residualSeat_startTime_finalTime[0];
+						audiID = screenID_audiID_filmID_residualSeat_startTime_finalTime[1];
+						filmID = screenID_audiID_filmID_residualSeat_startTime_finalTime[2];
+						residualSeat = screenID_audiID_filmID_residualSeat_startTime_finalTime[3];
+						startTime = screenID_audiID_filmID_residualSeat_startTime_finalTime[4];
+						finalTime = screenID_audiID_filmID_residualSeat_startTime_finalTime[5];
+
+						boolean updateScreen =true;
+						if (updateScreen==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_SCREEN_TABLE_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_SCREEN_TABLE_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+						
+						//상영영화 삭제 18
+						case Protocol.CODE_PT_REQ_UPDATE_DELETE_SCREEN_TABLE :
+						screenID = protocol.getDel_Screen();
+						boolean deleteScreen = cinemadao.deleteScreen(screenID);
+						if (deleteScreen==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_SCREEN_TABLE_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_SCREEN_TABLE_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+
+						//영화 추가 19
+						case Protocol.CODE_PT_REQ_UPDATE_ADD_FILM :
+						break;
+						
+						//영화 수정 20
+						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_FILM : 
+						break;
+
+						//영화 삭제 21
+						case Protocol.CODE_PT_REQ_UPDATE_DELETE_FILM :
+						filmID = protocol.getDel_Film();
+						boolean deleteFilm = fdao.deleteFilm(filmID);
+						if (deleteFilm==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_FILM_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_FILM_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
 					}
 
 			}// end switch
