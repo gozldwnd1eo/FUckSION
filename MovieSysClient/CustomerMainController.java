@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import MovieSysServer.LoginProtocol.Protocol;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,12 +16,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 
 public class CustomerMainController implements Initializable {
 
     @FXML
-    private ListView<String> film_list;
+    private ListView<filmList> film_list;
 
     @FXML
     private Button detail_btn;
@@ -85,7 +87,8 @@ public class CustomerMainController implements Initializable {
             ArrayList<String> data = new ArrayList<String>();
 
             byte last = 0;
-            if (last != 1) {
+            boolean stopread = false;
+            while (!stopread) {
                 Myconn.is.read(buf);
                 int packetType = buf[0];
                 int packetCode = buf[1];
@@ -93,14 +96,35 @@ public class CustomerMainController implements Initializable {
                 protocol.setPacket(packetType, packetCode, buf);
                 String temp = protocol.getScreenList();
                 data.add(temp);
+                if (last == 1)
+                    stopread = true;
             }
-            String body;
+            String body=null;
             Iterator<String> it = data.iterator();
             while (it.hasNext()) {
                 body += it.next();
             }
-            ObservableList<String> nowscreenlist;
+            String[] bodydiv = body.split("|");
+            ArrayList<String[]> filmliststring = new ArrayList<String[]>();
 
+            for (int i = 0; i < bodydiv.length; i++) {
+                String[] fielddiv = bodydiv[i].split("\\\\");
+                filmliststring.add(fielddiv);
+            }
+            ObservableList<filmList> nowscreenlist = FXCollections.observableArrayList();
+
+            for (int i = 0; i < filmliststring.size() ; i++) {
+                filmList newfilm = new filmList();
+                String[] line=filmliststring.get(i);
+                newfilm.setFilm_id(line[0]);
+                newfilm.setFilm_name(line[1]);
+                newfilm.setFilm_poster(line[2]);
+                newfilm.setRev_rate(line[3]);
+                newfilm.setStarpt(line[4]);
+                nowscreenlist.add(newfilm);
+            }
+            film_list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            film_list.setItems(nowscreenlist);
         } catch (IOException e) {
             e.printStackTrace();
         }
