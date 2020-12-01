@@ -587,7 +587,8 @@ public class Protocol implements Serializable {
 	}
 
 	public void setID(String id) { // 조회응답코드1 조회요청코드D 조회요청코드13 조회요청코드9 조회요청코드A 조회요청코드B 갱신요청코드3
-		System.arraycopy(id.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE, id.trim().getBytes().length);
+		System.arraycopy(id.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				id.trim().getBytes().length);
 		packet[LEN_PROTOCOL_TYPE + id.trim().getBytes().length] = '\0';
 	}
 
@@ -614,13 +615,14 @@ public class Protocol implements Serializable {
 	public void setName_Email(String name, String email) { // 조회요청코드0 아이디 찾기 요청시 name,email 입력..by 규철
 		this.protocolCode = 0;
 		String finalStr = name + "\\" + email;
-		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
-				finalStr.trim().getBytes().length);
-		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet,
+				LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
 	}
 
 	public String[] getName_Email() { // 위에꺼 세트..by 규철
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -628,8 +630,8 @@ public class Protocol implements Serializable {
 	public void setID_Name_Email(String id, String name, String email) { // 조회요청코드1 비밀번호 찾기 요청시 로그인id,name,email 입력..by
 																			// 규철
 		String finalStr = id + "\\" + name + "\\" + email;
-		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
-				finalStr.trim().getBytes().length);
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet,
+				LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, finalStr.trim().getBytes().length);
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
@@ -676,29 +678,31 @@ public class Protocol implements Serializable {
 	}
 
 	public void setTheaterID(String id) { // 조회요청코드6 조회요청코드8 조회요청코드E 영화관id 입력..by 규철
-		System.arraycopy(id.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+		System.arraycopy(id.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
 				id.trim().getBytes().length);
-		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + id.trim().getBytes().length] = '\0';
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + id.trim().getBytes().length] = '\0';
 	}
 
 	public String getTheaterID() { // 위에꺼 세트 ..by 규철
-		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen())
+				.trim();
 	}
 
 	public void setScreenID(String id) { // 조회요청코드7 영화관id 입력..by 규철
-		System.arraycopy(id.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+		System.arraycopy(id.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
 				id.trim().getBytes().length);
-		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + id.trim().getBytes().length] = '\0';
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + id.trim().getBytes().length] = '\0';
 	}
 
 	public String getScreenID() { // 위에꺼 세트 ..by 규철
-		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen())
+				.trim();
 	}
 
-	public void setTheaterList(int cnt, String[] list) {// 조회응답코드5
+	public void setTheaterList(String[] list) {// 조회응답코드5
 		String finalStr = "";// 사용시 쿼리문 받으면서 바로 넣던지 스트링배열로 받아서 cnt세서 여기서 넣을지 결정할것
-		for (int i = cnt; i > 0; i--) {
-			finalStr += (list[i - 1] + "|");
+		for (int i = 0; i < list.length; i++) {
+			finalStr += (list[i] + "\\");
 		} ////////////////////////////////////////////////////
 
 		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
@@ -707,8 +711,8 @@ public class Protocol implements Serializable {
 	}
 
 	public String[] getTheaterList() {
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
-		String[] splited = origin.split("~");
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, getProtocolBodyLen()).trim();
+		String[] splited = origin.split("\\\\");
 		return splited;
 	}
 
@@ -754,26 +758,34 @@ public class Protocol implements Serializable {
 		return arr;
 	}
 
-	public String[] getScreenList(String list) {// 조회영회리스트// "영화제목\영화포스터\예매율\별점"
-		int srcBegin = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST
-				+ LEN_PROTOCOL_SEQNUM;
+	public String[] getScreenList(String list) {// 조회영회리스트// "영화id\영화제목\영화포스터\예매율\별점"
+		int headLength = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
+				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM;
+		int dataLength = LEN_MAX - headLength;
+		int srcBegin = headLength;
+		int srcEnd = LEN_MAX + 1;
+		String packetList = "";
 		String resultStr = "";
-
-		for (int i = list.length(); LEN_MAX < i; i -= LEN_MAX) {
-			String tempStr = new String(list.getBytes(), srcBegin, arr.get(index).packet.length);
-			resultStr += tempStr;
-			arr.remove(index);
+		int i = list.length();
+		for (; LEN_MAX < i; i -= LEN_MAX) {
+			packetList = list.substring(srcBegin, srcEnd);
+			srcBegin += LEN_MAX;
+			srcEnd += LEN_MAX;
+			resultStr += new String(packetList.getBytes(), headLength, dataLength);
+		}
+		if (i <= LEN_MAX) {
+			packetList = list.substring(srcBegin);
+			resultStr += new String(packetList.getBytes(), headLength, packetList.length() - headLength);
 		}
 		String[] splited = resultStr.split("|");
 		return splited;
 
 	}
 
-	public String[] getScreenList()// "영화제목\영화포스터\예매율\별점"
+	public String getScreenList()// "영화제목\영화포스터\예매율\별점"
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
-		String[] splited = origin.split("|");
-		return splited;
+		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
+				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM, getProtocolBodyLen());
 	}
 
 	public void setTheScreenList(int cnt, String[] list) {// 조회응답코드7
