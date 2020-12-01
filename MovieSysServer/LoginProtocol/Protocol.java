@@ -565,9 +565,13 @@ public class Protocol implements Serializable {
 		packet = getPacket(pt, code);
 		protocolType = pt;
 		protocolCode = code;
+		packet[3] = (byte) bodyLen;
 		protocolBodyLen = bodyLen;
+		packet[5] = (byte) flag;
 		protocolFlag = flag;
+		packet[6] = (byte) last;
 		protocolLast = last;
+		packet[7] = (byte) seqNum;
 		protocolSeqNum = seqNum;
 		System.arraycopy(buf, 0, packet, 0, buf.length);
 	}

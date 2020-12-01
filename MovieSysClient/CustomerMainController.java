@@ -89,32 +89,15 @@ public class CustomerMainController implements Initializable {
         // groupby film_id
         try {
             Protocol protocol = new Protocol(Protocol.PT_REQ_LOOKUP, Protocol.CODE_PT_REQ_LOOKUP_ALL_SCREEN);
-            byte[] buf = protocol.getPacket();
             Myconn.os.write(protocol.getPacket());
-            ArrayList<String> data = new ArrayList<String>();
 
             protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
-            buf = protocol.getPacket();
-
-            byte last = 0;
-            boolean stopread = false;
-            while (!stopread) {
+            byte[] buf = {};
+            while (Myconn.is.read() != -1) {
                 Myconn.is.read(buf);
-                int packetType = buf[0];
-                int packetCode = buf[1];
-                last = buf[5];
-                protocol.setPacket(packetType, packetCode, buf);
-                String temp = protocol.getScreenList();
-                data.add(temp);
-                if (last == 1)
-                    stopread = true;
             }
-            String body = null;
-            Iterator<String> it = data.iterator();
-            while (it.hasNext()) {
-                body += it.next();
-            }
-            String[] bodydiv = body.split("|");
+            String bufStr = new String(buf, 0, buf.length);
+            String[] bodydiv = protocol.getScreenList(bufStr);
             ArrayList<String[]> filmliststring = new ArrayList<String[]>();
 
             for (int i = 0; i < bodydiv.length; i++) {
@@ -157,14 +140,14 @@ public class CustomerMainController implements Initializable {
             });
 
             rev_btn.setOnAction(event -> {
-                try{
-                    filmList selected=film_list.getSelectionModel().getSelectedItem();
+                try {
+                    filmList selected = film_list.getSelectionModel().getSelectedItem();
                     Userchoice.setFilmID(selected.film_id);
                     Parent parent = FXMLLoader.load(getClass().getResource("reservation.fxml"));
                     Scene scene = new Scene(parent);
-                    Stage primaryStage=(Stage)detail_btn.getScene().getWindow();
+                    Stage primaryStage = (Stage) detail_btn.getScene().getWindow();
                     primaryStage.setScene(scene);
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
