@@ -104,16 +104,23 @@ public class CustomerMainController implements Initializable {
             while (it.hasNext()) {
                 body += it.next();
             }
-            String[] bodydiv=body.split("\\\\");
-            ObservableList<filmList> nowscreenlist=FXCollections.observableArrayList();
+            String[] bodydiv = body.split("|");
+            ArrayList<String[]> filmliststring = new ArrayList<String[]>();
 
-            for(int i=0;i<bodydiv.length-4;i++){
-                filmList newfilm=new filmList();
-                newfilm.setFilm_id(bodydiv[i]);
-                newfilm.setFilm_name(bodydiv[i+1]);
-                newfilm.setFilm_poster(bodydiv[i+2]);
-                newfilm.setRev_rate(bodydiv[i+3]);
-                newfilm.setStarpt(bodydiv[i+4]);
+            for (int i = 0; i < bodydiv.length; i++) {
+                String[] fielddiv = bodydiv[i].split("\\\\");
+                filmliststring.add(fielddiv);
+            }
+            ObservableList<filmList> nowscreenlist = FXCollections.observableArrayList();
+
+            for (int i = 0; i < filmliststring.size() ; i++) {
+                filmList newfilm = new filmList();
+                String[] line=filmliststring.get(i);
+                newfilm.setFilm_id(line[0]);
+                newfilm.setFilm_name(line[1]);
+                newfilm.setFilm_poster(line[2]);
+                newfilm.setRev_rate(line[3]);
+                newfilm.setStarpt(line[4]);
                 nowscreenlist.add(newfilm);
             }
             film_list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
