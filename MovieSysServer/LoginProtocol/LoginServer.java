@@ -2,11 +2,11 @@ package MovieSysServer.LoginProtocol;
 
 import java.net.*;
 
-import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
 import java.io.*;
 import MovieSysServer.Member.*;
 import MovieSysServer.Film.*;
+import MovieSysServer.Cinema.*;
 
 public class LoginServer {
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
@@ -43,14 +43,24 @@ public class LoginServer {
 
 		String theaterID; 	//영화관 아이디
 
-		String screenID;	//상영관 아이디
+		
+		String resvnum;		//예매번호
+		String screenID;	//상영영화 아이디
+		String seatNum;		//좌석번호
+		String peopleNum;	//인원수(예약)
+		String amount;		//금액
 
+		String reviewID;	//게시물 아이디
 		String REVcontent; //리뷰내용
 		String starpoint; 	//별점
 
 		while (true) {
 			MemberDAO mdao = new MemberDAO();
+			CinemaDAO cinemadao = new CinemaDAO();
+			ResvDTO resvdto = new ResvDTO();
 			CustomerDTO cdto = new CustomerDTO();
+			FilmDAO fdao = new FilmDAO();
+			ReviewDTO reviewdto = new ReviewDTO();
 
 			Protocol protocol = new Protocol(); // 새 Protocol 객체 생성 (기본 생성자)
 			byte[] buf = protocol.getPacket(); // 기본 생성자로 생성할 때에는 바이트 배열의 길이가 1000바이트로 지정됨
@@ -341,37 +351,118 @@ public class LoginServer {
 
 						 //비밀번호 재설정 요청 4
 						 case Protocol.CODE_PT_REQ_UPDATE_CHANGE_PASSWORD :
-							
-						 break;
+							password=protocol.getChangePwd();
+							boolean updateresult = mdao.updateMemPWD(cid, password);
+							if(updateresult==false){
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_PASSWORD_NO);
+								os.write(protocol.getPacket());
+								break;
+							}
+							else{
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_PASSWORD_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
+						 
 
-						 //결제 요청 5
+						 //결제 요청 5(예매)
 						 case Protocol.CODE_PT_REQ_UPDATE_ADD_PAY_RESV :
-						 break;
+						 String[] id_screenID_seatNum_peopleNum_amount = protocol.getAdd_Pay_Resv();
+						 id=id_screenID_seatNum_peopleNum_amount[0];
+						 screenID=id_screenID_seatNum_peopleNum_amount[1];
+						 seatNum=id_screenID_seatNum_peopleNum_amount[2];
+						 peopleNum=id_screenID_seatNum_peopleNum_amount[3];
+						 amount=id_screenID_seatNum_peopleNum_amount[4];
+						 resvdto.setCus_id(id);
+						resvdto.setScreen_id(screenID);
+						resvdto.setResv_seatNum(seatNum);
+						resvdto.setResv_peopleNum(Integer.parseInt(peopleNum));
+						resvdto.setResv_depositAmount(Integer.parseInt(amount));
+						boolean insertresult=cinemadao.insertResvation(resvdto);
+						if (insertresult==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO);
+							os.write(protocol.getPacket());
+							break;
+						}
+						else{
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+
+						
 						 
 						 //예매 취소 요청 6
 						 case Protocol.CODE_PT_REQ_UPDATE_DELETE_PAY_RESV :
-						 break;
+						 String[] id_resvnum = protocol.getDel_Pay_Resv();
+						 id= id_resvnum[0];
+						 resvnum = id_resvnum[1];
+						 boolean deleteresvresult = cinemadao.deleteResv(id, resvnum);
+						 if (deleteresvresult==false) {
+							 protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_PAY_RESV_NO);
+							 os.write(protocol.getPacket());
+							 break;
+						 } else {
+							 protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_PAY_RESV_OK);
+							 os.write(protocol.getPacket());
+							 break;
+						 }
+						 
 
 						 //리뷰 추가 요청 7
 						 case Protocol.CODE_PT_REQ_UPDATE_ADD_REVIEW :
+						 
 						 String[] id_filmID_REVcontent_starpoint = protocol.getAdd_Review();
 						 id = id_filmID_REVcontent_starpoint[0];
 						 filmID = id_filmID_REVcontent_starpoint[1];
 						 REVcontent = id_filmID_REVcontent_starpoint[2];
 						 starpoint = id_filmID_REVcontent_starpoint[3];
-						
+						 
+						 reviewdto.setCus_id(id);
+						 reviewdto.setFilm_id(filmID);
+						 reviewdto.setRev_content(REVcontent);
+						 reviewdto.setRev_starPoint(Integer.parseInt(starpoint));
+						 boolean insertreviewresult = fdao.insertReview(reviewdto);
+						if (insertreviewresult) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_REVIEW_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_REVIEW_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
 
-						 break;
+						 
 							
 						 //리뷰 수정 요청 8
 						 case Protocol.CODE_PT_REQ_UPDATE_CHANGE_REVIEW :
-						 break;
+						String[] reviewID_REVcontent_starpoint = protocol.getChange_Review();
+						reviewID = reviewID_REVcontent_starpoint[0];
+						REVcontent = reviewID_REVcontent_starpoint[1];
+						starpoint = reviewID_REVcontent_starpoint[2];
+
+						boolean updatereviewresult =true;///////////////fafdsadfssdfsd미완성
+						if (updatereviewresult==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_REVIEW_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_REVIEW_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+						 
+
+						//리뷰 삭제 요청 9
+						case Protocol.CODE_PT_REQ_UPDATE_DELETE_REVIEW :
+						break;
 
 						 
 
 
 					
-					// }
+					
 					 }
 					
 
