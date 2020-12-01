@@ -99,7 +99,7 @@ public class CustomerMainController implements Initializable {
                 if (last == 1)
                     stopread = true;
             }
-            String body;
+            String body=null;
             Iterator<String> it = data.iterator();
             while (it.hasNext()) {
                 body += it.next();
