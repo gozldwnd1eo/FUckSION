@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class CinemaDAO {
 	private boolean insertResult = false;
 	private boolean deleteResult = false;
+	private boolean updateResult = false;
 	private PreparedStatement pstmt = null;  //
 	private CallableStatement cstmt = null;  //프로시저, 함수 쿼리를 사용할 때 쓰는 용
 	private Connection conn = null;
@@ -151,7 +152,7 @@ public class CinemaDAO {
 
 
 	public boolean insertAuditorium(AuditoriumDTO dto) { //상영관 추가
-		String SQL = "INSERT INTO AUDITORIUMS(THEATER_ID, AUDI_NUM, AUDI_SEATCNT)" + "VALUES (?,?,?,?)";
+		String SQL = "INSERT INTO AUDITORIUMS(THEATER_ID, AUDI_NUM, AUDI_SEATCNT)" + "VALUES (?,?,?)";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
@@ -202,7 +203,43 @@ public class CinemaDAO {
 		return arr;
 	}
 
-	public boolean deleteResv(String id, String resvnum){
+	public boolean updateTheater(TheaterDTO dto){//영화관 수정
+		boolean updateResult;
+		String SQL = "UPDATE THEATERS SET THEATER_NAME=?, THEATER_AREA=?, THEATER_ADDRESS=? WHERE THEATER_ID=? AND AD_ID=?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, dto.getTheater_name());
+			pstmt.setString(2, dto.getTheater_area());
+			pstmt.setString(3, dto.getTheater_address());
+			pstmt.setString(4, dto.getTtheater_id());
+			pstmt.setString(5, dto.getAd_id());
+		
+			pstmt.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("UPDATE문에서 예외 발생");
+			sqle.printStackTrace();
+			updateResult = false;
+			return updateResult;
+		} finally {
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		updateResult = true;
+		return updateResult;
+	}
+
+	public boolean deleteResv(String id, String resvnum){//예매 취소
 		String SQL = "DELETE FROM RESERVATIONS WHERE AUDI_ID = \'" + id + "\' AND RESV_NUM = \'" + resvnum + "\'";
 
 		try {
@@ -290,6 +327,115 @@ public class CinemaDAO {
 		}
 		deleteResult = true;
 		return deleteResult;
+	}
+	public boolean updateFilm(ScreenDTO dto) { //상영영화 수정
+
+		String SQL = "UPDATE SCREENS SET AUDI_ID=?,FILM_ID=?, SCREEN_RESIDUALSEAT=?, SCREEN_STARTTIME=?, SCREEN_FINALTIME=? WHERE SCREEN_ID=?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, dto.getAudi_id());
+			pstmt.setString(2, dto.getFilm_id());
+			pstmt.setInt(3, dto.getScreen_residualSeat());
+			pstmt.setString(4, dto.getScreen_startTime());
+			pstmt.setString(5, dto.getScreen_finalTime());
+			pstmt.setString(6, dto.getScreen_id());
+			pstmt.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("UPDATE문에서 예외 발생");
+			sqle.printStackTrace();
+			updateResult = false;
+			return updateResult;
+		} finally {
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		updateResult = true;
+		return updateResult;
+	}
+	public String displayMovie() { //상영영화 조회
+		String result="";
+		String SQL = "SELECT * FROM SCREENS";
+
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result=result+rs.getString("SCREEN_ID")+"\\";
+				result=result+rs.getString("AUDI_ID")+"\\";
+				result=result+rs.getString("FILM_ID")+"\\";
+				result=result+rs.getString("SCREEN_RESIDUALSEAT")+"\\";
+				result=result+rs.getString("SCREEN_STARTTIME")+"\\";
+				result=result+rs.getString("SCREEN_FINALTIME")+"|";
+			}
+		} catch (SQLException sqle) {
+			System.out.println("SELECT문에서 예외 발생");
+			sqle.printStackTrace();
+		} finally {
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		return result;
+	}
+	public boolean updateScreen(AuditoriumDTO dto) { ////상영관 수정
+
+		String SQL = "UPDATE AUDITORIUMS SET AUDI_NUM=?,THEATER_ID=?, AUDI_SEATCNT=? WHERE AUDI_ID=?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, dto.getAudi_num());
+			pstmt.setString(2, dto.getTheater_id());
+			pstmt.setInt(3, dto.getAudi_seatCnt());
+			pstmt.setString(4, dto.getAudi_id());
+			pstmt.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("UPDATE문에서 예외 발생");
+			sqle.printStackTrace();
+			updateResult = false;
+			return updateResult;
+		} finally {
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		updateResult = true;
+		return updateResult;
 	}
 
 	public static Connection getConnection() {

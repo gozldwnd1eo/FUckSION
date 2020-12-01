@@ -39,7 +39,12 @@ public class LoginServer {
 
 		String filmID; // 영화 아이디
 
+		String audiNum;	//상영관 번호
+		String seatcnt;	//총좌석수
+
 		String theaterID; // 영화관 아이디
+		String theaterName;	//영화관명
+		String address;		//영화관 주소
 
 		String resvnum; // 예매번호
 		String screenID; // 상영영화 아이디
@@ -54,6 +59,7 @@ public class LoginServer {
 		while (true) {
 			MemberDAO mdao = new MemberDAO();
 			CinemaDAO cinemadao = new CinemaDAO();
+			TheaterDTO theaterdto = new TheaterDTO();
 			ResvDTO resvdto = new ResvDTO();
 			CustomerDTO cdto = new CustomerDTO();
 			FilmDAO fdao = new FilmDAO();
@@ -464,8 +470,91 @@ public class LoginServer {
 
 							// 리뷰 삭제 요청 9
 						case Protocol.CODE_PT_REQ_UPDATE_DELETE_REVIEW:
+						reviewID = protocol.getDel_Review();
+						boolean deletereviewResult = fdao.deleteReview(reviewID);
+						if (deletereviewResult==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_REVIEW_NO);
+							os.write(protocol.getPacket());
 							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_REVIEW_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+						
+						//영화관 추가 10
+						case Protocol.CODE_PT_REQ_UPDATE_ADD_THEATER :
+						String[] id_theatername_area_address = protocol.getAdd_Theater();
+						id=id_theatername_area_address[0];
+						theaterName=id_theatername_area_address[1];
+						area = id_theatername_area_address[2];
+						address = id_theatername_area_address[3];
 
+						theaterdto.setAd_id(id);
+						theaterdto.setTheater_name(theaterName);
+						theaterdto.setTheater_area(area);
+						theaterdto.setTheater_address(address);
+						boolean insertTheater = cinemadao.insertTheater(theaterdto);
+						if (insertTheater==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,
+							Protocol.CODE_PT_RES_UPDATE_ADD_REVIEW_NO);
+							os.write(protocol.getPacket());								break;
+						} 
+						else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,
+							Protocol.CODE_PT_RES_UPDATE_ADD_REVIEW_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+						
+						//영화관 정보 변경 11
+						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_THEATER :
+						String[] theaterID_id_theaterName_area_address = protocol.getChange_Theater();
+						theaterID= theaterID_id_theaterName_area_address[0];
+						id = theaterID_id_theaterName_area_address[1];
+						theaterName = theaterID_id_theaterName_area_address[2];
+						area = theaterID_id_theaterName_area_address[3];
+						address = theaterID_id_theaterName_area_address[4];
+
+						theaterdto.setTheater_name(theaterName);
+						theaterdto.setTheater_area(area);
+						theaterdto.setTheater_address(address);
+						theaterdto.setTheater_id(theaterID);
+						theaterdto.setAd_id(id);
+
+						boolean updateTheater = cinemadao.updateTheater(theaterdto);
+						if (updateTheater==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_THEATER_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_THEATER_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+
+						//영화관 삭제 12
+						case Protocol.CODE_PT_REQ_UPDATE_DELETE_THEATER :
+						theaterID = protocol.getDel_Theater();
+						boolean deleteTheater = cinemadao.deleteTheater(theaterID);
+						if (deleteTheater==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_THEATER_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_THEATER_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+
+						//상영관 추가 13
+						case Protocol.CODE_PT_REQ_UPDATE_ADD_AUDI :
+						String[] audiNum_theaterID_seatcnt = protocol.getAdd_Audi();
+						audiNum = audiNum_theaterID_seatcnt[0];
+						theaterID = audiNum_theaterID_seatcnt[1];
+						seatcnt = audiNum_theaterID_seatcnt[2];
+							
+						boolean insertAudi = 
 					}
 
 			}// end switch
