@@ -340,6 +340,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_MY_REVIEWS_OK:
 						case CODE_PT_RES_LOOKUP_RESV_LIST_OK:
 						case CODE_PT_RES_LOOKUP_ALL_SCREEN_OK:
+
 						case CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_OK:
 						case CODE_PT_RES_LOOKUP_THEATER_SALES_OK:
 						case CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_OK:
@@ -568,7 +569,7 @@ public class Protocol implements Serializable {
 		protocolFlag = flag;
 		protocolLast = last;
 		protocolSeqNum = seqNum;
-		System.arraycopy(buf, 0, packet, 0, packet.length);
+		System.arraycopy(buf, 0, packet, 0, buf.length);
 	}
 	// byte[] packet에 String ID를 byte[]로 만들어 프로토콜 타입 바로 뒤에 추가
 
@@ -735,7 +736,7 @@ public class Protocol implements Serializable {
 			packetList = list.substring(srcBegin, srcEnd);
 			srcBegin += srcEnd;
 
-			this.setPacket(PT_REQ_LOOKUP, CODE_PT_REQ_LOOKUP_ALL_SCREEN, dataLength, 1, 0, seqNum, this.packet);
+			this.setPacket(PT_RES_LOOKUP, CODE_PT_RES_LOOKUP_ALL_SCREEN_OK, dataLength, 1, 0, seqNum, this.packet);
 
 			System.arraycopy(packetList.getBytes(), 0, packet, headLength, dataLength);
 
@@ -743,16 +744,12 @@ public class Protocol implements Serializable {
 			arr.add(this);
 		}
 		if (i < dataLength) {
-			srcEnd += dataLength + 1;
-			packetList = list.substring(srcBegin, srcEnd);
-			srcBegin += srcEnd;
-
-			this.setPacket(PT_REQ_LOOKUP, CODE_PT_REQ_LOOKUP_ALL_SCREEN, packetList.length(), 1, 1, seqNum,
+			packetList = list.substring(srcBegin);
+			this.setPacket(PT_RES_LOOKUP, CODE_PT_RES_LOOKUP_ALL_SCREEN_OK, packetList.length(), 1, 1, seqNum,
 					this.packet);
 
 			System.arraycopy(packetList.getBytes(), 0, packet, headLength, packetList.length());
 
-			packet[LEN_MAX] = '\0';
 			arr.add(this);
 		}
 		return arr;

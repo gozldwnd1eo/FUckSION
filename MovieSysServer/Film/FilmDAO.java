@@ -138,7 +138,7 @@ public class FilmDAO {
 		ResultSet rs = null;
 		String result = "";
 
-		String SQLcu = "select *,avg(rev_starpoint) from film where film_id=(select distinct film_id from screen) order by film_resvrate desc";
+		String SQLcu = "select films.film_id,films.film_name,films.film_resvrate, avg(reviews.rev_starpoint)as rev_starpoint from films,reviews where (films.film_id=(select distinct film_id from screens) and films.film_id=reviews.film_id) group by films.film_id,films.film_name,films.film_resvrate,reviews.rev_starpoint order by film_resvrate desc";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQLcu);
@@ -147,7 +147,7 @@ public class FilmDAO {
 			if (rs.next()) {
 				result += rs.getString("film_id") + "\\";
 				result += rs.getString("film_name") + "\\"; // 안되면 getString 1
-				result += rs.getByte("film_poster") + "\\";
+				// result += rs.getByte("film_poster") + "\\";
 				result += rs.getString("film_resvrate") + "\\";
 				result += rs.getString("rev_starpoint") + "|";
 			}
@@ -400,8 +400,8 @@ public class FilmDAO {
 	public static Connection getConnection() {
 		Connection conn = null;
 		try {
-			String user = "movieAdmin";
-			String pw = "movieadmin";
+			String user = "test1";
+			String pw = "1234";
 			String url = "jdbc:oracle:thin:@localhost:1521:xe";
 
 			Class.forName("oracle.jdbc.driver.OracleDriver");
