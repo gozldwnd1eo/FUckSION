@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class FilmDAO {
 	boolean insertResult = false;
 	boolean deleteResult = false;
+	boolean updateResult = false;
 
 	private PreparedStatement pstmt = null;
 	private Connection conn = null;
@@ -92,6 +93,38 @@ public class FilmDAO {
 		}
 		insertResult = true;
 		return insertResult;
+	}
+	public boolean updateFilm(FilmDTO dto) { //영화 수정
+
+		String SQL = "UPDATE FILMS SET FILM_NAME=?, FILM_INFO=? WHERE FILM_ID=?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, dto.getFilm_name());
+			pstmt.setString(2, dto.getFilm_info());
+			pstmt.setString(3, dto.getFilm_id());
+			pstmt.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("INSERT문에서 예외 발생");
+			sqle.printStackTrace();
+			updateResult = false;
+			return updateResult;
+		} finally {
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		updateResult = true;
+		return updateResult;
 	}
 
 	public String displayScreenList() { // 상영영화리스트 조회
@@ -247,6 +280,7 @@ public class FilmDAO {
 		insertResult = true;
 		return insertResult;
 	}
+	
 
 	public ArrayList<ReviewDTO> displayReview(String movid) { // 리뷰 조회
 

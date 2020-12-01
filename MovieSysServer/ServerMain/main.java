@@ -2,6 +2,8 @@ package MovieSysServer.ServerMain;
 
 import java.util.ArrayList;
 
+import MovieSysServer.Film.FilmDAO;
+import MovieSysServer.Film.FilmDTO;
 import MovieSysServer.Member.*;
 
 public class main {
@@ -18,22 +20,22 @@ public class main {
 		// dto.setFilm_name("gd");
 		// boolean result =dao.insertFilm(dto);
 
-		CustomerDTO dto = new CustomerDTO();
-		MemberDAO dao = new MemberDAO();
-		dto.setCus_id("js");
-		dto.setCus_password("1234");
-		dto.setCus_name("방진성");
-		dto.setCus_phoneNum("010213");
-		dto.setCus_account("1234");
-		dto.setCus_gender("m");
-		dto.setCus_money(1111);
-		dto.setEmail("1111");
-		dto.setBirthday("1111");
-		dto.setFlag("C");
+		// CustomerDTO dto = new CustomerDTO();
+		// MemberDAO dao = new MemberDAO();
+		// dto.setCus_id("js");
+		// dto.setCus_password("1234");
+		// dto.setCus_name("방진성");
+		// dto.setCus_phoneNum("010213");
+		// dto.setCus_account("1234");
+		// dto.setCus_gender("m");
+		// dto.setCus_money(1111);
+		// dto.setEmail("1111");
+		// dto.setBirthday("1111");
+		// dto.setFlag("C");
 
 
-		boolean result = dao.insertCustomer(dto);
-		System.out.println(result);
+		// boolean result = dao.insertCustomer(dto);
+		// System.out.println(result);
 		//
 		// dto=new ReviewDTO();
 		// dto.setCus_id("js");
@@ -79,5 +81,12 @@ public class main {
 		// dao.insertAuditorium(dto)
 		// ArrayList<TheaterDTO>arr=dao.TheaterDisplay();
 		// ArrayList<AuditoriumDTO>arr=dao.AuditoriumDisplay("2");
+		FilmDAO dao=new FilmDAO();
+		FilmDTO dto=new FilmDTO();
+		dto.setFilm_id("21");
+		dto.setFilm_name("우가우가");
+		dto.setFilm_info("z~x~c~");
+		boolean result=dao.updateFilm(dto);
+		System.out.println(result);
 	}
 }
