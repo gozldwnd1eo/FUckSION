@@ -202,6 +202,42 @@ public class CinemaDAO {
 		return arr;
 	}
 
+	public boolean updateTheater(TheaterDTO dto){
+		boolean updateResult;
+		String SQL = "UPDATE THEATERS SET THEATER_NAME=?, THEATER_AREA=?, THEATER_ADDRESS=? WHERE THEATER_ID=? AND AD_ID=?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, dto.getTheater_name());
+			pstmt.setString(2, dto.getTheater_area());
+			pstmt.setString(3, dto.getTheater_address());
+			pstmt.setString(4, dto.getTtheater_id());
+			pstmt.setString(5, dto.getAd_id());
+		
+			pstmt.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("UPDATE문에서 예외 발생");
+			sqle.printStackTrace();
+			updateResult = false;
+			return updateResult;
+		} finally {
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		updateResult = true;
+		return updateResult;
+	}
+
 	public boolean deleteResv(String id, String resvnum){
 		String SQL = "DELETE FROM RESERVATIONS WHERE AUDI_ID = \'" + id + "\' AND RESV_NUM = \'" + resvnum + "\'";
 
