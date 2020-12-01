@@ -86,6 +86,9 @@ public class CustomerMainController implements Initializable {
             Myconn.os.write(protocol.getPacket());
             ArrayList<String> data = new ArrayList<String>();
 
+            protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
+            buf=protocol.getPacket();
+            
             byte last = 0;
             boolean stopread = false;
             while (!stopread) {
@@ -118,9 +121,9 @@ public class CustomerMainController implements Initializable {
                 String[] line=filmliststring.get(i);
                 newfilm.setFilm_id(line[0]);
                 newfilm.setFilm_name(line[1]);
-                newfilm.setFilm_poster(line[2]);
-                newfilm.setRev_rate(line[3]);
-                newfilm.setStarpt(line[4]);
+                // newfilm.setFilm_poster(line[2]);
+                newfilm.setRev_rate(line[2]);
+                newfilm.setStarpt(line[3]);
                 nowscreenlist.add(newfilm);
             }
             film_list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

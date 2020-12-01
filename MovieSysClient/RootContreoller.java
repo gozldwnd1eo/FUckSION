@@ -55,7 +55,7 @@ public class RootContreoller implements Initializable {
 
                 protocol.setPacket(packetType, packetCode, buf);
                 
-                String result = protocol.getLoginResult();
+                // String result = protocol.getLoginResult();
 
                 if (packetCode==1) { // 고객 로그인
                     Parent second = FXMLLoader.load(getClass().getResource("customerMain.fxml"));
