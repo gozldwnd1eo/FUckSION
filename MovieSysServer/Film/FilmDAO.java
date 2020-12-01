@@ -96,16 +96,21 @@ public class FilmDAO {
 	}
 	public boolean updateFilm(FilmDTO dto) { //영화 수정
 
-		String SQL = "UPDATE FILMS SET FILM_NAME=?, FILM_INFO=? WHERE FILM_ID=?";
+		String SQL = "UPDATE FILMS SET FILM_NAME=?,FILM_TEASER=?, FILM_INFO=?, FILM_GENRE=?, FILM_OPENINGDATE=?, FILM_SUMMARY=?, FILM_POSTER=? WHERE FILM_ID=?";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, dto.getFilm_name());
-			pstmt.setString(2, dto.getFilm_info());
-			pstmt.setString(3, dto.getFilm_id());
+			pstmt.setString(2, dto.getFilm_teaser());
+			pstmt.setString(3, dto.getFilm_info());
+			pstmt.setString(4, dto.getFilm_genre());
+			pstmt.setString(5, dto.getFilm_openingDate());
+			pstmt.setString(6, dto.getFilm_summary());
+			pstmt.setByte(7, dto.getFilm_poster());
+			pstmt.setString(8, dto.getFilm_id());
 			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			System.out.println("INSERT문에서 예외 발생");
+			System.out.println("UPDATE문에서 예외 발생");
 			sqle.printStackTrace();
 			updateResult = false;
 			return updateResult;
@@ -280,7 +285,38 @@ public class FilmDAO {
 		insertResult = true;
 		return insertResult;
 	}
-	
+	public boolean updateReview(ReviewDTO dto) { //리뷰 수정
+
+		String SQL = "UPDATE REVIEWS SET REV_CONTENT=?, REV_STARPOINT=? WHERE REV_ID=?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, dto.getRev_content());
+			pstmt.setInt(2, dto.getRev_starPoint());
+			pstmt.setString(3, dto.getRev_id());
+			pstmt.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("UPDATE문에서 예외 발생");
+			sqle.printStackTrace();
+			updateResult = false;
+			return updateResult;
+		} finally {
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		updateResult = true;
+		return updateResult;
+	}
 
 	public ArrayList<ReviewDTO> displayReview(String movid) { // 리뷰 조회
 
