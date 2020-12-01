@@ -202,6 +202,29 @@ public class CinemaDAO {
 		return arr;
 	}
 
+	public boolean deleteResv(String id, String resvnum){
+		String SQL = "DELETE FROM RESERVATIONS WHERE AUDI_ID = \'" + id + "\' AND RESV_NUM = \'" + resvnum + "\'";
+
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, id);
+			pstmt.setString(2, resvnum);
+			pstmt.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("DELETE문에서 예외 발생");
+			sqle.printStackTrace();
+			deleteResult = false;
+			return deleteResult;
+		} finally {
+			if(pstmt!=null) try{pstmt.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+			if(conn!=null) try{conn.close();} catch(Exception e){throw new RuntimeException(e.getMessage());}
+
+		}
+		deleteResult = true;
+		return deleteResult;
+	}
+
 	public boolean deleteAuditorium(String audi_id) { //상영관 삭제
 		String SQL = "DELETE FROM AUDITORUMS WHERE AUDI_ID = ?";
 
