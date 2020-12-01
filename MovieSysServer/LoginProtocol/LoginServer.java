@@ -42,6 +42,8 @@ public class LoginServer {
 		String filmID;	//영화 아이디
 
 		String theaterID; 	//영화관 아이디
+		String theatername;	//영화관명
+		String address;		//주소
 
 		
 		String resvnum;		//예매번호
@@ -57,6 +59,7 @@ public class LoginServer {
 		while (true) {
 			MemberDAO mdao = new MemberDAO();
 			CinemaDAO cinemadao = new CinemaDAO();
+			TheaterDTO theaterdto = new TheaterDTO();
 			ResvDTO resvdto = new ResvDTO();
 			CustomerDTO cdto = new CustomerDTO();
 			FilmDAO fdao = new FilmDAO();
@@ -456,10 +459,41 @@ public class LoginServer {
 
 						//리뷰 삭제 요청 9
 						case Protocol.CODE_PT_REQ_UPDATE_DELETE_REVIEW :
-						break;
+						reviewID = protocol.getDel_Review();
 
+						boolean deletereviewresult = true;////////////////////////////////////
+						if (deletereviewresult==false) {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_REVIEW_NO);
+							os.write(protocol.getPacket());
+							break;
+						} else {
+							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_REVIEW_OK);
+							os.write(protocol.getPacket());
+							break;
+						}
+						
+						//영화관 추가 요청 10
+						case Protocol.CODE_PT_REQ_UPDATE_ADD_THEATER :
+						String[] id_theatername_area_address = protocol.getAdd_Theater();
+						id = id_theatername_area_address[0];
+						theatername = id_theatername_area_address[1];
+						area = id_theatername_area_address[2];
+						address = id_theatername_area_address[3];
 						 
-
+						theaterdto.setAd_id(id);
+						 theaterdto.setTheater_name(theatername);
+						 theaterdto.setTheater_area(area);
+						 theaterdto.setTheater_address(address);
+						 boolean inserttheaterresult = cinemadao.insertTheater(theaterdto);
+						 if (inserttheaterresult==false) {
+							 protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_THEATER_NO);
+							 os.write(protocol.getPacket());
+							 break;
+						 } else {
+							 protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_THEATER_OK);
+							 os.write(protocol.getPacket());
+							 break;
+						 }
 
 					
 					
