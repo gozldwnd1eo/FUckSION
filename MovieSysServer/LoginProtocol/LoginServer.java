@@ -186,11 +186,13 @@ public class LoginServer {
 						case Protocol.CODE_PT_REQ_LOOKUP_AREA:
 							filmID = protocol.getFlimID();
 
-							ArrayList<String> arr = new ArrayList<String>();
-							arr = fdao.displayArea(filmID);
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_AREA_OK);
-							// protocol.setArea(arr);
+							ArrayList<Protocol> arr_area = new ArrayList<Protocol>();
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_AREA_OK);
+							String areaResult = fdao.displayArea(filmID);
+							//arr_area = protocol.setArea;
 							os.write(protocol.getPacket());
+
 							break;
 
 						// 영화관 조회 3
@@ -199,8 +201,8 @@ public class LoginServer {
 							String[] area_filmID = protocol.getTheaterArea_FlimID();
 							area = area_filmID[0];
 							filmID = area_filmID[1];
-							theaterdto.setTheater_area(area);
-							// theaterdto.set
+							String theaterresult = cinemadao.displayTheaterByArea(area, filmID);
+
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_THEATER_OK);
 							// protocol.set
@@ -214,8 +216,8 @@ public class LoginServer {
 							theaterID = theaterID_filmID[0];
 							filmID = theaterID_filmID[1];
 
-							ArrayList<ScreenDTO> arr_screen = new ArrayList<ScreenDTO>();
-							arr_screen = cinemadao.displayScreen(filmID, theaterID);
+							String screenResult =
+							cinemadao.displayScreen(filmID, theaterID);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_OK);
 							// protocol.set
