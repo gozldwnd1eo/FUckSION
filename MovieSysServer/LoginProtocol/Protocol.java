@@ -613,6 +613,12 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + password.trim().getBytes().length] = '\0';
 	}
 
+	public ArrayList<Protocol> setTheaterArea(String list) {
+		ArrayList<Protocol> arr = new ArrayList<>();
+
+		return arr;
+	}
+
 	public String getTheaterArea() {
 		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_THEATER_AREA).trim();
 	}
@@ -726,47 +732,56 @@ public class Protocol implements Serializable {
 
 		int headLength = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
 				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM;
-		int dataLength = LEN_MAX - headLength;
+		int maxBodyLen = LEN_MAX - headLength;
 		int srcBegin = 0;
 		int srcEnd = 0;
 		String packetList = "";
-		int i = list.getBytes().length;
+		int bodyLen = list.getBytes().length;
 
 		byte[] b = new byte[2];
-		b[0] = (byte) ((i & 0x0000ff00) >> 8);
-		b[1] = (byte) (i & 0x000000ff);
+		byte[] s = new byte[2];
 
 		int seqNum = 0;
 		packet = new byte[LEN_MAX];
-		for (; dataLength < i; i -= dataLength, seqNum++) {
+		for (; maxBodyLen < bodyLen; bodyLen -= maxBodyLen, seqNum++) {
 
-			srcEnd += dataLength + 1;
+			srcEnd += maxBodyLen + 1;
 			packetList = list.substring(srcBegin, srcEnd);
 			srcBegin += srcEnd;
 
 			packet[0] = PT_RES_LOOKUP;
 			packet[1] = CODE_PT_RES_LOOKUP_ALL_SCREEN_OK;
+			b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
+			b[1] = (byte) (bodyLen & 0x000000ff);
 			System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
 			packet[5] = 1;
 			packet[6] = 0;
-			packet[7] = (byte) seqNum;
+			s[0] = (byte) ((seqNum & 0x0000ff00) >> 8);
+			s[1] = (byte) (seqNum & 0x000000ff);
+			System.arraycopy(s, 0, packet,
+					LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST,
+					LEN_PROTOCOL_SEQNUM);
 
-			System.arraycopy(packetList.getBytes(), 0, packet, headLength, dataLength);
+			System.arraycopy(packetList.getBytes(), 0, packet, headLength, maxBodyLen);
 
-			packet[LEN_MAX] = '\0';
 			arr.add(this);
 		}
-		if (i < dataLength) {
+		if (bodyLen < maxBodyLen) {
+
 			packetList = list.substring(srcBegin);
 
 			packet[0] = PT_RES_LOOKUP;
 			packet[1] = CODE_PT_RES_LOOKUP_ALL_SCREEN_OK;
+			b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
+			b[1] = (byte) (bodyLen & 0x000000ff);
 			System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
-
-			// packet[3] = (byte) dataLength;
 			packet[5] = 1;
 			packet[6] = 1;
-			packet[7] = (byte) seqNum;
+			s[0] = (byte) ((seqNum & 0x0000ff00) >> 8);
+			s[1] = (byte) (seqNum & 0x000000ff);
+			System.arraycopy(s, 0, packet,
+					LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST,
+					LEN_PROTOCOL_SEQNUM);
 
 			System.arraycopy(packetList.getBytes(), 0, packet, headLength, packetList.getBytes().length);
 
