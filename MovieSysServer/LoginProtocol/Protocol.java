@@ -548,7 +548,7 @@ public class Protocol implements Serializable {
 		packet = getPacket(pt, code);
 		protocolType = pt;
 		protocolCode = code;
-		System.arraycopy(buf, 0, packet, 0, buf.length);
+		System.arraycopy(buf, 0, packet, 0, packet.length);
 	}
 
 	public void setPacket(int pt, int code, int bodyLen, byte[] buf) {
@@ -557,7 +557,7 @@ public class Protocol implements Serializable {
 		protocolType = pt;
 		protocolCode = code;
 		protocolBodyLen = bodyLen;
-		System.arraycopy(buf, 0, packet, 0, buf.length);
+		System.arraycopy(buf, 0, packet, 0, packet.length);
 	}
 
 	public void setPacket(int pt, int code, int bodyLen, int flag, int last, int seqNum, byte[] buf) {
