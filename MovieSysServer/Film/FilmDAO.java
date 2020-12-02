@@ -221,7 +221,7 @@ public class FilmDAO {
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, dto.getFilm_id());
+			pstmt.setString(1, inputFilmId);
 			rs = pstmt.executeQuery();
 
 			result += rs.getString("FILM_NAME") + "\\";
