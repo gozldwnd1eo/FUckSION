@@ -657,8 +657,8 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + id.trim().getBytes().length] = '\0';
 	}
 
-	public String getFlimID() { // 위에꺼 세트 ..by 규철
-		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+	public String getFlimID() {
+		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_FILM_ID).trim();
 	}
 
 	public void setTheaterArea_FlimID(String area, String flimID) { // 조회요청코드3 영화관 조회 요청시 지역, 영화id 입력..by 규철
@@ -668,7 +668,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getTheaterArea_FlimID() { // 위에꺼 세트 ..by 규철
+	public String[] getTheaterArea_FlimID() {
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
@@ -681,7 +681,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getTheaterID_FlimID() { // 위에꺼 세트 ..by 규철
+	public String[] getTheaterID_FlimID() {
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
@@ -693,7 +693,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + id.trim().getBytes().length] = '\0';
 	}
 
-	public String getTheaterID() { // 위에꺼 세트 ..by 규철
+	public String getTheaterID() {
 		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen())
 				.trim();
 	}
@@ -704,7 +704,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + id.trim().getBytes().length] = '\0';
 	}
 
-	public String getScreenID() { // 위에꺼 세트 ..by 규철
+	public String getScreenID() {
 		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen())
 				.trim();
 	}
