@@ -91,7 +91,8 @@ public class FilmDAO {
 		insertResult = true;
 		return insertResult;
 	}
-	public boolean updateFilm(FilmDTO dto) { //영화 수정
+
+	public boolean updateFilm(FilmDTO dto) { // 영화 수정
 
 		String SQL = "UPDATE FILMS SET FILM_NAME=?,FILM_TEASER=?, FILM_INFO=?, FILM_GENRE=?, FILM_OPENINGDATE=?, FILM_SUMMARY=?, FILM_POSTER=? WHERE FILM_ID=?";
 		try {
@@ -141,8 +142,9 @@ public class FilmDAO {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
+				result += rs.getString("film_id") + "\\";
 				result += rs.getString("film_name") + "\\"; // 안되면 getString 1
-				result += rs.getByte("film_poster") + "\\";
+				// result += rs.getByte("film_poster") + "\\";
 				result += rs.getString("film_resvrate") + "\\";
 				result += rs.getString("rev_starpoint") + "|";
 			}
@@ -227,7 +229,7 @@ public class FilmDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, dto.getFilm_id());
 			rs = pstmt.executeQuery();
-			
+
 			dto.setFilm_name(rs.getString("FILM_NAME"));
 			dto.setFilm_teaser(rs.getString("FILM_TEASER"));
 			dto.setFilm_info(rs.getString("FILM_INFO"));
@@ -235,7 +237,7 @@ public class FilmDAO {
 			dto.setFilm_openingDate(rs.getString("FILM_OPENINGDATE"));
 			dto.setFilm_summary(rs.getString("FILM_SUMMARY"));
 			dto.setFilm_poster(rs.getByte("FILM_POSTER"));
-				
+
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
@@ -261,7 +263,6 @@ public class FilmDAO {
 		}
 		return dto;
 	}
-
 
 	public boolean deleteFilm(String filmId) { // 영화 삭제
 		String SQL = "DELETE FROM FILMS WHERE FILM_NAME = ?";
@@ -327,7 +328,8 @@ public class FilmDAO {
 		insertResult = true;
 		return insertResult;
 	}
-	public boolean updateReview(ReviewDTO dto) { //리뷰 수정
+
+	public boolean updateReview(ReviewDTO dto) { // 리뷰 수정
 
 		String SQL = "UPDATE REVIEWS SET REV_CONTENT=?, REV_STARPOINT=? WHERE REV_ID=?";
 		try {
@@ -418,7 +420,7 @@ public class FilmDAO {
 			dto.setRev_date(rs.getString("REV_DATE"));
 			dto.setRev_content(rs.getString("REV_CONTENT"));
 			dto.setRev_starPoint(rs.getInt("REV_rev_STARPOINT"));
-				
+
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
@@ -480,8 +482,8 @@ public class FilmDAO {
 	public static Connection getConnection() {
 		Connection conn = null;
 		try {
-			String user = "movieAdmin";
-			String pw = "movieadmin";
+			String user = "test1";
+			String pw = "1234";
 			String url = "jdbc:oracle:thin:@localhost:1521:xe";
 
 			Class.forName("oracle.jdbc.driver.OracleDriver");
