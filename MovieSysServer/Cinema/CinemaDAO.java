@@ -230,8 +230,8 @@ public class CinemaDAO {
 		return updateResult;
 	}
 
-	public boolean deleteResv(String id, String resvnum){//예매 취소(함수실행아닌가?)
-		String SQL = "DELETE FROM RESERVATIONS WHERE AUDI_ID = \'" + id + "\' AND RESV_NUM = \'" + resvnum + "\'";
+	public boolean deleteResv(String id, String resvnum){//예매 취소
+		String SQL = "EXEC RESERV_CNACEL_EXEC (?,?)";
 
 		try {
 			conn = getConnection();
@@ -750,8 +750,9 @@ public class CinemaDAO {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
 			rs = pstmt.executeQuery();
+			if (rs.next()) {
 			result=result+rs.getString("total");
-			
+			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();

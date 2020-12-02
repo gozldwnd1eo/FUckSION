@@ -397,7 +397,7 @@ public class MemberDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, inputMemId);
 			rs = pstmt.executeQuery();
-
+			if (rs.next()) {
 			result=result+rs.getString("MEM_ID")+"\\";
 			result=result+rs.getString("MEM_PASSWORD")+"\\";
 			result=result+rs.getString("MEM_NAME")+"\\";
@@ -407,7 +407,7 @@ public class MemberDAO {
 			result=result+rs.getString("MEM_MONEY")+"\\";
 			result=result+rs.getString("MEM_EMAIL")+"\\";
 			result=result+rs.getString("MEM_BIRTHDAY");
-		
+			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
@@ -442,8 +442,10 @@ public class MemberDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, inputMemId);
 			rs = pstmt.executeQuery();
+			if (rs.next()) {
 			result=result+rs.getString("MEM_ACCOUNT")+"\\";
 			result=result+rs.getString("MEM_MONEY");
+			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
