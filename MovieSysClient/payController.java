@@ -24,6 +24,7 @@ public class payController implements Initializable{
     private TextField customeraccount;
     private TextField amount;
     private CheckBox confirm;
+    private Button before_btn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
@@ -39,7 +40,7 @@ public class payController implements Initializable{
 
             int packetType=buf[0];
             int packetCode=buf[1];
-            
+
 
         }catch (IOException e){
             e.printStackTrace();
