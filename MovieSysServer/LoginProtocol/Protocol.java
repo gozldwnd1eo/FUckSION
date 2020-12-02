@@ -2,7 +2,6 @@ package MovieSysServer.LoginProtocol;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Protocol implements Serializable {
 	// 프로토콜 타입에 관한 변수
