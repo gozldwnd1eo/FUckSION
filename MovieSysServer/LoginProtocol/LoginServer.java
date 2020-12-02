@@ -832,7 +832,7 @@ public class LoginServer {
 							// 영화 추가 19
 						case Protocol.CODE_PT_REQ_UPDATE_ADD_FILM:
 							protocol = new Protocol(protocol.PT_RES_UPDATE,protocol.CODE_PT_REQ_UPDATE_ADD_FILM);
-							protocol.setList(list)
+							//protocol.setList(list)
 							break;
 
 						// 영화 수정 20
