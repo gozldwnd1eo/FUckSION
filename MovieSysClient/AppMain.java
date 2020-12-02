@@ -1,7 +1,5 @@
 package MovieSysClient;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 
 import javafx.application.Application;

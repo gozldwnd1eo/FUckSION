@@ -89,15 +89,32 @@ public class CustomerMainController implements Initializable {
         // groupby film_id
         try {
             Protocol protocol = new Protocol(Protocol.PT_REQ_LOOKUP, Protocol.CODE_PT_REQ_LOOKUP_ALL_SCREEN);
+            byte[] buf = protocol.getPacket();
             Myconn.os.write(protocol.getPacket());
+            ArrayList<String> data = new ArrayList<String>();
 
             protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
-            byte[] buf = {};
-            while (Myconn.is.read() != -1) {
+            buf = protocol.getPacket();
+
+            byte last = 0;
+            boolean stopread = false;
+            while (!stopread) {
                 Myconn.is.read(buf);
+                int packetType = buf[0];
+                int packetCode = buf[1];
+                last = buf[6];
+                protocol.setPacket(packetType, packetCode, buf);
+                String temp = protocol.getScreenList();
+                data.add(temp);
+                if (last == 1)
+                    stopread = true;
             }
-            String bufStr = new String(buf, 0, buf.length);
-            String[] bodydiv = protocol.getScreenList(bufStr);
+            String body = null;
+            Iterator<String> it = data.iterator();
+            while (it.hasNext()) {
+                body += it.next();
+            }
+            String[] bodydiv = body.split("|");
             ArrayList<String[]> filmliststring = new ArrayList<String[]>();
 
             for (int i = 0; i < bodydiv.length; i++) {
