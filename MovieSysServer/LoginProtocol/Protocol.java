@@ -3,6 +3,7 @@ package MovieSysServer.LoginProtocol;
 import java.io.*;
 import java.util.ArrayList;
 
+
 public class Protocol implements Serializable {
 	// 프로토콜 타입에 관한 변수
 	public static final int PT_UNDEFINED = -1; // 프로토콜이 지정되어 있지 않은 경우
@@ -836,7 +837,7 @@ public class Protocol implements Serializable {
 		String[] splited = origin.split("\\\\");
 		return splited;// (상영관~상영시간)이므로 한번 더 잘라야함
 	}
-
+	
 	public ArrayList<Protocol> setList(String list) {
 		ArrayList<Protocol> arr = new ArrayList<Protocol>();
 
@@ -929,7 +930,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String getListBody()// 위에꺼 세트 by 규철
+	public String getScreenDetails()// 위에꺼 세트 by 규철
 	{
 		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
 				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM, getProtocolBodyLen());
@@ -1263,6 +1264,7 @@ public class Protocol implements Serializable {
 	}
 
 	// 갱신요청코드19(영화명\티저\정보(감독~출연진1~2~3)\장르\개봉일\줄거리\포스터\예매율)
+	public setInsert_Film(String)
 	// 갱신요청코드20(영화ID\영화명\티저\정보(감독~출연진1~2~3)\장르\개봉일\줄거리\포스터\예매율)
 
 	public void setDel_Film(String filmId) {// 갱신요청코드21(영화ID)

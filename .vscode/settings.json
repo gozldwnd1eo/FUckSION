@@ -1,6 +1,13 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\Users\\류형근\\Downloads\\sqldeveloper-20.2.0.175.1842-x64\\sqldeveloper\\jdbc\\lib\\ojdbc8.jar"
+        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.base.jar",
+        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.controls.jar",
+        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.fxml.jar",
+        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.graphics.jar",
+        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
+        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
+        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
+        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar"
     ]
 }
