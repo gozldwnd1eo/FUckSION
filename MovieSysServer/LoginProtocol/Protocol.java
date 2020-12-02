@@ -838,7 +838,7 @@ public class Protocol implements Serializable {
 		return splited;// (상영관~상영시간)이므로 한번 더 잘라야함
 	}
 
-	public ArrayList<Protocol> setList(String list, int type, int code) {
+	public ArrayList<Protocol> setList(String list) {
 		ArrayList<Protocol> arr = new ArrayList<Protocol>();
 
 		int headLength = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
@@ -860,8 +860,8 @@ public class Protocol implements Serializable {
 			packetList = list.substring(srcBegin, srcEnd);
 			srcBegin += srcEnd;
 
-			packet[0] = (byte) type;
-			packet[1] = (byte) code;
+			packet[0] = (byte) protocolType;
+			packet[1] = (byte) protocolCode;
 			b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
 			b[1] = (byte) (bodyLen & 0x000000ff);
 			System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
@@ -881,8 +881,8 @@ public class Protocol implements Serializable {
 
 			packetList = list.substring(srcBegin);
 
-			packet[0] = (byte) type;
-			packet[1] = (byte) code;
+			packet[0] = (byte) protocolType;
+			packet[1] = (byte) protocolCode;
 			b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
 			b[1] = (byte) (bodyLen & 0x000000ff);
 			System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
