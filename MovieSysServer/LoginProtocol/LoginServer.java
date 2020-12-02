@@ -362,7 +362,7 @@ public class LoginServer {
 						// 상영관 조회 요청 14
 						case Protocol.CODE_PT_REQ_LOOKUP_AUDI:
 							theaterID = protocol.getTheaterID();
-							
+
 							String audiResult = cinemadao.displayAuditorium(theaterID);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_AUDI_OK);
@@ -371,24 +371,24 @@ public class LoginServer {
 							break;
 
 						// 영화관별 매출 조회 요청 15
-						case Protocol.CODE_PT_REQ_LOOKUP_THEATER_SALES:
-							theaterID = protocol.getTheaterID();
+						// case Protocol.CODE_PT_REQ_LOOKUP_THEATER_SALES:
+						// theaterID = protocol.getTheaterID();
 
-							break;
+						// break;
 
 						// 총 매출 조회 요청 16
 						case Protocol.CODE_PT_REQ_LOOKUP_TOTAL_SALES:
 							String allsales = cinemadao.displayAllSales();
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_TOTAL_SALES_OK);
-							//protocol.set
+							// protocol.set
 							os.write(protocol.getPacket());
 							break;
 
 						// 영화별 취소율 조회 요청 17
 						case Protocol.CODE_PT_REQ_LOOKUP_THEATER_CANCEL_RATE:
 							String cancelrate = cinemadao.displayCancelRatePerMovie();
-							//protocol.set
+							// protocol.set
 							os.write(protocol.getPacket());
 							break;
 

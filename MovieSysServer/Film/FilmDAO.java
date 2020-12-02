@@ -26,7 +26,7 @@ public class FilmDAO {
 			pstmt.setString(1, filmId);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				result=result+rs.getString("THEATER_AREA")+"~";
+				result = result + rs.getString("THEATER_AREA") + "~";
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -131,7 +131,6 @@ public class FilmDAO {
 	}
 
 	public String displayScreenList() { // 상영영화리스트 조회
-		
 
 		String SQLcu = "select films.film_id,films.film_name,films.film_resvrate, avg(reviews.rev_starpoint)as rev_starpoint from films,reviews where (films.film_id in (select distinct film_id from screens) and films.film_id = reviews.film_id(+)) group by  films.film_id,films.film_name,films.film_resvrate, rev_starpoint";
 		try {
@@ -142,7 +141,7 @@ public class FilmDAO {
 			while (rs.next()) {
 				result += rs.getString("film_id") + "\\";
 				result += rs.getString("film_name") + "\\"; // 안되면 getString 1
-				result += rs.getString("film_poster") + "\\";
+				// result += rs.getString("film_poster") + "\\";
 				result += rs.getString("film_resvrate") + "\\";
 				result += rs.getString("rev_starpoint") + "|";
 			}
@@ -182,12 +181,12 @@ public class FilmDAO {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				result += rs.getString("FILM_NAME") + "\\";
-				result += rs.getString("FILM_TEASER") + "\\"; 
-				result += rs.getString("FILM_INFO") + "\\"; 
-				result += rs.getString("FILM_GENRE") + "\\"; 
-				result += rs.getString("FILM_OPENINGDATE") + "\\"; 
-				result += rs.getString("FILM_SUMMARY") + "\\"; 
-				result += rs.getString("FILM_POSTER") + "|"; 
+				result += rs.getString("FILM_TEASER") + "\\";
+				result += rs.getString("FILM_INFO") + "\\";
+				result += rs.getString("FILM_GENRE") + "\\";
+				result += rs.getString("FILM_OPENINGDATE") + "\\";
+				result += rs.getString("FILM_SUMMARY") + "\\";
+				result += rs.getString("FILM_POSTER") + "|";
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -225,12 +224,12 @@ public class FilmDAO {
 			rs = pstmt.executeQuery();
 
 			result += rs.getString("FILM_NAME") + "\\";
-			result += rs.getString("FILM_TEASER") + "\\"; 
-			result += rs.getString("FILM_INFO") + "\\"; 
-			result += rs.getString("FILM_GENRE") + "\\"; 
-			result += rs.getString("FILM_OPENINGDATE") + "\\"; 
-			result += rs.getString("FILM_SUMMARY") + "\\"; 
-			result += rs.getString("FILM_POSTER") + "|"; 
+			result += rs.getString("FILM_TEASER") + "\\";
+			result += rs.getString("FILM_INFO") + "\\";
+			result += rs.getString("FILM_GENRE") + "\\";
+			result += rs.getString("FILM_OPENINGDATE") + "\\";
+			result += rs.getString("FILM_SUMMARY") + "\\";
+			result += rs.getString("FILM_POSTER") + "|";
 
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -365,10 +364,10 @@ public class FilmDAO {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				result += rs.getString("MEM_ID") + "\\";
-				result += rs.getString("FILM_ID") + "\\"; 
-				result += rs.getString("REV_DATE") + "\\"; 
-				result += rs.getString("REV_CONTENT") + "\\"; 
-				result += rs.getString("REV_rev_STARPOINT") + "|"; 
+				result += rs.getString("FILM_ID") + "\\";
+				result += rs.getString("REV_DATE") + "\\";
+				result += rs.getString("REV_CONTENT") + "\\";
+				result += rs.getString("REV_rev_STARPOINT") + "|";
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -405,10 +404,10 @@ public class FilmDAO {
 			rs = pstmt.executeQuery();
 
 			result += rs.getString("MEM_ID") + "\\";
-			result += rs.getString("FILM_ID") + "\\"; 
-			result += rs.getString("REV_DATE") + "\\"; 
-			result += rs.getString("REV_CONTENT") + "\\"; 
-			result += rs.getString("REV_rev_STARPOINT") + "|"; 
+			result += rs.getString("FILM_ID") + "\\";
+			result += rs.getString("REV_DATE") + "\\";
+			result += rs.getString("REV_CONTENT") + "\\";
+			result += rs.getString("REV_rev_STARPOINT") + "|";
 
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");

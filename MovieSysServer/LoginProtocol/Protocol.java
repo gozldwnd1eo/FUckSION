@@ -131,8 +131,8 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_NO = 22; // 담당자용 영화관 조회 요청 거절 코드번호
 	public static final int CODE_PT_RES_LOOKUP_AUDI_OK = 7; // 상영관 조회 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_AUDI_NO = 8; // 상영관 조회 요청 거절 코드번호
-	public static final int CODE_PT_REQ_LOOKUP_SALES_PER_MOVIE_OK = 23; // 영화별 매출 조회 요청 승인 코드번호
-	public static final int CODE_PT_REQ_LOOKUP_SALES_PER_MOVIE_NO = 24; // 영화별 매출 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_SALES_PER_MOVIE_OK = 23; // 영화별 매출 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_SALES_PER_MOVIE_NO = 24; // 영화별 매출 조회 요청 거절 코드번호
 	public static final int CODE_PT_RES_LOOKUP_TOTAL_SALES_OK = 25; // 총 매출 조회 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_TOTAL_SALES_NO = 26; // 총 매출 조회 요청 거절 코드번호
 	public static final int CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_OK = 27; // 영화별 취소율 조회 요청 승인 코드번호
@@ -141,8 +141,8 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_NO = 30; // 영화별 예매율 조회 요청 거절 코드번호
 	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_OK = 31; // 계좌 조회 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_NO = 32; // 계좌 조회 요청 거절 코드번호
-	public static final int CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE_OK = 41; // 모든 상영영화 조회 요청 승인 코드번호
-	public static final int CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE_NO = 42; // 모든 상영영화 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ALL_SCREEN_SCHEDULE_OK = 41; // 모든 상영영화 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ALL_SCREEN_SCHEDULE_NO = 42; // 모든 상영영화 조회 요청 거절 코드번호
 	// TYPE 7 CODE
 	public static final int CODE_PT_REQ_UPDATE_ADD_MEM = 1; // 회원 추가 요청 코드번호
 	public static final int CODE_PT_REQ_UPDATE_CHANGE_MEM_INFO = 2; // 회원 정보 수정 요청 코드번호
@@ -320,7 +320,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_RESV_LIST_NO:
 						case CODE_PT_RES_LOOKUP_ALL_SCREEN_NO:
 						case CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_NO:
-						case CODE_PT_REQ_LOOKUP_SALES_PER_MOVIE_NO:
+						case CODE_PT_RES_LOOKUP_SALES_PER_MOVIE_NO:
 						case CODE_PT_RES_LOOKUP_TOTAL_SALES_NO:
 						case CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_NO:
 						case CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_NO:
@@ -329,7 +329,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_SCREEN_TIME_NO:
 						case CODE_PT_RES_LOOKUP_ALL_THEATER_NO:
 						case CODE_PT_RES_LOOKUP_SCREEN_TABLE_NO:
-						case CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE_NO:
+						case CODE_PT_RES_LOOKUP_ALL_SCREEN_SCHEDULE_NO:
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE];
 							break;
 						case CODE_PT_RES_LOOKUP_AUDI_OK:
@@ -341,14 +341,14 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_ALL_SCREEN_OK:
 
 						case CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_OK:
-						case CODE_PT_REQ_LOOKUP_SALES_PER_MOVIE_OK:
+						case CODE_PT_RES_LOOKUP_SALES_PER_MOVIE_OK:
 						case CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_OK:
 						case CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_OK:
 						case CODE_PT_RES_LOOKUP_AREA_OK:
 						case CODE_PT_RES_LOOKUP_SCREEN_TIME_OK:
 						case CODE_PT_RES_LOOKUP_ALL_THEATER_OK:
 						case CODE_PT_RES_LOOKUP_SCREEN_TABLE_OK:
-						case CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE_OK:
+						case CODE_PT_RES_LOOKUP_ALL_SCREEN_SCHEDULE_OK:
 							packet = new byte[LEN_MAX];
 							break;
 						case CODE_PT_RES_LOOKUP_MY_INFO_OK:
@@ -929,11 +929,10 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getScreenDetails()// 위에꺼 세트 by 규철
+	public String getScreenDetails()// 위에꺼 세트 by 규철
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
-		String[] splited = origin.split("\\\\");
-		return splited;
+		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
+				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM, getProtocolBodyLen());
 	}
 
 	public void setMemberDetails(int cnt, String[] detail) {// 조회응답코드D
