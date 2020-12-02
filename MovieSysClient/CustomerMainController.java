@@ -102,19 +102,22 @@ public class CustomerMainController implements Initializable {
                 Myconn.is.read(buf);
                 int packetType = buf[0];
                 int packetCode = buf[1];
+                int packetBodyLen = buf[3];
+                int packetFlag = buf[5];
                 last = buf[6];
-                protocol.setPacket(packetType, packetCode, buf);
+                int packetSeqNum = buf[7];
+                protocol.setPacket(packetType, packetCode, packetBodyLen, packetFlag, last, packetSeqNum, buf);
                 String temp = protocol.getScreenList();
                 data.add(temp);
                 if (last == 1)
                     stopread = true;
             }
-            String body = null;
+            String body = "";
             Iterator<String> it = data.iterator();
             while (it.hasNext()) {
                 body += it.next();
             }
-            String[] bodydiv = body.split("|");
+            String[] bodydiv = body.split("\\|");
             ArrayList<String[]> filmliststring = new ArrayList<String[]>();
 
             for (int i = 0; i < bodydiv.length; i++) {

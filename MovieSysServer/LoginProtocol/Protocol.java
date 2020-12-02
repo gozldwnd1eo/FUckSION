@@ -548,7 +548,7 @@ public class Protocol implements Serializable {
 		packet = getPacket(pt, code);
 		protocolType = pt;
 		protocolCode = code;
-		System.arraycopy(buf, 0, packet, 0, packet.length);
+		System.arraycopy(buf, 0, packet, 0, buf.length);
 	}
 
 	public void setPacket(int pt, int code, int bodyLen, byte[] buf) {
@@ -557,7 +557,7 @@ public class Protocol implements Serializable {
 		protocolType = pt;
 		protocolCode = code;
 		protocolBodyLen = bodyLen;
-		System.arraycopy(buf, 0, packet, 0, packet.length);
+		System.arraycopy(buf, 0, packet, 0, buf.length);
 	}
 
 	public void setPacket(int pt, int code, int bodyLen, int flag, int last, int seqNum, byte[] buf) {
@@ -565,13 +565,13 @@ public class Protocol implements Serializable {
 		packet = getPacket(pt, code);
 		protocolType = pt;
 		protocolCode = code;
-		packet[3] = (byte) bodyLen;
+		this.packet[3] = (byte) bodyLen;
 		protocolBodyLen = bodyLen;
-		packet[5] = (byte) flag;
+		this.packet[5] = (byte) flag;
 		protocolFlag = flag;
-		packet[6] = (byte) last;
+		this.packet[6] = (byte) last;
 		protocolLast = last;
-		packet[7] = (byte) seqNum;
+		this.packet[7] = (byte) seqNum;
 		protocolSeqNum = seqNum;
 		System.arraycopy(buf, 0, packet, 0, buf.length);
 	}
@@ -749,10 +749,10 @@ public class Protocol implements Serializable {
 		}
 		if (i < dataLength) {
 			packetList = list.substring(srcBegin);
-			this.setPacket(PT_RES_LOOKUP, CODE_PT_RES_LOOKUP_ALL_SCREEN_OK, packetList.length(), 1, 1, seqNum,
+			this.setPacket(PT_RES_LOOKUP, CODE_PT_RES_LOOKUP_ALL_SCREEN_OK, packetList.getBytes().length, 1, 1, seqNum,
 					this.packet);
 
-			System.arraycopy(packetList.getBytes(), 0, packet, headLength, packetList.length());
+			System.arraycopy(packetList.getBytes(), 0, packet, headLength, packetList.getBytes().length);
 
 			arr.add(this);
 		}

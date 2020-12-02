@@ -141,7 +141,7 @@ public class FilmDAO {
 			pstmt = conn.prepareStatement(SQLcu);
 			rs = pstmt.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 				result += rs.getString("film_id") + "\\";
 				result += rs.getString("film_name") + "\\"; // 안되면 getString 1
 				// result += rs.getByte("film_poster") + "\\";

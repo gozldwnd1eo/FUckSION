@@ -40,17 +40,17 @@ public class LoginServer {
 		String filmID; // 영화 아이디
 
 		String screenID; // 상영영화 아이디
-		String residualSeat;	//잔여좌석수
-		String startTime;	//시작시각
-		String finalTime;	//종료시각
+		String residualSeat; // 잔여좌석수
+		String startTime; // 시작시각
+		String finalTime; // 종료시각
 
-		String audiID; 	//상영관 아이디
-		String audiNum;	//상영관 번호
-		String seatcnt;	//총좌석수
+		String audiID; // 상영관 아이디
+		String audiNum; // 상영관 번호
+		String seatcnt; // 총좌석수
 
 		String theaterID; // 영화관 아이디
-		String theaterName;	//영화관명
-		String address;		//영화관 주소
+		String theaterName; // 영화관명
+		String address; // 영화관 주소
 
 		String resvnum; // 예매번호
 		String seatNum; // 좌석번호
@@ -62,17 +62,14 @@ public class LoginServer {
 		String starpoint; // 별점
 
 		while (true) {
-			MemberDAO mdao = new MemberDAO();	
-			CustomerDTO cdto = new CustomerDTO();
-		
+			MemberDAO mdao = new MemberDAO();
 			CinemaDAO cinemadao = new CinemaDAO();
 			ScreenDTO screendto = new ScreenDTO();
 			AuditoriumDTO audidto = new AuditoriumDTO();
 			TheaterDTO theaterdto = new TheaterDTO();
-			ResvDTO resvdto = new ResvDTO();		
-
+			ResvDTO resvdto = new ResvDTO();
+			CustomerDTO cdto = new CustomerDTO();
 			FilmDAO fdao = new FilmDAO();
-			FilmDTO filmdto = new FilmDTO();
 			ReviewDTO reviewdto = new ReviewDTO();
 
 			Protocol protocol = new Protocol(); // 새 Protocol 객체 생성 (기본 생성자)
@@ -185,12 +182,6 @@ public class LoginServer {
 							///////////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_AREA:
 							filmID = protocol.getFlimID();
-
-							ArrayList<String> arr = new ArrayList<String>();
-							arr = fdao.displayArea(filmID);
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_AREA_OK);
-							//protocol.setArea(arr);
-							os.write(protocol.getPacket());
 							break;
 
 						// 영화관 조회 3
@@ -199,12 +190,6 @@ public class LoginServer {
 							String[] area_filmID = protocol.getTheaterArea_FlimID();
 							area = area_filmID[0];
 							filmID = area_filmID[1];
-							theaterdto.setTheater_area(area);
-						//	theaterdto.set
-
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_THEATER_OK);
-							//protocol.set
-							os.write(protocol.getPacket());
 							break;
 
 						// 상영시간 조회4
@@ -213,92 +198,52 @@ public class LoginServer {
 							String[] theaterID_filmID = protocol.getTheaterID_FlimID();
 							theaterID = theaterID_filmID[0];
 							filmID = theaterID_filmID[1];
-
-							ArrayList<ScreenDTO> arr_screen = new ArrayList<ScreenDTO>();
-							arr_screen = cinemadao.displayScreen(filmID, theaterID);
-
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_OK);
-						//	protocol.set
-							os.write(protocol.getPacket());
-
 							break;
 
 						// 모든 영화관 조회 5
 						///////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_ALL_THEATER:
-							ArrayList<TheaterDTO> arr_alltheater = new ArrayList<TheaterDTO>();
-							arr_alltheater = cinemadao.displayTheater();
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_THEATER_OK);
-						//	protocol.setTheaterList(arr_alltheater);
-							os.write(protocol.getPacket());
+
 							break;
 
 						// 해당 영화관의 상영시간표 조회 6
 						///////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TABLE:
 							theaterID = protocol.getTheaterID();
-
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_SCREEN_TABLE_OK);
-							//protocol.set
-							os.write(protocol.getPacket());
-
 							break;
 
 						// 현재 좌석 상황 조회 요청 7
 						/////////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_SEAT_SITUATION:
 							screenID = protocol.getScreenID();
-
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_SEAT_SITUATION_OK);
-							//protocol.setSeatNumList
-							os.write(protocol.getPacket());
 							break;
 
 						// 영화의 상세정보 조회 요청 8
 						///////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_FILM_DETAIL:
 							filmID = protocol.getFlimID();
-
-							filmdto = fdao.displayMovieDetail(filmID);
-
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FILM_DETAIL_OK);
-							//protocol.setScreenDetails
-							os.write(protocol.getPacket());
 							break;
 
 						// 내 정보 조회 요청 9
 						case Protocol.CODE_PT_REQ_LOOKUP_MY_INFO:
 							id = protocol.getID();
-
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_MY_INFO_OK);
-							//protocol.setMemberDetails
-							os.write(protocol.getPacket());
 							break;
 
 						// 자신이 작성한 리뷰 리스트 조회 10
 						case Protocol.CODE_PT_REQ_LOOKUP_MY_REVIEWS:
 							id = protocol.getID();
-
-							reviewdto = fdao.displayReviewDetail(id);
-
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_MY_REVIEWS_OK);
-							//protocol.setMemberReviews
-							os.write(protocol.getPacket());
 							break;
 
 						// 예매 내역 조회 요청 11
 						case Protocol.CODE_PT_REQ_LOOKUP_RESV_LIST:
 							id = protocol.getID();
-
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_RESV_LIST_OK);
-							//protocol.set 없는데?
-							os.write(protocol.getPacket());
 							break;
 
 						// 현재 상영 중 영화 조회 요청 12
 						case Protocol.CODE_PT_REQ_LOOKUP_ALL_SCREEN:
 							ArrayList<Protocol> packetList = new ArrayList<Protocol>();
 							String filmResult = fdao.displayScreenList();
+							protocol = new Protocol(protocol.PT_RES_LOOKUP, protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
 							packetList = protocol.setScreenList(filmResult);
 							Iterator<Protocol> iterator = packetList.iterator();
 							int count = 0;
@@ -313,28 +258,16 @@ public class LoginServer {
 						// 담당자용 영화관 조회 요청 13
 						case Protocol.CODE_PT_REQ_LOOKUP_THEATER_FOR_ADMIN:
 							id = protocol.getID();
-
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_OK);
-							//protocol.set
-							os.write(protocol.getPacket());
 							break;
 
 						// 상영관 조회 요청 14
 						case Protocol.CODE_PT_REQ_LOOKUP_AUDI:
 							theaterID = protocol.getTheaterID();
-							//이것도 없는 거 같음
-
-
-
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_AUDI_OK);
-							//protocol.set
-							os.write(protocol.getPacket());
 							break;
 
 						// 영화관별 매출 조회 요청 15
 						case Protocol.CODE_PT_REQ_LOOKUP_THEATER_SALES:
 							theaterID = protocol.getTheaterID();
-							
 							break;
 
 						// 총 매출 조회 요청 16
@@ -547,223 +480,243 @@ public class LoginServer {
 
 							// 리뷰 삭제 요청 9
 						case Protocol.CODE_PT_REQ_UPDATE_DELETE_REVIEW:
-						reviewID = protocol.getDel_Review();
-						boolean deletereviewResult = fdao.deleteReview(reviewID);
-						if (deletereviewResult==false) {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_REVIEW_NO);
-							os.write(protocol.getPacket());
-							break;
-						} else {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_REVIEW_OK);
-							os.write(protocol.getPacket());
-							break;
-						}
-						
-						//영화관 추가 10
-						case Protocol.CODE_PT_REQ_UPDATE_ADD_THEATER :
-						String[] id_theatername_area_address = protocol.getAdd_Theater();
-						id=id_theatername_area_address[0];
-						theaterName=id_theatername_area_address[1];
-						area = id_theatername_area_address[2];
-						address = id_theatername_area_address[3];
+							reviewID = protocol.getDel_Review();
+							boolean deletereviewResult = fdao.deleteReview(reviewID);
+							if (deletereviewResult == false) {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_DELETE_REVIEW_NO);
+								os.write(protocol.getPacket());
+								break;
+							} else {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_DELETE_REVIEW_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
 
-						theaterdto.setAd_id(id);
-						theaterdto.setTheater_name(theaterName);
-						theaterdto.setTheater_area(area);
-						theaterdto.setTheater_address(address);
-						boolean insertTheater = cinemadao.insertTheater(theaterdto);
-						if (insertTheater==false) {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,
-							Protocol.CODE_PT_RES_UPDATE_ADD_REVIEW_NO);
-							os.write(protocol.getPacket());								break;
-						} 
-						else {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,
-							Protocol.CODE_PT_RES_UPDATE_ADD_REVIEW_OK);
-							os.write(protocol.getPacket());
-							break;
-						}
-						
-						//영화관 정보 변경 11
-						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_THEATER :
-						String[] theaterID_id_theaterName_area_address = protocol.getChange_Theater();
-						theaterID= theaterID_id_theaterName_area_address[0];
-						id = theaterID_id_theaterName_area_address[1];
-						theaterName = theaterID_id_theaterName_area_address[2];
-						area = theaterID_id_theaterName_area_address[3];
-						address = theaterID_id_theaterName_area_address[4];
+							// 영화관 추가 10
+						case Protocol.CODE_PT_REQ_UPDATE_ADD_THEATER:
+							String[] id_theatername_area_address = protocol.getAdd_Theater();
+							id = id_theatername_area_address[0];
+							theaterName = id_theatername_area_address[1];
+							area = id_theatername_area_address[2];
+							address = id_theatername_area_address[3];
 
-						theaterdto.setTheater_name(theaterName);
-						theaterdto.setTheater_area(area);
-						theaterdto.setTheater_address(address);
-						theaterdto.setTheater_id(theaterID);
-						theaterdto.setAd_id(id);
+							theaterdto.setAd_id(id);
+							theaterdto.setTheater_name(theaterName);
+							theaterdto.setTheater_area(area);
+							theaterdto.setTheater_address(address);
+							boolean insertTheater = cinemadao.insertTheater(theaterdto);
+							if (insertTheater == false) {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_ADD_REVIEW_NO);
+								os.write(protocol.getPacket());
+								break;
+							} else {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_ADD_REVIEW_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
 
-						boolean updateTheater = cinemadao.updateTheater(theaterdto);
-						if (updateTheater==false) {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_THEATER_NO);
-							os.write(protocol.getPacket());
-							break;
-						} else {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_THEATER_OK);
-							os.write(protocol.getPacket());
-							break;
-						}
+							// 영화관 정보 변경 11
+						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_THEATER:
+							String[] theaterID_id_theaterName_area_address = protocol.getChange_Theater();
+							theaterID = theaterID_id_theaterName_area_address[0];
+							id = theaterID_id_theaterName_area_address[1];
+							theaterName = theaterID_id_theaterName_area_address[2];
+							area = theaterID_id_theaterName_area_address[3];
+							address = theaterID_id_theaterName_area_address[4];
 
-						//영화관 삭제 12
-						case Protocol.CODE_PT_REQ_UPDATE_DELETE_THEATER :
-						theaterID = protocol.getDel_Theater();
-						boolean deleteTheater = cinemadao.deleteTheater(theaterID);
-						if (deleteTheater==false) {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_THEATER_NO);
-							os.write(protocol.getPacket());
-							break;
-						} else {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_THEATER_OK);
-							os.write(protocol.getPacket());
-							break;
-						}
+							theaterdto.setTheater_name(theaterName);
+							theaterdto.setTheater_area(area);
+							theaterdto.setTheater_address(address);
+							theaterdto.setTheater_id(theaterID);
+							theaterdto.setAd_id(id);
 
-						//상영관 추가 13
-						case Protocol.CODE_PT_REQ_UPDATE_ADD_AUDI :
-						String[] audiNum_theaterID_seatcnt = protocol.getAdd_Audi();
-						audiNum = audiNum_theaterID_seatcnt[0];
-						theaterID = audiNum_theaterID_seatcnt[1];
-						seatcnt = audiNum_theaterID_seatcnt[2];
+							boolean updateTheater = cinemadao.updateTheater(theaterdto);
+							if (updateTheater == false) {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_CHANGE_THEATER_NO);
+								os.write(protocol.getPacket());
+								break;
+							} else {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_CHANGE_THEATER_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
 
-						audidto.setAudi_num(Integer.parseInt(audiNum));
-						audidto.setTheater_id(theaterID);
-						audidto.setAudi_seatCnt(Integer.parseInt(seatcnt));
-						
+							// 영화관 삭제 12
+						case Protocol.CODE_PT_REQ_UPDATE_DELETE_THEATER:
+							theaterID = protocol.getDel_Theater();
+							boolean deleteTheater = cinemadao.deleteTheater(theaterID);
+							if (deleteTheater == false) {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_DELETE_THEATER_NO);
+								os.write(protocol.getPacket());
+								break;
+							} else {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_DELETE_THEATER_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
 
-						boolean insertAudi = cinemadao.insertAuditorium(audidto);
-						if (insertAudi==false) {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_AUDI_NO);
-							os.write(protocol.getPacket());
-							break;
-						} else {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_AUDI_OK);
-							os.write(protocol.getPacket());
-							break;
-						}
+							// 상영관 추가 13
+						case Protocol.CODE_PT_REQ_UPDATE_ADD_AUDI:
+							String[] audiNum_theaterID_seatcnt = protocol.getAdd_Audi();
+							audiNum = audiNum_theaterID_seatcnt[0];
+							theaterID = audiNum_theaterID_seatcnt[1];
+							seatcnt = audiNum_theaterID_seatcnt[2];
 
-						//상영관 변경 14
-						//////////////////////////////////////////////////dao 미완성
-						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_AUDI :
-						String[] audiID_audiNum_theaterID_seatcnt = protocol.getChange_Audi();
-						audiID = audiID_audiNum_theaterID_seatcnt[0];
-						audiNum = audiID_audiNum_theaterID_seatcnt[1];
-						theaterID = audiID_audiNum_theaterID_seatcnt[2];
-						seatcnt = audiID_audiNum_theaterID_seatcnt[3];
+							audidto.setAudi_num(Integer.parseInt(audiNum));
+							audidto.setTheater_id(theaterID);
+							audidto.setAudi_seatCnt(Integer.parseInt(seatcnt));
 
-						boolean updateAudi=true ;
-						if (updateAudi==false) {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_AUDI_NO);
-							os.write(protocol.getPacket());
-							break;
-						} else {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_AUDI_OK);
-							os.write(protocol.getPacket());
-							break;
-						}
+							boolean insertAudi = cinemadao.insertAuditorium(audidto);
+							if (insertAudi == false) {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_ADD_AUDI_NO);
+								os.write(protocol.getPacket());
+								break;
+							} else {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_ADD_AUDI_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
 
-						//상영관 삭제 15
-						case Protocol.CODE_PT_REQ_UPDATE_DELETE_AUDI :
-						audiID = protocol.getDel_Audi();
-						boolean deleteAudiID = cinemadao.deleteAuditorium(audiID);
-						if (deleteAudiID==false) {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_AUDI_NO);
-							os.write(protocol.getPacket());
-							break;
-						} else {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_AUDI_OK);
-							os.write(protocol.getPacket());
-							break;
-						}
+							// 상영관 변경 14
+							////////////////////////////////////////////////// dao 미완성
+						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_AUDI:
+							String[] audiID_audiNum_theaterID_seatcnt = protocol.getChange_Audi();
+							audiID = audiID_audiNum_theaterID_seatcnt[0];
+							audiNum = audiID_audiNum_theaterID_seatcnt[1];
+							theaterID = audiID_audiNum_theaterID_seatcnt[2];
+							seatcnt = audiID_audiNum_theaterID_seatcnt[3];
 
-						//상영스케줄 추가 16
-						case Protocol.CODE_PT_REQ_UPDATE_ADD_SCREEN_TABLE :
-						String[] audiID_filmID_residualSeat_startTime_finalTime = protocol.getAdd_Screen();
-						audiID = audiID_filmID_residualSeat_startTime_finalTime[0];
-						filmID = audiID_filmID_residualSeat_startTime_finalTime[1];
-						residualSeat = audiID_filmID_residualSeat_startTime_finalTime[2];
-						startTime = audiID_filmID_residualSeat_startTime_finalTime[3];
-						finalTime = audiID_filmID_residualSeat_startTime_finalTime[4];
+							boolean updateAudi = true;
+							if (updateAudi == false) {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_CHANGE_AUDI_NO);
+								os.write(protocol.getPacket());
+								break;
+							} else {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_CHANGE_AUDI_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
 
-						screendto.setAudi_id(audiID);
-						screendto.setFilm_id(filmID);
-						screendto.setScreen_residualSeat(Integer.parseInt(residualSeat));
-						screendto.setScreen_startTime(startTime);
-						screendto.setScreen_finalTime(finalTime);
+							// 상영관 삭제 15
+						case Protocol.CODE_PT_REQ_UPDATE_DELETE_AUDI:
+							audiID = protocol.getDel_Audi();
+							boolean deleteAudiID = cinemadao.deleteAuditorium(audiID);
+							if (deleteAudiID == false) {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_DELETE_AUDI_NO);
+								os.write(protocol.getPacket());
+								break;
+							} else {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_DELETE_AUDI_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
 
-						boolean insertScreen = cinemadao.insertScreen(screendto);
-						if (insertScreen==false) {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_SCREEN_TABLE_NO);
-							os.write(protocol.getPacket());
-							break;
-						} else {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_ADD_SCREEN_TABLE_OK);
-							os.write(protocol.getPacket());
-							break;
-						}
+							// 상영스케줄 추가 16
+						case Protocol.CODE_PT_REQ_UPDATE_ADD_SCREEN_TABLE:
+							String[] audiID_filmID_residualSeat_startTime_finalTime = protocol.getAdd_Screen();
+							audiID = audiID_filmID_residualSeat_startTime_finalTime[0];
+							filmID = audiID_filmID_residualSeat_startTime_finalTime[1];
+							residualSeat = audiID_filmID_residualSeat_startTime_finalTime[2];
+							startTime = audiID_filmID_residualSeat_startTime_finalTime[3];
+							finalTime = audiID_filmID_residualSeat_startTime_finalTime[4];
 
-						//상영스케줄 변경 17
-						//////////////////////////////////////////////////////////
-						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_SCREEN_TABLE :
-						String[] screenID_audiID_filmID_residualSeat_startTime_finalTime = protocol.getChange_Screen();
-						screenID = screenID_audiID_filmID_residualSeat_startTime_finalTime[0];
-						audiID = screenID_audiID_filmID_residualSeat_startTime_finalTime[1];
-						filmID = screenID_audiID_filmID_residualSeat_startTime_finalTime[2];
-						residualSeat = screenID_audiID_filmID_residualSeat_startTime_finalTime[3];
-						startTime = screenID_audiID_filmID_residualSeat_startTime_finalTime[4];
-						finalTime = screenID_audiID_filmID_residualSeat_startTime_finalTime[5];
+							screendto.setAudi_id(audiID);
+							screendto.setFilm_id(filmID);
+							screendto.setScreen_residualSeat(Integer.parseInt(residualSeat));
+							screendto.setScreen_startTime(startTime);
+							screendto.setScreen_finalTime(finalTime);
 
-						boolean updateScreen =true;
-						if (updateScreen==false) {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_SCREEN_TABLE_NO);
-							os.write(protocol.getPacket());
-							break;
-						} else {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_CHANGE_SCREEN_TABLE_OK);
-							os.write(protocol.getPacket());
-							break;
-						}
-						
-						//상영영화 삭제 18
-						case Protocol.CODE_PT_REQ_UPDATE_DELETE_SCREEN_TABLE :
-						screenID = protocol.getDel_Screen();
-						boolean deleteScreen = cinemadao.deleteScreen(screenID);
-						if (deleteScreen==false) {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_SCREEN_TABLE_NO);
-							os.write(protocol.getPacket());
-							break;
-						} else {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_SCREEN_TABLE_OK);
-							os.write(protocol.getPacket());
-							break;
-						}
+							boolean insertScreen = cinemadao.insertScreen(screendto);
+							if (insertScreen == false) {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_ADD_SCREEN_TABLE_NO);
+								os.write(protocol.getPacket());
+								break;
+							} else {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_ADD_SCREEN_TABLE_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
 
-						//영화 추가 19
-						case Protocol.CODE_PT_REQ_UPDATE_ADD_FILM :
-						break;
-						
-						//영화 수정 20
-						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_FILM : 
-						break;
+							// 상영스케줄 변경 17
+							//////////////////////////////////////////////////////////
+						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_SCREEN_TABLE:
+							String[] screenID_audiID_filmID_residualSeat_startTime_finalTime = protocol
+									.getChange_Screen();
+							screenID = screenID_audiID_filmID_residualSeat_startTime_finalTime[0];
+							audiID = screenID_audiID_filmID_residualSeat_startTime_finalTime[1];
+							filmID = screenID_audiID_filmID_residualSeat_startTime_finalTime[2];
+							residualSeat = screenID_audiID_filmID_residualSeat_startTime_finalTime[3];
+							startTime = screenID_audiID_filmID_residualSeat_startTime_finalTime[4];
+							finalTime = screenID_audiID_filmID_residualSeat_startTime_finalTime[5];
 
-						//영화 삭제 21
-						case Protocol.CODE_PT_REQ_UPDATE_DELETE_FILM :
-						filmID = protocol.getDel_Film();
-						boolean deleteFilm = fdao.deleteFilm(filmID);
-						if (deleteFilm==false) {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_FILM_NO);
-							os.write(protocol.getPacket());
+							boolean updateScreen = true;
+							if (updateScreen == false) {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_CHANGE_SCREEN_TABLE_NO);
+								os.write(protocol.getPacket());
+								break;
+							} else {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_CHANGE_SCREEN_TABLE_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
+
+							// 상영영화 삭제 18
+						case Protocol.CODE_PT_REQ_UPDATE_DELETE_SCREEN_TABLE:
+							screenID = protocol.getDel_Screen();
+							boolean deleteScreen = cinemadao.deleteScreen(screenID);
+							if (deleteScreen == false) {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_DELETE_SCREEN_TABLE_NO);
+								os.write(protocol.getPacket());
+								break;
+							} else {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_DELETE_SCREEN_TABLE_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
+
+							// 영화 추가 19
+						case Protocol.CODE_PT_REQ_UPDATE_ADD_FILM:
 							break;
-						} else {
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_RES_UPDATE_DELETE_FILM_OK);
-							os.write(protocol.getPacket());
+
+						// 영화 수정 20
+						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_FILM:
 							break;
-						}
+
+						// 영화 삭제 21
+						case Protocol.CODE_PT_REQ_UPDATE_DELETE_FILM:
+							filmID = protocol.getDel_Film();
+							boolean deleteFilm = fdao.deleteFilm(filmID);
+							if (deleteFilm == false) {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_DELETE_FILM_NO);
+								os.write(protocol.getPacket());
+								break;
+							} else {
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_DELETE_FILM_OK);
+								os.write(protocol.getPacket());
+								break;
+							}
 					}
 
 			}// end switch
