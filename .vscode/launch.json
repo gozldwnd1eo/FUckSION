@@ -10,33 +10,6 @@
             "request": "launch",
             "mainClass": "${file}"
         },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-AppMain<FUckSION_35d78d01>",
-            "request": "launch",
-            "mainClass": "MovieSysClient.AppMain",
-            "projectName": "FUckSION_35d78d01"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-LoginClient<FUckSION_35d78d01>",
-            "request": "launch",
-            "mainClass": "MovieSysServer.LoginProtocol.LoginClient",
-            "projectName": "FUckSION_35d78d01"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-LoginServer<FUckSION_35d78d01>",
-            "request": "launch",
-            "mainClass": "MovieSysServer.LoginProtocol.LoginServer",
-            "projectName": "FUckSION_35d78d01"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-main<FUckSION_35d78d01>",
-            "request": "launch",
-            "mainClass": "MovieSysServer.ServerMain.main",
-            "projectName": "FUckSION_35d78d01"
-        }
+      
     ]
 }
