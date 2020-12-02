@@ -838,6 +838,69 @@ public class Protocol implements Serializable {
 		return splited;// (상영관~상영시간)이므로 한번 더 잘라야함
 	}
 
+	public ArrayList<Protocol> setList(String list, int type, int code) {
+		ArrayList<Protocol> arr = new ArrayList<Protocol>();
+
+		int headLength = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
+				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM;
+		int maxBodyLen = LEN_MAX - headLength;
+		int srcBegin = 0;
+		int srcEnd = 0;
+		String packetList = "";
+		int bodyLen = list.getBytes().length;
+
+		byte[] b = new byte[2];
+		byte[] s = new byte[2];
+
+		int seqNum = 0;
+		packet = new byte[LEN_MAX];
+		for (; maxBodyLen < bodyLen; bodyLen -= maxBodyLen, seqNum++) {
+
+			srcEnd += maxBodyLen + 1;
+			packetList = list.substring(srcBegin, srcEnd);
+			srcBegin += srcEnd;
+
+			packet[0] = (byte) type;
+			packet[1] = (byte) code;
+			b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
+			b[1] = (byte) (bodyLen & 0x000000ff);
+			System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
+			packet[5] = 1;
+			packet[6] = 0;
+			s[0] = (byte) ((seqNum & 0x0000ff00) >> 8);
+			s[1] = (byte) (seqNum & 0x000000ff);
+			System.arraycopy(s, 0, packet,
+					LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST,
+					LEN_PROTOCOL_SEQNUM);
+
+			System.arraycopy(packetList.getBytes(), 0, packet, headLength, maxBodyLen);
+
+			arr.add(this);
+		}
+		if (bodyLen < maxBodyLen) {
+
+			packetList = list.substring(srcBegin);
+
+			packet[0] = (byte) type;
+			packet[1] = (byte) code;
+			b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
+			b[1] = (byte) (bodyLen & 0x000000ff);
+			System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
+			packet[5] = 1;
+			packet[6] = 1;
+			s[0] = (byte) ((seqNum & 0x0000ff00) >> 8);
+			s[1] = (byte) (seqNum & 0x000000ff);
+			System.arraycopy(s, 0, packet,
+					LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST,
+					LEN_PROTOCOL_SEQNUM);
+
+			System.arraycopy(packetList.getBytes(), 0, packet, headLength, packetList.getBytes().length);
+
+			arr.add(this);
+		}
+		return arr;
+	}
+
 	public void setSeatNumList(int cnt, String[] list) {// 조회응답코드9
 		String finalStr = "";// 사용시 쿼리문을 스트링 배열로 받으면서 상영관과 상영시간 사이 ~ 를 넣고(상영관~상영시간)여기로 가져와서 \추가할것.
 		for (int i = cnt; i > 0; i--) {
