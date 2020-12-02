@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MovieSysClient.payController">
    <children>
       <ImageView fx:id="poster" fitHeight="176.0" fitWidth="139.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
       <Line endX="-62.5" endY="280.0" layoutX="231.0" layoutY="120.0" startX="-62.5" startY="-120.0" />
@@ -25,5 +25,6 @@
       <Label layoutX="182.0" layoutY="323.0" text="결제금액 : " />
       <TextField fx:id="amount" layoutX="241.0" layoutY="319.0" prefHeight="22.0" prefWidth="127.0" />
       <CheckBox fx:id="confirm" layoutX="184.0" layoutY="367.0" mnemonicParsing="false" text="위의 예매내역과 결제금액을 모두 확인하셨습니까? " underline="true" />
+      <Button fx:id="before_btn" layoutX="14.0" layoutY="364.0" mnemonicParsing="false" text="이전" />
    </children>
 </AnchorPane>

@@ -215,11 +215,34 @@ public class reservationController implements Initializable {
 
         protocol=new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_AREA_OK);
         buf=protocol.getPacket();
-
-        Myconn.is.read(buf);
+        
+        String areas="";
+        byte last=0;
+        boolean stopread=false;
+        while(!stopread){
+            Myconn.is.read(buf);
+            int packetType=buf[0];
+            int packetCode=buf[1];
+            byte[] b=new byte[2];
+            System.arraycopy(buf, 3, b, 0, 2);
+            int packetBodyLen=(b[0]&0x000000ff<<8);
+            packetBodyLen+=(b[1]&0x000000ff);
+            int packetFlag=buf[5];
+            last=buf[6];
+            int packetSeqNum=buf[7];
+            protocol.setPacket(packetType,packetCode,packetBodyLen,packetFlag,last,packetSeqNum,buf);
+            areas+= protocol.getListBody();
+            if(last==1){
+                stopread=true;
+            }
+        }
+        String[] arealist=areas.split("|");
+        ObservableList<String> areacomboxlist=FXCollections.observableArrayList();
+        areacomboxlist.setAll(arealist);
+        localcombox.setItems(areacomboxlist);
 
         // 프로토콜에 온 지역들을 스트링배열로 빼옴
-        protocol.;
+        
 
         String[] areas;
         localcombox.setItems(FXCollections.observableArrayList(areas)); // 되나?

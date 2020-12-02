@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -23,5 +24,6 @@
       <Label layoutX="241.0" layoutY="152.0" text="티저영상 : " />
       <Line endX="-3.79998779296875" endY="315.9999694824219" layoutX="219.0" layoutY="84.0" startX="-3.79998779296875" startY="-83.99999237060547" />
       <TextArea fx:id="summary" layoutX="223.0" layoutY="180.0" prefHeight="214.0" prefWidth="370.0" />
+      <Button fx:id="before_btn" layoutX="14.0" layoutY="364.0" mnemonicParsing="false" text="이전" />
    </children>
 </AnchorPane>
