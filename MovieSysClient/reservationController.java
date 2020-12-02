@@ -1,5 +1,7 @@
 package MovieSysClient;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import MovieSysServer.LoginProtocol.Protocol;
@@ -15,6 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
@@ -23,271 +26,184 @@ public class reservationController implements Initializable {
 
     @FXML
     private ImageView poster;
-
-    @FXML
     private ComboBox<String> localcombox;
-
-    @FXML
     private ComboBox<String> theatercombox;
-
-    @FXML
     private ComboBox<String> schedcombox;
-
-    @FXML
     private CheckBox a1;
-
-    @FXML
     private CheckBox a2;
-
-    @FXML
     private CheckBox a3;
-
-    @FXML
     private CheckBox a4;
-
-    @FXML
     private CheckBox a5;
-
-    @FXML
     private CheckBox a6;
-
-    @FXML
     private CheckBox a7;
-
-    @FXML
     private CheckBox a8;
-
-    @FXML
     private CheckBox a9;
-
-    @FXML
     private CheckBox a10;
-
-    @FXML
     private CheckBox a11;
-
-    @FXML
     private CheckBox a12;
-
-    @FXML
     private CheckBox a13;
-
-    @FXML
     private CheckBox a14;
-
-    @FXML
     private CheckBox b1;
-
-    @FXML
     private CheckBox b2;
-
-    @FXML
     private CheckBox b3;
-
-    @FXML
     private CheckBox b4;
-
-    @FXML
     private CheckBox b5;
-
-    @FXML
     private CheckBox b6;
-
-    @FXML
     private CheckBox b7;
-
-    @FXML
     private CheckBox b8;
-
-    @FXML
     private CheckBox b9;
-
-    @FXML
     private CheckBox b10;
-
-    @FXML
     private CheckBox b11;
-
-    @FXML
     private CheckBox b12;
-
-    @FXML
     private CheckBox b13;
-
-    @FXML
     private CheckBox b14;
-
-    @FXML
     private CheckBox c1;
-
-    @FXML
     private CheckBox c2;
-
-    @FXML
     private CheckBox c3;
-
-    @FXML
     private CheckBox c4;
-
-    @FXML
     private CheckBox c5;
-
-    @FXML
     private CheckBox c6;
-
-    @FXML
     private CheckBox c7;
-
-    @FXML
     private CheckBox c8;
-
-    @FXML
     private CheckBox c9;
-
-    @FXML
     private CheckBox c10;
-
-    @FXML
     private CheckBox c11;
-
-    @FXML
     private CheckBox c12;
-
-    @FXML
     private CheckBox c13;
-
-    @FXML
     private CheckBox c14;
-
-    @FXML
     private CheckBox d1;
-
-    @FXML
     private CheckBox d2;
-
-    @FXML
     private CheckBox d3;
-
-    @FXML
     private CheckBox d4;
-
-    @FXML
     private CheckBox d5;
-
-    @FXML
     private CheckBox d6;
-
-    @FXML
     private CheckBox d7;
-
-    @FXML
     private CheckBox d8;
-
-    @FXML
     private CheckBox d9;
-
-    @FXML
     private CheckBox d10;
-
-    @FXML
     private CheckBox d11;
-
-    @FXML
     private CheckBox d12;
-
-    @FXML
     private CheckBox d13;
-
-    @FXML
     private CheckBox d14;
-
-    @FXML
     private CheckBox e1;
-
-    @FXML
     private CheckBox e2;
-
-    @FXML
     private CheckBox e3;
-
-    @FXML
     private CheckBox e4;
-
-    @FXML
     private CheckBox e5;
-
-    @FXML
     private CheckBox e6;
-
-    @FXML
     private CheckBox e7;
-
-    @FXML
     private CheckBox e8;
-
-    @FXML
     private CheckBox e9;
-
-    @FXML
     private CheckBox e10;
-
-    @FXML
     private CheckBox e11;
-
-    @FXML
     private CheckBox e12;
-
-    @FXML
     private CheckBox e13;
-
-    @FXML
     private CheckBox e14;
-
-    @FXML
     private CheckBox f1;
-
-    @FXML
     private CheckBox f2;
-
-    @FXML
     private CheckBox f3;
-
-    @FXML
     private CheckBox f4;
-
-    @FXML
     private CheckBox f5;
-
-    @FXML
     private CheckBox f6;
-
-    @FXML
     private CheckBox f7;
-
-    @FXML
     private CheckBox f8;
-
-    @FXML
     private CheckBox f9;
-
-    @FXML
     private CheckBox f10;
-
-    @FXML
     private CheckBox f11;
-
-    @FXML
     private CheckBox f12;
-
-    @FXML
     private CheckBox f13;
-
-    @FXML
     private CheckBox f14;
+    private Button nextbtn;
+    private Button beforebtn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
         try{
+            ArrayList<CheckBox> btnlist=new ArrayList<CheckBox>();
+            btnlist.add(a1);
+            btnlist.add(a2);
+            btnlist.add(a3);
+            btnlist.add(a4);
+            btnlist.add(a5);
+            btnlist.add(a6);
+            btnlist.add(a7);
+            btnlist.add(a8);
+            btnlist.add(a9);
+            btnlist.add(a10);
+            btnlist.add(a11);
+            btnlist.add(a12);
+            btnlist.add(a13);
+            btnlist.add(a14);
+            btnlist.add(b1);
+            btnlist.add(b2);
+            btnlist.add(b3);
+            btnlist.add(b4);
+            btnlist.add(b5);
+            btnlist.add(b6);
+            btnlist.add(b7);
+            btnlist.add(b8);
+            btnlist.add(b9);
+            btnlist.add(b10);
+            btnlist.add(b11);
+            btnlist.add(b12);
+            btnlist.add(b13);
+            btnlist.add(b14);
+            btnlist.add(c1);
+            btnlist.add(c2);
+            btnlist.add(c3);
+            btnlist.add(c4);
+            btnlist.add(c5);
+            btnlist.add(c6);
+            btnlist.add(c7);
+            btnlist.add(c8);
+            btnlist.add(c9);
+            btnlist.add(c10);
+            btnlist.add(c11);
+            btnlist.add(c12);
+            btnlist.add(c13);
+            btnlist.add(c14);
+            btnlist.add(d1);
+            btnlist.add(d2);
+            btnlist.add(d3);
+            btnlist.add(d4);
+            btnlist.add(d5);
+            btnlist.add(d6);
+            btnlist.add(d7);
+            btnlist.add(d8);
+            btnlist.add(d9);
+            btnlist.add(d10);
+            btnlist.add(d11);
+            btnlist.add(d12);
+            btnlist.add(d13);
+            btnlist.add(d14);
+            btnlist.add(e1);
+            btnlist.add(e2);
+            btnlist.add(e3);
+            btnlist.add(e4);
+            btnlist.add(e5);
+            btnlist.add(e6);
+            btnlist.add(e7);
+            btnlist.add(e8);
+            btnlist.add(e9);
+            btnlist.add(e10);
+            btnlist.add(e11);
+            btnlist.add(e12);
+            btnlist.add(e13);
+            btnlist.add(e14);
+            btnlist.add(f1);
+            btnlist.add(f2);
+            btnlist.add(f3);
+            btnlist.add(f4);
+            btnlist.add(f5);
+            btnlist.add(f6);
+            btnlist.add(f7);
+            btnlist.add(f8);
+            btnlist.add(f9);
+            btnlist.add(f10);
+            btnlist.add(f11);
+            btnlist.add(f12);
+            btnlist.add(f13);
+            btnlist.add(f14);
         Protocol protocol = new Protocol(Protocol.PT_REQ_LOOKUP,Protocol.CODE_PT_REQ_LOOKUP_AREA);
         byte[] buf=protocol.getPacket();
         protocol.setFlimID(Userchoice.getFilmID());
@@ -304,12 +220,24 @@ public class reservationController implements Initializable {
         String[] areas;
         localcombox.setItems(FXCollections.observableArrayList(areas)); // 되나?
 
+
+        nextbtn.setOnAction(event->{
+            ArrayList<String> selectedSeat=new ArrayList<String>();
+            Iterator<CheckBox> it=btnlist.iterator();
+            while(it.hasNext()){
+                CheckBox temp=it.next();
+                if(temp.isSelected()){
+                    selectedSeat.add(temp.getText());
+                }
+            }
+            String seatstring=
+            Userchoice.setSchedule(schedule);
+            
+        });
+
         }catch (IOException e){
             e.printStackTrace();
         }
-
-
-
     }
 
     @FXML
@@ -373,11 +301,96 @@ public class reservationController implements Initializable {
             // 패킷에 온 좌석상황을 받음
             String[] seatlist = protocol.getSeatNumList();
 
-            
-
+            for(int i=0;i<seatlist.length;i++){
+                switch(seatlist[i]){
+                    case "A1":a1.setDisable(true); break;
+                    case "A2":a2.setDisable(true); break;
+                    case "A3":a3.setDisable(true); break;
+                    case "A4":a4.setDisable(true); break;
+                    case "A5":a5.setDisable(true); break;
+                    case "A6":a6.setDisable(true); break;
+                    case "A7":a7.setDisable(true); break;
+                    case "A8":a8.setDisable(true); break;
+                    case "A9":a9.setDisable(true); break;
+                    case "A10":a10.setDisable(true); break;
+                    case "A11":a11.setDisable(true); break;
+                    case "A12":a12.setDisable(true); break;
+                    case "A13":a13.setDisable(true); break;
+                    case "A14":a14.setDisable(true); break;
+                    case "B1":b1.setDisable(true); break;
+                    case "B2":b2.setDisable(true); break;
+                    case "B3":b3.setDisable(true); break;
+                    case "B4":b4.setDisable(true); break;
+                    case "B5":b5.setDisable(true); break;
+                    case "B6":b6.setDisable(true); break;
+                    case "B7":b7.setDisable(true); break;
+                    case "B8":b8.setDisable(true); break;
+                    case "B9":b9.setDisable(true); break;
+                    case "B10":b10.setDisable(true); break;
+                    case "B11":b11.setDisable(true); break;
+                    case "B12":b12.setDisable(true); break;
+                    case "B13":b13.setDisable(true); break;
+                    case "B14":b14.setDisable(true); break;
+                    case "C1":c1.setDisable(true); break;
+                    case "C2":c2.setDisable(true); break;
+                    case "C3":c3.setDisable(true); break;
+                    case "C4":c4.setDisable(true); break;
+                    case "C5":c5.setDisable(true); break;
+                    case "C6":c6.setDisable(true); break;
+                    case "C7":c7.setDisable(true); break;
+                    case "C8":c8.setDisable(true); break;
+                    case "C9":c9.setDisable(true); break;
+                    case "C10":c10.setDisable(true); break;
+                    case "C11":c11.setDisable(true); break;
+                    case "C12":c12.setDisable(true); break;
+                    case "C13":c13.setDisable(true); break;
+                    case "C14":c14.setDisable(true); break;
+                    case "D1":d1.setDisable(true); break;
+                    case "D2":d2.setDisable(true); break;
+                    case "D3":d3.setDisable(true); break;
+                    case "D4":d4.setDisable(true); break;
+                    case "D5":d5.setDisable(true); break;
+                    case "D6":d6.setDisable(true); break;
+                    case "D7":d7.setDisable(true); break;
+                    case "D8":d8.setDisable(true); break;
+                    case "D9":d9.setDisable(true); break;
+                    case "D10":d10.setDisable(true); break;
+                    case "D11":d11.setDisable(true); break;
+                    case "D12":d12.setDisable(true); break;
+                    case "D13":d13.setDisable(true); break;
+                    case "D14":d14.setDisable(true); break;
+                    case "E1":e1.setDisable(true); break;
+                    case "E2":e2.setDisable(true); break;
+                    case "E3":e3.setDisable(true); break;
+                    case "E4":e4.setDisable(true); break;
+                    case "E5":e5.setDisable(true); break;
+                    case "E6":e6.setDisable(true); break;
+                    case "E7":e7.setDisable(true); break;
+                    case "E8":e8.setDisable(true); break;
+                    case "E9":e9.setDisable(true); break;
+                    case "E10":e10.setDisable(true); break;
+                    case "E11":e11.setDisable(true); break;
+                    case "E12":e12.setDisable(true); break;
+                    case "E13":e13.setDisable(true); break;
+                    case "E14":e14.setDisable(true); break;
+                    case "F1":f1.setDisable(true); break;
+                    case "F2":f2.setDisable(true); break;
+                    case "F3":f3.setDisable(true); break;
+                    case "F4":f4.setDisable(true); break;
+                    case "F5":f5.setDisable(true); break;
+                    case "F6":f6.setDisable(true); break;
+                    case "F7":f7.setDisable(true); break;
+                    case "F8":f8.setDisable(true); break;
+                    case "F9":f9.setDisable(true); break;
+                    case "F10":f10.setDisable(true); break;
+                    case "F11":f11.setDisable(true); break;
+                    case "F12":f12.setDisable(true); break;
+                    case "F13":f13.setDisable(true); break;
+                    case "F14":f14.setDisable(true); break;
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

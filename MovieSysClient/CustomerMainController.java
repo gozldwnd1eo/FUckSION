@@ -29,7 +29,7 @@ import javafx.stage.Stage;
 public class CustomerMainController implements Initializable {
 
     @FXML
-    private ListView<filmList> film_list;
+    private ListView<String> film_list;
 
     @FXML
     private Button detail_btn;
@@ -104,32 +104,48 @@ public class CustomerMainController implements Initializable {
                 String[] fielddiv = bodydiv[i].split("\\\\");
                 filmliststring.add(fielddiv);
             }
-            ObservableList<filmList> nowscreenlist = FXCollections.observableArrayList();
+            ObservableList<String> nowscreenlist = FXCollections.observableArrayList();
 
             for (int i = 0; i < filmliststring.size(); i++) {
                 filmList newfilm = new filmList();
                 String[] line = filmliststring.get(i);
-                newfilm.setFilm_id(line[0]);
-                newfilm.setFilm_name(line[1]);
-                // newfilm.setFilm_poster(line[2]);
-                newfilm.setRev_rate(line[2]);
-                newfilm.setStarpt(line[3]);
-                nowscreenlist.add(newfilm);
+                // newfilm.setFilm_id(line[0]);
+                // newfilm.setFilm_name(line[1]);
+                // // newfilm.setFilm_poster(line[2]);
+                // newfilm.setRev_rate(line[2]);
+                // newfilm.setStarpt(line[3]);
+                nowscreenlist.add(line[1]);
             }
             film_list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             film_list.setItems(nowscreenlist);
 
             film_list.setOnMouseClicked(event -> {
-                filmList selected = film_list.getSelectionModel().getSelectedItem();
-                filmname.setText(selected.film_id);
-                film_starpt.setText(selected.starpt);
-                filmrevrate.setText(selected.rev_rate);
+                String selected = film_list.getSelectionModel().getSelectedItem();
+                Iterator<String[]> ite = filmliststring.iterator();
+                String[] temp = null;
+                while (ite.hasNext()) {
+                    temp = ite.next();
+                    if (temp[1].equals(selected)) {
+                        break;
+                    }
+                }
+                filmname.setText(temp[1]);
+                film_starpt.setText(temp[3]);
+                filmrevrate.setText(temp[2]);
             });
 
             detail_btn.setOnAction(event -> {
                 try {
-                    filmList selected = film_list.getSelectionModel().getSelectedItem();
-                    Userchoice.setFilmID(selected.film_id);
+                    String selected = film_list.getSelectionModel().getSelectedItem();
+                    Iterator<String[]> ite = filmliststring.iterator();
+                    String[] temp = null;
+                    while (ite.hasNext()) {
+                        temp = ite.next();
+                        if (temp[1].equals(selected)) {
+                            break;
+                        }
+                    }
+                    Userchoice.setFilmID(temp[0]);
                     Parent parent = FXMLLoader.load(getClass().getResource("moviedetail.fxml"));
                     Scene scene = new Scene(parent);
                     Stage primaryStage = (Stage) detail_btn.getScene().getWindow();
@@ -141,8 +157,16 @@ public class CustomerMainController implements Initializable {
 
             rev_btn.setOnAction(event -> {
                 try {
-                    filmList selected = film_list.getSelectionModel().getSelectedItem();
-                    Userchoice.setFilmID(selected.film_id);
+                    String selected = film_list.getSelectionModel().getSelectedItem();
+                    Iterator<String[]> ite = filmliststring.iterator();
+                    String[] temp = null;
+                    while (ite.hasNext()) {
+                        temp = ite.next();
+                        if (temp[1].equals(selected)) {
+                            break;
+                        }
+                    }
+                    Userchoice.setFilmID(temp[0]);
                     Parent parent = FXMLLoader.load(getClass().getResource("reservation.fxml"));
                     Scene scene = new Scene(parent);
                     Stage primaryStage = (Stage) detail_btn.getScene().getWindow();
@@ -151,10 +175,8 @@ public class CustomerMainController implements Initializable {
                     e.printStackTrace();
                 }
             });
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }
