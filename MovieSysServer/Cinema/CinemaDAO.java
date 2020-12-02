@@ -92,9 +92,7 @@ public class CinemaDAO {
 
 		try {
 			conn = getConnection();
-			String SQL = "SELECT * FROM SCREENS WHERE (\"AUDI_ID\" IN "
-					+ "(SELECT AUDI_ID FROM AUDITORIUMS WHERE THEATER_ID=" + theater_id + "))" + " AND FILM_ID=" + movid
-					+ " AND SCREEN_STARTTIME>SYSDATE ORDER BY SCREEN_STARTTIME";
+			String SQL = "SELECT * FROM SCREENS WHERE (AUDI_ID IN (SELECT AUDI_ID FROM AUDITORIUMS WHERE THEATER_ID= ? )) AND FILM_ID= ? AND SCREEN_STARTTIME>SYSDATE ORDER BY SCREEN_STARTTIME";
 			pstmt = conn.prepareStatement(SQL);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -984,8 +982,8 @@ public class CinemaDAO {
 	public static Connection getConnection() {
 		Connection conn = null;
 		try {
-			String user = "movieAdmin";
-			String pw = "movieadmin";
+			String user = "test1";
+			String pw = "1234";
 			String url = "jdbc:oracle:thin:@localhost:1521:xe";
 
 			Class.forName("oracle.jdbc.driver.OracleDriver");
