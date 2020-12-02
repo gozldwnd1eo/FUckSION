@@ -63,13 +63,16 @@ public class LoginServer {
 
 		while (true) {
 			MemberDAO mdao = new MemberDAO();
+			CustomerDTO cdto = new CustomerDTO();
+
 			CinemaDAO cinemadao = new CinemaDAO();
 			ScreenDTO screendto = new ScreenDTO();
 			AuditoriumDTO audidto = new AuditoriumDTO();
 			TheaterDTO theaterdto = new TheaterDTO();
 			ResvDTO resvdto = new ResvDTO();
-			CustomerDTO cdto = new CustomerDTO();
+
 			FilmDAO fdao = new FilmDAO();
+			FilmDTO filmdto = new FilmDTO();
 			ReviewDTO reviewdto = new ReviewDTO();
 
 			Protocol protocol = new Protocol(); // 새 Protocol 객체 생성 (기본 생성자)
@@ -182,6 +185,12 @@ public class LoginServer {
 							///////////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_AREA:
 							filmID = protocol.getFlimID();
+
+							ArrayList<String> arr = new ArrayList<String>();
+							arr = fdao.displayArea(filmID);
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_AREA_OK);
+							// protocol.setArea(arr);
+							os.write(protocol.getPacket());
 							break;
 
 						// 영화관 조회 3
@@ -190,6 +199,12 @@ public class LoginServer {
 							String[] area_filmID = protocol.getTheaterArea_FlimID();
 							area = area_filmID[0];
 							filmID = area_filmID[1];
+							theaterdto.setTheater_area(area);
+							// theaterdto.set
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_THEATER_OK);
+							// protocol.set
+							os.write(protocol.getPacket());
 							break;
 
 						// 상영시간 조회4
@@ -198,53 +213,95 @@ public class LoginServer {
 							String[] theaterID_filmID = protocol.getTheaterID_FlimID();
 							theaterID = theaterID_filmID[0];
 							filmID = theaterID_filmID[1];
+
+							ArrayList<ScreenDTO> arr_screen = new ArrayList<ScreenDTO>();
+							arr_screen = cinemadao.displayScreen(filmID, theaterID);
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_OK);
+							// protocol.set
+							os.write(protocol.getPacket());
+
 							break;
 
 						// 모든 영화관 조회 5
 						///////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_ALL_THEATER:
-
+							ArrayList<TheaterDTO> arr_alltheater = new ArrayList<TheaterDTO>();
+							arr_alltheater = cinemadao.displayTheater();
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_THEATER_OK);
+							// protocol.setTheaterList(arr_alltheater);
+							os.write(protocol.getPacket());
 							break;
 
 						// 해당 영화관의 상영시간표 조회 6
 						///////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TABLE:
 							theaterID = protocol.getTheaterID();
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
+									Protocol.CODE_PT_RES_LOOKUP_SCREEN_TABLE_OK);
+							// protocol.set
+							os.write(protocol.getPacket());
+
 							break;
 
 						// 현재 좌석 상황 조회 요청 7
 						/////////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_SEAT_SITUATION:
 							screenID = protocol.getScreenID();
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
+									Protocol.CODE_PT_RES_LOOKUP_SEAT_SITUATION_OK);
+							// protocol.setSeatNumList
+							os.write(protocol.getPacket());
 							break;
 
 						// 영화의 상세정보 조회 요청 8
 						///////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_FILM_DETAIL:
 							filmID = protocol.getFlimID();
+
+							filmdto = fdao.displayMovieDetail(filmID);
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_FILM_DETAIL_OK);
+							// protocol.setScreenDetails
+							os.write(protocol.getPacket());
 							break;
 
 						// 내 정보 조회 요청 9
 						case Protocol.CODE_PT_REQ_LOOKUP_MY_INFO:
 							id = protocol.getID();
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_MY_INFO_OK);
+							// protocol.setMemberDetails
+							os.write(protocol.getPacket());
 							break;
 
 						// 자신이 작성한 리뷰 리스트 조회 10
 						case Protocol.CODE_PT_REQ_LOOKUP_MY_REVIEWS:
 							id = protocol.getID();
+
+							reviewdto = fdao.displayReviewDetail(id);
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_MY_REVIEWS_OK);
+							// protocol.setMemberReviews
+							os.write(protocol.getPacket());
 							break;
 
 						// 예매 내역 조회 요청 11
 						case Protocol.CODE_PT_REQ_LOOKUP_RESV_LIST:
 							id = protocol.getID();
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_RESV_LIST_OK);
+							// protocol.set 없는데?
+							os.write(protocol.getPacket());
 							break;
 
 						// 현재 상영 중 영화 조회 요청 12
 						case Protocol.CODE_PT_REQ_LOOKUP_ALL_SCREEN:
 							ArrayList<Protocol> packetList = new ArrayList<Protocol>();
-							String filmResult = fdao.displayScreenList();
 							protocol = new Protocol(protocol.PT_RES_LOOKUP, protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
-
+							String filmResult = fdao.displayScreenList();
 							packetList = protocol.setScreenList(filmResult);
 							Iterator<Protocol> iterator = packetList.iterator();
 							int count = 0;
@@ -259,16 +316,27 @@ public class LoginServer {
 						// 담당자용 영화관 조회 요청 13
 						case Protocol.CODE_PT_REQ_LOOKUP_THEATER_FOR_ADMIN:
 							id = protocol.getID();
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
+									Protocol.CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_OK);
+							// protocol.set
+							os.write(protocol.getPacket());
 							break;
 
 						// 상영관 조회 요청 14
 						case Protocol.CODE_PT_REQ_LOOKUP_AUDI:
 							theaterID = protocol.getTheaterID();
+							// 이것도 없는 거 같음
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_AUDI_OK);
+							// protocol.set
+							os.write(protocol.getPacket());
 							break;
 
 						// 영화관별 매출 조회 요청 15
 						case Protocol.CODE_PT_REQ_LOOKUP_THEATER_SALES:
 							theaterID = protocol.getTheaterID();
+
 							break;
 
 						// 총 매출 조회 요청 16
