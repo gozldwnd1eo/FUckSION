@@ -135,7 +135,7 @@ public class FilmDAO {
 		ResultSet rs = null;
 		String result = "";
 
-		String SQLcu = "select *,avg(rev_starpoint) from FILMS where film_id=(select distinct film_id from screen)";
+		String SQLcu = "select films.film_id,films.film_name,films.film_resvrate, avg(reviews.rev_starpoint)as rev_starpoint from films,reviews where (films.film_id in (select distinct film_id from screens) and films.film_id = reviews.film_id(+)) group by  films.film_id,films.film_name,films.film_resvrate, rev_starpoint";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQLcu);
