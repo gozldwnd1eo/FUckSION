@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
 
 public class FilmDAO {
 	boolean insertResult = false;
@@ -16,8 +15,9 @@ public class FilmDAO {
 	private Connection conn = null;
 	private ResultSet rs = null;
 
-	public ArrayList<String> displayArea(String filmId) { // 지역 조회
-		ArrayList<String> arr = new ArrayList<String>();
+	String result = "";
+
+	public String displayArea(String filmId) { // 지역 조회
 		String SQL = "SELECT DISTINCT THEATER_AREA FROM THEATERS WHERE THEATER_ID IN (SELECT THEATER_ID FROM AUDITORIUMS WHERE AUDI_ID IN(SELECT AUDI_ID FROM SCREENS WHERE FILM_ID='?')) ORDER BY THEATER_AREA";
 
 		try {
@@ -26,7 +26,7 @@ public class FilmDAO {
 			pstmt.setString(1, filmId);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				arr.add(rs.getString("THEATER_AREA"));
+				result=result+rs.getString("THEATER_AREA")+"~";
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -51,7 +51,7 @@ public class FilmDAO {
 					throw new RuntimeException(e.getMessage());
 				}
 		}
-		return arr;
+		return result;
 	}
 
 	public boolean insertFilm(FilmDTO dto) { // 영화 추가
@@ -131,9 +131,7 @@ public class FilmDAO {
 	}
 
 	public String displayScreenList() { // 상영영화리스트 조회
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String result = "";
+		
 
 		String SQLcu = "select films.film_id,films.film_name,films.film_resvrate, avg(reviews.rev_starpoint)as rev_starpoint from films,reviews where (films.film_id in (select distinct film_id from screens) and films.film_id = reviews.film_id(+)) group by  films.film_id,films.film_name,films.film_resvrate, rev_starpoint";
 		try {
@@ -175,9 +173,7 @@ public class FilmDAO {
 		return result;
 	}
 
-	public ArrayList<FilmDTO> displayMovie() { // 영화 조회
-		ArrayList<FilmDTO> arr = new ArrayList<FilmDTO>();
-		FilmDTO dto = new FilmDTO();
+	public String displayMovie() { // 영화 조회
 		String SQL = "SELECT * FROM FILMS WHERE (FILM_OPENINGDATE<SYSDATE) AND (FILM_OPENINGDATE+30>SYSDATE) ORDER BY FILM_OPENINGDATE DESC";
 
 		try {
@@ -185,14 +181,13 @@ public class FilmDAO {
 			pstmt = conn.prepareStatement(SQL);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				dto.setFilm_name(rs.getString("FILM_NAME"));
-				dto.setFilm_teaser(rs.getString("FILM_TEASER"));
-				dto.setFilm_info(rs.getString("FILM_INFO"));
-				dto.setFilm_genre(rs.getString("FILM_GENRE"));
-				dto.setFilm_openingDate(rs.getString("FILM_OPENINGDATE"));
-				dto.setFilm_summary(rs.getString("FILM_SUMMARY"));
-				dto.setFilm_poster(rs.getByte("FILM_POSTER"));
-				arr.add(dto);
+				result += rs.getString("FILM_NAME") + "\\";
+				result += rs.getString("FILM_TEASER") + "\\"; 
+				result += rs.getString("FILM_INFO") + "\\"; 
+				result += rs.getString("FILM_GENRE") + "\\"; 
+				result += rs.getString("FILM_OPENINGDATE") + "\\"; 
+				result += rs.getString("FILM_SUMMARY") + "\\"; 
+				//result += rs.getString("FILM_POSTER") + "|"; 
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -217,26 +212,25 @@ public class FilmDAO {
 					throw new RuntimeException(e.getMessage());
 				}
 		}
-		return arr;
+		return result;
 	}
 
-	public FilmDTO displayMovieDetail(String inputFilmId) { // 영화의 상세정보 조회
-		FilmDTO dto = new FilmDTO();
+	public String displayMovieDetail(String inputFilmId) { // 영화의 상세정보 조회
 		String SQL = "SELECT * FROM FILMS WHERE (FILM_OPENINGDATE<SYSDATE) AND (FILM_OPENINGDATE+30>SYSDATE) AND FILM_ID=? ORDER BY FILM_OPENINGDATE DESC";
 
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, dto.getFilm_id());
+			pstmt.setString(1, inputFilmId);
 			rs = pstmt.executeQuery();
 
-			dto.setFilm_name(rs.getString("FILM_NAME"));
-			dto.setFilm_teaser(rs.getString("FILM_TEASER"));
-			dto.setFilm_info(rs.getString("FILM_INFO"));
-			dto.setFilm_genre(rs.getString("FILM_GENRE"));
-			dto.setFilm_openingDate(rs.getString("FILM_OPENINGDATE"));
-			dto.setFilm_summary(rs.getString("FILM_SUMMARY"));
-			dto.setFilm_poster(rs.getByte("FILM_POSTER"));
+			result += rs.getString("FILM_NAME") + "\\";
+			result += rs.getString("FILM_TEASER") + "\\"; 
+			result += rs.getString("FILM_INFO") + "\\"; 
+			result += rs.getString("FILM_GENRE") + "\\"; 
+			result += rs.getString("FILM_OPENINGDATE") + "\\"; 
+			result += rs.getString("FILM_SUMMARY") + "\\"; 
+			result += rs.getString("FILM_POSTER") + "|"; 
 
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -261,7 +255,7 @@ public class FilmDAO {
 					throw new RuntimeException(e.getMessage());
 				}
 		}
-		return dto;
+		return result;
 	}
 
 	public boolean deleteFilm(String filmId) { // 영화 삭제
@@ -362,10 +356,7 @@ public class FilmDAO {
 		return updateResult;
 	}
 
-	public ArrayList<ReviewDTO> displayReview(String movid) { // 리뷰 조회
-
-		ArrayList<ReviewDTO> arr = new ArrayList<ReviewDTO>();
-		ReviewDTO dto = new ReviewDTO();
+	public String displayReview(String movid) { // 리뷰 조회
 		String SQL = "SELECT * FROM REVIEWS WHERE FILM_ID=" + movid + " ORDER BY REV_DATE DESC";
 
 		try {
@@ -373,12 +364,11 @@ public class FilmDAO {
 			pstmt = conn.prepareStatement(SQL);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				dto.setCus_id(rs.getString("MEM_ID"));
-				dto.setFilm_id(rs.getString("FILM_ID"));
-				dto.setRev_date(rs.getString("REV_DATE"));
-				dto.setRev_content(rs.getString("REV_CONTENT"));
-				dto.setRev_starPoint(rs.getInt("REV_rev_STARPOINT"));
-				arr.add(dto);
+				result += rs.getString("MEM_ID") + "\\";
+				result += rs.getString("FILM_ID") + "\\"; 
+				result += rs.getString("REV_DATE") + "\\"; 
+				result += rs.getString("REV_CONTENT") + "\\"; 
+				result += rs.getString("REV_rev_STARPOINT") + "|"; 
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -403,23 +393,22 @@ public class FilmDAO {
 					throw new RuntimeException(e.getMessage());
 				}
 		}
-		return arr;
+		return result;
 	}
 
-	public ReviewDTO displayReviewDetail(String cusId) { // 내가 작성한 리뷰 조회
-
-		ReviewDTO dto = new ReviewDTO();
+	public String displayReviewDetail(String cusId) { // 내가 작성한 리뷰 조회
 		String SQL = "SELECT * FROM REVIEWS WHERE MEM_ID=" + cusId + " ORDER BY REV_DATE DESC";
 
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
 			rs = pstmt.executeQuery();
-			dto.setCus_id(rs.getString("MEM_ID"));
-			dto.setFilm_id(rs.getString("FILM_ID"));
-			dto.setRev_date(rs.getString("REV_DATE"));
-			dto.setRev_content(rs.getString("REV_CONTENT"));
-			dto.setRev_starPoint(rs.getInt("REV_rev_STARPOINT"));
+
+			result += rs.getString("MEM_ID") + "\\";
+			result += rs.getString("FILM_ID") + "\\"; 
+			result += rs.getString("REV_DATE") + "\\"; 
+			result += rs.getString("REV_CONTENT") + "\\"; 
+			result += rs.getString("REV_rev_STARPOINT") + "|"; 
 
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -444,7 +433,7 @@ public class FilmDAO {
 					throw new RuntimeException(e.getMessage());
 				}
 		}
-		return dto;
+		return result;
 	}
 
 	public boolean deleteReview(String id) { // 리뷰 삭제
