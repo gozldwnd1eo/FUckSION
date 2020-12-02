@@ -18,7 +18,7 @@ public class FilmDAO {
 	String result = "";
 
 	public String displayArea(String filmId) { // 지역 조회
-		String SQL = "SELECT DISTINCT THEATER_AREA FROM THEATERS WHERE THEATER_ID IN (SELECT THEATER_ID FROM AUDITORIUMS WHERE AUDI_ID IN(SELECT AUDI_ID FROM SCREENS WHERE FILM_ID='?')) ORDER BY THEATER_AREA";
+		String SQL = "SELECT DISTINCT THEATER_AREA FROM THEATERS WHERE THEATER_ID IN (SELECT THEATER_ID FROM AUDITORIUMS WHERE AUDI_ID IN(SELECT AUDI_ID FROM SCREENS WHERE FILM_ID= ? )) ORDER BY THEATER_AREA";
 
 		try {
 			conn = getConnection();
@@ -26,7 +26,7 @@ public class FilmDAO {
 			pstmt.setString(1, filmId);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				result = result + rs.getString("THEATER_AREA") + "\\|";
+				result = result + rs.getString("THEATER_AREA") + "|";
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
