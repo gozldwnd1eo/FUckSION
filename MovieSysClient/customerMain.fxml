@@ -11,8 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-fx:controller="MovieSysClient.CustomerMainController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MovieSysClient.CustomerMainController">
   <tabs>
     <Tab text="영화">
       <content>
@@ -22,9 +21,11 @@ fx:controller="MovieSysClient.CustomerMainController">
                   <Button fx:id="detail_btn" layoutX="275.0" layoutY="332.0" mnemonicParsing="false" text="상세정보" />
                   <Button fx:id="rev_btn" layoutX="275.0" layoutY="366.0" mnemonicParsing="false" text="예매하기" />
                   <ImageView fitHeight="210.0" fitWidth="150.0" layoutX="232.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="filmname" layoutX="283.0" layoutY="231.0" text="영화제목" />
+                  <Label fx:id="filmname" layoutX="282.0" layoutY="230.0" text="영화제목" />
                   <Label fx:id="film_starpt" layoutX="293.0" layoutY="254.0" text="별점" />
                   <Label fx:id="filmrevrate" layoutX="287.0" layoutY="279.0" text="예매율" />
+                  <Label layoutX="246.0" layoutY="254.0" text="별점 : " />
+                  <Label layoutX="238.0" layoutY="279.0" text="예매율 : " />
                </children></AnchorPane>
       </content>
     </Tab>

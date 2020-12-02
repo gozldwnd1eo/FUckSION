@@ -14,16 +14,16 @@
    <children>
       <ImageView fx:id="poster" fitHeight="176.0" fitWidth="139.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
       <Line endX="-62.5" endY="280.0" layoutX="231.0" layoutY="120.0" startX="-62.5" startY="-120.0" />
-      <Button layoutX="530.0" layoutY="364.0" mnemonicParsing="false" text="결제하기" />
-      <TextArea editable="false" layoutX="192.0" layoutY="14.0" prefHeight="125.0" prefWidth="387.0" />
+      <Button fx:id="pay_btn" layoutX="530.0" layoutY="364.0" mnemonicParsing="false" text="결제하기" />
+      <TextArea fx:id="paydatafield" editable="false" layoutX="192.0" layoutY="14.0" prefHeight="125.0" prefWidth="387.0" />
       <Button layoutX="192.0" layoutY="179.0" mnemonicParsing="false" text="계좌이체" />
       <Text layoutX="182.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="결제방법" />
       <Line endX="331.0" layoutX="269.0" layoutY="149.0" startX="-100.0" />
       <Line endX="331.0" layoutX="269.0" layoutY="212.0" startX="-100.0" />
-      <TextField editable="false" layoutX="192.0" layoutY="244.0" prefHeight="22.0" prefWidth="258.0" />
+      <TextField fx:id="customeraccount" editable="false" layoutX="192.0" layoutY="244.0" prefHeight="22.0" prefWidth="258.0" />
       <Text layoutX="182.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="고객 계좌번호" />
       <Label layoutX="182.0" layoutY="323.0" text="결제금액 : " />
-      <TextField layoutX="241.0" layoutY="319.0" prefHeight="22.0" prefWidth="127.0" />
-      <CheckBox layoutX="221.0" layoutY="367.0" mnemonicParsing="false" text="위의 예매내역과 결제금액을 모두 확인하셨습니까? " underline="true" />
+      <TextField fx:id="amount" layoutX="241.0" layoutY="319.0" prefHeight="22.0" prefWidth="127.0" />
+      <CheckBox fx:id="confirm" layoutX="184.0" layoutY="367.0" mnemonicParsing="false" text="위의 예매내역과 결제금액을 모두 확인하셨습니까? " underline="true" />
    </children>
 </AnchorPane>

@@ -131,13 +131,7 @@ public class CustomerMainController implements Initializable {
             ObservableList<String> nowscreenlist = FXCollections.observableArrayList();
 
             for (int i = 0; i < filmliststring.size(); i++) {
-                filmList newfilm = new filmList();
                 String[] line = filmliststring.get(i);
-                // newfilm.setFilm_id(line[0]);
-                // newfilm.setFilm_name(line[1]);
-                // // newfilm.setFilm_poster(line[2]);
-                // newfilm.setRev_rate(line[2]);
-                // newfilm.setStarpt(line[3]);
                 nowscreenlist.add(line[1]);
             }
             film_list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

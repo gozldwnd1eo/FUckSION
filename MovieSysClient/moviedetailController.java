@@ -45,7 +45,7 @@ public class moviedetailController implements Initializable {
         try {
             Myconn.os.write(protocol.getPacket());
 
-            protocol=new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FILM_DETAIL_OK)
+            protocol=new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_FILM_DETAIL_OK);
             buf=protocol.getPacket();
 
             Myconn.is.read(buf);
@@ -54,6 +54,7 @@ public class moviedetailController implements Initializable {
             int packetCode=buf[1];
 
             // 여기서 프로토콜에 받은 정보 꺼내서 레이블들 이름 다 변경해줌
+            String 
             protocol.
 
             String filmname;

@@ -16,11 +16,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class reservationController implements Initializable {
 
@@ -230,11 +234,20 @@ public class reservationController implements Initializable {
                     selectedSeat.add(temp.getText());
                 }
             }
-            String seatstring=
-            Userchoice.setSchedule(schedule);
-            
-        });
+            String seatstring="";
+            for(int i=0;i<selectedSeat.size();i++){
+                seatstring+=selectedSeat.get(i);
+            }
+            if(seatstring.length()<1){
+                return;
+            }
+            Userchoice.setSelectSeat(seatstring);
 
+            Parent parent=FXMLLoader.load(getClass().getResource("pay.fxml"));
+            Scene scene = new Scene(parent);
+            Stage primaryStage=(Stage)nextbtn.getScene().getWindow();
+            primaryStage.setScene(scene);
+        });
         }catch (IOException e){
             e.printStackTrace();
         }
