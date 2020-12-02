@@ -838,6 +838,13 @@ public class Protocol implements Serializable {
 		return splited;// (상영관~상영시간)이므로 한번 더 잘라야함
 	}
 	
+	public String[] getBody()
+	{
+		byte[] b = new byte[2];
+		System.arraycopy(packet, LEN_PROTOCOL_TYPE+LEN_TYPE_CODE, b, 0, LEN_PROTOCOL_BODYLEN);
+		protocolBodyLen = b.int;
+		String body = new String(packet,LEN_PROTOCOL_TYPE+LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN+LEN_PROTOCOL_FRAG+LEN_PROTOCOL_LAST+LEN_PROTOCOL_SEQNUM,)
+	}
 	public ArrayList<Protocol> setList(String list) {
 		ArrayList<Protocol> arr = new ArrayList<Protocol>();
 
