@@ -630,7 +630,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getName_Email() { // 위에꺼 세트..by 규철
+	public String[] getName_Email() { 
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
 				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
@@ -645,7 +645,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getID_Name_Email() { // 위에꺼 세트..by 규철
+	public String[] getID_Name_Email() { 
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
@@ -929,7 +929,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String getScreenDetails()// 위에꺼 세트 by 규철
+	public String getListBody()// 위에꺼 세트 by 규철
 	{
 		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
 				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM, getProtocolBodyLen());

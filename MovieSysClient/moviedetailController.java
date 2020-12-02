@@ -8,11 +8,15 @@ import java.util.ResourceBundle;
 
 import MovieSysServer.LoginProtocol.Protocol;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 
 public class moviedetailController implements Initializable {
@@ -42,10 +46,13 @@ public class moviedetailController implements Initializable {
     private Label duringtime;
 
     @FXML
-    private TextField summary;
+    private TextArea summary;
 
     @FXML
     private Hyperlink tieser;
+
+    @FXML
+    private Button before_btn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,7 +79,7 @@ public class moviedetailController implements Initializable {
                 last = buf[6];
                 int packetSeqNum = buf[7];
                 protocol.setPacket(packetType, packetCode, packetBodyLen, packetFlag, last, packetSeqNum, buf);
-                details += protocol.getScreenDetails();
+                details += protocol.getListBody();
                 if (last == 1) {
                     stopread = true;
                 }
@@ -89,14 +96,23 @@ public class moviedetailController implements Initializable {
             duringtime.setText(staffs[4]);
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         tieser.setOnAction(event -> {
             try {
                 Desktop.getDesktop().browse(new URL(tieser.getText()).toURI());
             } catch (IOException | URISyntaxException e) {
-                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+        before_btn.setOnAction(event->{
+            Parent parent;
+            try {
+                parent = FXMLLoader.load(getClass().getResource("customerMain.fxml"));
+                Scene scene = new Scene(parent);
+                Stage primaryStage=(Stage)before_btn.getScene().getWindow();
+                primaryStage.setScene(scene);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });
