@@ -727,12 +727,15 @@ public class Protocol implements Serializable {
 		int headLength = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
 				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM;
 		int dataLength = LEN_MAX - headLength;
-
 		int srcBegin = 0;
 		int srcEnd = 0;
 		String packetList = "";
+		int i = list.getBytes().length;
 
-		int i = list.length();
+		byte[] b = new byte[2];
+		b[0] = (byte) ((i & 0x0000ff00) >> 8);
+		b[1] = (byte) (i & 0x000000ff);
+
 		int seqNum = 0;
 		packet = new byte[LEN_MAX];
 		for (; dataLength < i; i -= dataLength, seqNum++) {
@@ -743,7 +746,7 @@ public class Protocol implements Serializable {
 
 			packet[0] = PT_RES_LOOKUP;
 			packet[1] = CODE_PT_RES_LOOKUP_ALL_SCREEN_OK;
-			System.arraycopy(dataLength, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, 4);
+			System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
 			packet[5] = 1;
 			packet[6] = 0;
 			packet[7] = (byte) seqNum;
@@ -758,7 +761,9 @@ public class Protocol implements Serializable {
 
 			packet[0] = PT_RES_LOOKUP;
 			packet[1] = CODE_PT_RES_LOOKUP_ALL_SCREEN_OK;
-			packet[3] = (byte) dataLength;
+			System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
+
+			// packet[3] = (byte) dataLength;
 			packet[5] = 1;
 			packet[6] = 1;
 			packet[7] = (byte) seqNum;
