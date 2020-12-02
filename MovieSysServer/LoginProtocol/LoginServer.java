@@ -228,10 +228,9 @@ public class LoginServer {
 						// 모든 영화관 조회 5
 						///////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_ALL_THEATER:
-							ArrayList<TheaterDTO> arr_alltheater = new ArrayList<TheaterDTO>();
-							arr_alltheater = cinemadao.displayTheater();
+							String theaterResult = cinemadao.displayTheater();
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_THEATER_OK);
-							// protocol.setTheaterList(arr_alltheater);
+							// protocol.setTheaterList(theaterResult);
 							os.write(protocol.getPacket());
 							break;
 
@@ -240,6 +239,7 @@ public class LoginServer {
 						case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TABLE:
 							theaterID = protocol.getTheaterID();
 
+							String screenresult = cinemadao.displayScreenTable(theaterID);
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
 									Protocol.CODE_PT_RES_LOOKUP_SCREEN_TABLE_OK);
 							// protocol.set
@@ -252,6 +252,8 @@ public class LoginServer {
 						case Protocol.CODE_PT_REQ_LOOKUP_SEAT_SITUATION:
 							screenID = protocol.getScreenID();
 
+							String seatsituationResult = cinemadao.displaySeatSituation(screenID);
+
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
 									Protocol.CODE_PT_RES_LOOKUP_SEAT_SITUATION_OK);
 							// protocol.setSeatNumList
@@ -261,18 +263,35 @@ public class LoginServer {
 						// 영화의 상세정보 조회 요청 8
 						///////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_FILM_DETAIL:
-							filmID = protocol.getFlimID();
-
-							filmdto = fdao.displayMovieDetail(filmID);
-
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_FILM_DETAIL_OK);
-							// protocol.setScreenDetails
-							os.write(protocol.getPacket());
+							 filmID = protocol.getFlimID();
+							ArrayList<Protocol> packetMovieList = new ArrayList<Protocol>();
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
+							String filmdetailResult = fdao.displayMovieDetail(filmID);
+							packetMovieList = protocol.setScreenList(filmdetailResult);
+							Iterator<Protocol> filmiterator = packetMovieList.iterator();
+							int filmcount = 0;
+							while (filmiterator.hasNext()) {
+								Protocol temp = filmiterator.next();
+								temp = packetMovieList.get(filmcount++);
+								os.write(temp.getPacket());
+							}
+							System.out.println("현재상영조회요청에 대한 응답 보냄");
 							break;
+
+							// filmID = protocol.getFlimID();
+
+							// filmdto = fdao.displayMovieDetail(filmID);
+
+							// protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_FILM_DETAIL_OK);
+							// // protocol.setScreenDetails
+							// os.write(protocol.getPacket());
+							// break;
 
 						// 내 정보 조회 요청 9
 						case Protocol.CODE_PT_REQ_LOOKUP_MY_INFO:
 							id = protocol.getID();
+
+							String myInfoResult = mdao.displayMyInfo(id);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_MY_INFO_OK);
 							// protocol.setMemberDetails
@@ -282,8 +301,9 @@ public class LoginServer {
 						// 자신이 작성한 리뷰 리스트 조회 10
 						case Protocol.CODE_PT_REQ_LOOKUP_MY_REVIEWS:
 							id = protocol.getID();
-
-							reviewdto = fdao.displayReviewDetail(id);
+							
+							String myreviewResult = fdao.displayReviewDetail(id);
+						//	reviewdto = fdao.displayReviewDetail(id);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_MY_REVIEWS_OK);
 							// protocol.setMemberReviews
@@ -293,6 +313,8 @@ public class LoginServer {
 						// 예매 내역 조회 요청 11
 						case Protocol.CODE_PT_REQ_LOOKUP_RESV_LIST:
 							id = protocol.getID();
+
+							String resvResult = cinemadao.displayResvList(id);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_RESV_LIST_OK);
 							// protocol.set 없는데?
@@ -318,6 +340,8 @@ public class LoginServer {
 						// 담당자용 영화관 조회 요청 13
 						case Protocol.CODE_PT_REQ_LOOKUP_THEATER_FOR_ADMIN:
 							id = protocol.getID();
+
+							//String theateradminResult =
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
 									Protocol.CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_OK);
