@@ -7,7 +7,7 @@
         {
             "type": "java",
             "name": "Debug (Launch) - Current File",
-            "vmArgs": "--module-path D:/코드모음집/JAVA/VSCODE/openjfx-11.0.2_windows-x64_bin-sdk/javafx-sdk-11.0.2/lib --add-modules javafx.controls,fxml",
+            "vmArgs": "--module-path D:/코드모음집/JAVA/VSCODE/openjfx-11.0.2_windows-x64_bin-sdk/javafx-sdk-11.0.2/lib --add-modules javafx.controls,javafx.fxml",
             "request": "launch",
             "mainClass": "${file}"
         },
