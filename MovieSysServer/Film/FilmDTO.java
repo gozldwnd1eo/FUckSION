@@ -54,10 +54,10 @@ public class FilmDTO {
 	public void setFilm_summary(String film_summary) {
 		this.film_summary = film_summary;
 	}
-	public byte getFilm_poster() {
+	public String getFilm_poster() {
 		return film_poster;
 	}
-	public void setFilm_poster(byte film_poster) {
+	public void setFilm_poster(String film_poster) {
 		this.film_poster = film_poster;
 	}
 
