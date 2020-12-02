@@ -186,7 +186,7 @@ public class LoginServer {
 						case Protocol.CODE_PT_REQ_LOOKUP_AREA:
 							filmID = protocol.getFlimID();
 
-							ArrayList<Protocol> arr_area = new ArrayList<Protocol>();
+							//ArrayList<Protocol> arr_area = new ArrayList<Protocol>();
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_AREA_OK);
 							String areaResult = fdao.displayArea(filmID);
