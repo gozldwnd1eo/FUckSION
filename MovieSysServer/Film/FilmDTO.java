@@ -9,7 +9,7 @@ public class FilmDTO {
 	private String film_genre; // varchar2(20)	영화장르
 	private String film_openingDate; // date	개봉일
 	private String film_summary; // 			영화줄거리
-	private byte film_poster; // 				영화포스터
+	private String film_poster; // 				영화포스터
 	private double film_resvRate;			//  영화예매율
 	
 	public String getFilm_id() {

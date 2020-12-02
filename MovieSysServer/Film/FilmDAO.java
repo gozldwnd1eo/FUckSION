@@ -142,7 +142,7 @@ public class FilmDAO {
 			while (rs.next()) {
 				result += rs.getString("film_id") + "\\";
 				result += rs.getString("film_name") + "\\"; // 안되면 getString 1
-				// result += rs.getByte("film_poster") + "\\";
+				result += rs.getString("film_poster") + "\\";
 				result += rs.getString("film_resvrate") + "\\";
 				result += rs.getString("rev_starpoint") + "|";
 			}
@@ -187,7 +187,7 @@ public class FilmDAO {
 				result += rs.getString("FILM_GENRE") + "\\"; 
 				result += rs.getString("FILM_OPENINGDATE") + "\\"; 
 				result += rs.getString("FILM_SUMMARY") + "\\"; 
-				//result += rs.getString("FILM_POSTER") + "|"; 
+				result += rs.getString("FILM_POSTER") + "|"; 
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");

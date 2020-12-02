@@ -2,7 +2,6 @@ package MovieSysServer.LoginProtocol;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Protocol implements Serializable {
 	// 프로토콜 타입에 관한 변수
@@ -95,7 +94,7 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_REQ_LOOKUP_ALL_SCREEN = 12; // 현재 상영 중 영화 조회 요청 코드번호
 	public static final int CODE_PT_REQ_LOOKUP_THEATER_FOR_ADMIN = 13; // 담당자용 영화관 조회 요청 코드번호
 	public static final int CODE_PT_REQ_LOOKUP_AUDI = 14; // 상영관 조회 요청 코드번호
-	public static final int CODE_PT_REQ_LOOKUP_THEATER_SALES = 15; // 영화관별 매출 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_SALES_PER_MOVIE = 15; // 영화별 매출 조회 요청 코드번호
 	public static final int CODE_PT_REQ_LOOKUP_TOTAL_SALES = 16; // 총 매출 조회 요청 코드번호
 	public static final int CODE_PT_REQ_LOOKUP_THEATER_CANCEL_RATE = 17; // 영화별 취소율 조회 요청 코드번호
 	public static final int CODE_PT_REQ_LOOKUP_THEATER_RESV_RATE = 18; // 영화별 예매율 조회 요청 코드번호
@@ -132,8 +131,8 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_NO = 22; // 담당자용 영화관 조회 요청 거절 코드번호
 	public static final int CODE_PT_RES_LOOKUP_AUDI_OK = 7; // 상영관 조회 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_AUDI_NO = 8; // 상영관 조회 요청 거절 코드번호
-	public static final int CODE_PT_RES_LOOKUP_THEATER_SALES_OK = 23; // 영화관별 매출 조회 요청 승인 코드번호
-	public static final int CODE_PT_RES_LOOKUP_THEATER_SALES_NO = 24; // 영화관별 매출 조회 요청 거절 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_SALES_PER_MOVIE_OK = 23; // 영화별 매출 조회 요청 승인 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_SALES_PER_MOVIE_NO = 24; // 영화별 매출 조회 요청 거절 코드번호
 	public static final int CODE_PT_RES_LOOKUP_TOTAL_SALES_OK = 25; // 총 매출 조회 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_TOTAL_SALES_NO = 26; // 총 매출 조회 요청 거절 코드번호
 	public static final int CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_OK = 27; // 영화별 취소율 조회 요청 승인 코드번호
@@ -263,7 +262,7 @@ public class Protocol implements Serializable {
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
 									+ LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM];
 							break;
-						case CODE_PT_REQ_LOOKUP_THEATER_SALES:
+						case CODE_PT_REQ_LOOKUP_SALES_PER_MOVIE:
 						case CODE_PT_REQ_LOOKUP_TOTAL_SALES:
 						case CODE_PT_REQ_LOOKUP_THEATER_CANCEL_RATE:
 						case CODE_PT_REQ_LOOKUP_THEATER_RESV_RATE:
@@ -321,7 +320,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_RESV_LIST_NO:
 						case CODE_PT_RES_LOOKUP_ALL_SCREEN_NO:
 						case CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_NO:
-						case CODE_PT_RES_LOOKUP_THEATER_SALES_NO:
+						case CODE_PT_REQ_LOOKUP_SALES_PER_MOVIE_NO:
 						case CODE_PT_RES_LOOKUP_TOTAL_SALES_NO:
 						case CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_NO:
 						case CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_NO:
@@ -342,7 +341,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_ALL_SCREEN_OK:
 
 						case CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_OK:
-						case CODE_PT_RES_LOOKUP_THEATER_SALES_OK:
+						case CODE_PT_REQ_LOOKUP_SALES_PER_MOVIE_OK:
 						case CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_OK:
 						case CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_OK:
 						case CODE_PT_RES_LOOKUP_AREA_OK:
