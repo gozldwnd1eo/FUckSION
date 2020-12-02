@@ -199,7 +199,7 @@ public class MemberDAO {
 	// 	return result;
 	// }
 
-	public boolean selectMemberPassword(String id, String name, String email) {	//비밀번호 조회 kAK
+	public boolean selectMemberPassword(String id, String name, String email) {	//비밀번호 조회 
 		PreparedStatement custmt = null;
 		ResultSet rsCusto = null;
 		boolean loginResult = false;
@@ -313,7 +313,7 @@ public class MemberDAO {
 		return updateresult;
 	}
 
-	public boolean idCheck(String id){	//id중복 KAK
+	public boolean idCheck(String id){	//id중복 
 		PreparedStatement custmt = null;
 		ResultSet rsCusto = null;
 		boolean loginResult = false;
@@ -397,17 +397,17 @@ public class MemberDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, inputMemId);
 			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				result=result+rs.getString("MEM_ID")+"\\";
-				result=result+rs.getString("MEM_PASSWORD")+"\\";
-				result=result+rs.getString("MEM_NAME")+"\\";
-				result=result+rs.getString("MEM_PHONENUM")+"\\";
-				result=result+rs.getString("MEM_ACCOUNT")+"\\";
-				result=result+rs.getString("MEM_GENDER")+"\\";
-				result=result+rs.getString("MEM_MONEY")+"\\";
-				result=result+rs.getString("MEM_EMAIL")+"\\";
-				result=result+rs.getString("MEM_BIRTHDAY")+"|";
-			}
+
+			result=result+rs.getString("MEM_ID")+"\\";
+			result=result+rs.getString("MEM_PASSWORD")+"\\";
+			result=result+rs.getString("MEM_NAME")+"\\";
+			result=result+rs.getString("MEM_PHONENUM")+"\\";
+			result=result+rs.getString("MEM_ACCOUNT")+"\\";
+			result=result+rs.getString("MEM_GENDER")+"\\";
+			result=result+rs.getString("MEM_MONEY")+"\\";
+			result=result+rs.getString("MEM_EMAIL")+"\\";
+			result=result+rs.getString("MEM_BIRTHDAY");
+		
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
@@ -442,10 +442,8 @@ public class MemberDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, inputMemId);
 			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				result=result+rs.getString("MEM_ACCOUNT")+"\\";
-				result=result+rs.getString("MEM_MONEY")+"|";
-			}
+			result=result+rs.getString("MEM_ACCOUNT")+"\\";
+			result=result+rs.getString("MEM_MONEY");
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
@@ -471,6 +469,7 @@ public class MemberDAO {
 		}
 		return result;
 	}
+
 
 	public static Connection getConnection() {
 		Connection conn = null;
