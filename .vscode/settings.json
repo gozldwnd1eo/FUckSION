@@ -1,6 +1,13 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\Users\\류형근\\Downloads\\sqldeveloper-20.2.0.175.1842-x64\\sqldeveloper\\jdbc\\lib\\ojdbc8.jar"
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.base.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.controls.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.fxml.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.graphics.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar"
     ]
 }
