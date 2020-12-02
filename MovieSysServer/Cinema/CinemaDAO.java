@@ -750,8 +750,9 @@ public class CinemaDAO {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
 			rs = pstmt.executeQuery();
+			if (rs.next()) {
 			result=result+rs.getString("total");
-			
+			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();

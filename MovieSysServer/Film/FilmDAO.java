@@ -185,8 +185,8 @@ public class FilmDAO {
 				result += rs.getString("FILM_INFO") + "\\";
 				result += rs.getString("FILM_GENRE") + "\\";
 				result += rs.getString("FILM_OPENINGDATE") + "\\";
-				result += rs.getString("FILM_SUMMARY") + "\\";
-				result += rs.getString("FILM_POSTER") + "|";
+				result += rs.getString("FILM_SUMMARY") + "|";
+				//result += rs.getString("FILM_POSTER") + "|";
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -402,13 +402,13 @@ public class FilmDAO {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
 			rs = pstmt.executeQuery();
-
+			if (rs.next()) {
 			result += rs.getString("MEM_ID") + "\\";
 			result += rs.getString("FILM_ID") + "\\";
 			result += rs.getString("REV_DATE") + "\\";
 			result += rs.getString("REV_CONTENT") + "\\";
 			result += rs.getString("REV_rev_STARPOINT") + "|";
-
+			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
 			sqle.printStackTrace();
