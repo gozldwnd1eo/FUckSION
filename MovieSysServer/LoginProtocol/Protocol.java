@@ -929,7 +929,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String getScreenDetails()// 위에꺼 세트 by 규철
+	public String getListBody()// 위에꺼 세트 by 규철
 	{
 		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
 				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM, getProtocolBodyLen());
