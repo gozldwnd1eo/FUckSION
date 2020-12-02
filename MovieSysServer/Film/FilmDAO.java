@@ -18,7 +18,7 @@ public class FilmDAO {
 
 	public ArrayList<String> displayArea(String filmId) { // 지역 조회
 		ArrayList<String> arr = new ArrayList<String>();
-		String SQL = "SELECT DISTINCT THEATER_AREA FROM THEATERS WHERE THEATER_ID IN (SELECT THEATER_ID FROM AUDITORIUMS WHERE AUDI_ID IN(SELECT AUDI_ID FROM SCREENS WHERE FILM_ID='?')) ORDER BY THEATER_AREA ;";
+		String SQL = "SELECT DISTINCT THEATER_AREA FROM THEATERS WHERE THEATER_ID IN (SELECT THEATER_ID FROM AUDITORIUMS WHERE AUDI_ID IN(SELECT AUDI_ID FROM SCREENS WHERE FILM_ID='?')) ORDER BY THEATER_AREA";
 
 		try {
 			conn = getConnection();
@@ -263,12 +263,12 @@ public class FilmDAO {
 	}
 
 
-	public boolean deleteFilm(String title) { // 영화 삭제
+	public boolean deleteFilm(String filmId) { // 영화 삭제
 		String SQL = "DELETE FROM FILMS WHERE FILM_NAME = ?";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, title);
+			pstmt.setString(1, filmId);
 			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
 			System.out.println("DELETE문에서 예외 발생");
