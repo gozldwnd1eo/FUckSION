@@ -10,8 +10,11 @@ public class MemberDAO {
 
 	boolean insertResult = false;
 	boolean deleteResult = false;
+	boolean updateresult=false;
 	PreparedStatement pstmt = null;
 	Connection conn = null;
+	String result ="";
+	private ResultSet rs = null;
 
 	public boolean insertCustomer(CustomerDTO dto) { // 고객 추가
 
@@ -110,7 +113,7 @@ public class MemberDAO {
 		return loginResult;
 	}
 
-	public String selectMemberID(String name, String email) {
+	public String selectMemberID(String name, String email) { // 아이디 찾기 요청 kak
 		PreparedStatement custmt = null;
 		ResultSet rsCusto = null;
 		String loginResult = "false";
@@ -152,51 +155,51 @@ public class MemberDAO {
 		return loginResult;
 	}
 
-	public String selectScreenList() {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String result = "";
+	// public String selectScreenList() {
+	// 	PreparedStatement pstmt = null;
+	// 	ResultSet rs = null;
+	// 	String result = "";
 
-		String SQLcu = "select *,avg(rev_starpoint) from film where film_id=(select distinct film_id from screen)";
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(SQLcu);
-			rs = pstmt.executeQuery();
+	// 	String SQLcu = "select *,avg(rev_starpoint) from film where film_id=(select distinct film_id from screen)";
+	// 	try {
+	// 		conn = getConnection();
+	// 		pstmt = conn.prepareStatement(SQLcu);
+	// 		rs = pstmt.executeQuery();
 
-			if (rs.next()) {
-				result += rs.getString("film_name") + "\\"; // 안되면 getString 1
-				result += rs.getString("film_poster") + "\\";
-				result += rs.getString("film_resvrate") + "\\";
-				result += rs.getString("rev_starpoint") + "|";
-			}
-		} catch (SQLException sqle) {
-			System.out.println("SQL문에서 예외 발생");
-			sqle.printStackTrace();
-		} finally {
+	// 		if (rs.next()) {
+	// 			result += rs.getString("film_name") + "\\"; // 안되면 getString 1
+	// 			result += rs.getString("film_poster") + "\\";
+	// 			result += rs.getString("film_resvrate") + "\\";
+	// 			result += rs.getString("rev_starpoint") + "|";
+	// 		}
+	// 	} catch (SQLException sqle) {
+	// 		System.out.println("SQL문에서 예외 발생");
+	// 		sqle.printStackTrace();
+	// 	} finally {
 
-			if (rs != null)
-				try {
-					rs.close();
-				} catch (Exception e) {
-					throw new RuntimeException(e.getMessage());
-				}
-			if (pstmt != null)
-				try {
-					pstmt.close();
-				} catch (Exception e) {
-					throw new RuntimeException(e.getMessage());
-				}
-			if (conn != null)
-				try {
-					conn.close();
-				} catch (Exception e) {
-					throw new RuntimeException(e.getMessage());
-				}
-		}
-		return result;
-	}
+	// 		if (rs != null)
+	// 			try {
+	// 				rs.close();
+	// 			} catch (Exception e) {
+	// 				throw new RuntimeException(e.getMessage());
+	// 			}
+	// 		if (pstmt != null)
+	// 			try {
+	// 				pstmt.close();
+	// 			} catch (Exception e) {
+	// 				throw new RuntimeException(e.getMessage());
+	// 			}
+	// 		if (conn != null)
+	// 			try {
+	// 				conn.close();
+	// 			} catch (Exception e) {
+	// 				throw new RuntimeException(e.getMessage());
+	// 			}
+	// 	}
+	// 	return result;
+	// }
 
-	public boolean selectMemberPassword(String id, String name, String email) {	//비밀번호 조회
+	public boolean selectMemberPassword(String id, String name, String email) {	//비밀번호 조회 kAK
 		PreparedStatement custmt = null;
 		ResultSet rsCusto = null;
 		boolean loginResult = false;
@@ -239,7 +242,7 @@ public class MemberDAO {
 		return loginResult;
 	}
 
-	public boolean updateMemPWD(String id, String password){
+	public boolean updateMemPWD(String id, String password){ //비밀번호 재설정 요청
 		String SQL = "UPDATE MEMBERS SET MEM_PASSWORD = \'" + password + "\'  WHERE MEM_ID = \'" + id + "\''";
 
 		try {
@@ -253,8 +256,8 @@ public class MemberDAO {
 		} catch (SQLException sqle) {
 			System.out.println("UPDATE문에서 예외 발생");
 			sqle.printStackTrace();
-			deleteResult = false;
-			return deleteResult;
+			updateresult = false;
+			return updateresult;
 		} finally {
 			if (pstmt != null)
 				try {
@@ -269,8 +272,8 @@ public class MemberDAO {
 					throw new RuntimeException(e.getMessage());
 				}
 		}
-		deleteResult = true;
-		return deleteResult;
+		updateresult = true;
+		return updateresult;
 	}
 
 	public boolean updateMemInfo(String id, String password, String phone, String email, String account){	//회원정보 수정
@@ -290,8 +293,8 @@ public class MemberDAO {
 		} catch (SQLException sqle) {
 			System.out.println("UPDATE문에서 예외 발생");
 			sqle.printStackTrace();
-			deleteResult = false;
-			return deleteResult;
+			updateresult = false;
+			return updateresult;
 		} finally {
 			if (pstmt != null)
 				try {
@@ -306,11 +309,11 @@ public class MemberDAO {
 					throw new RuntimeException(e.getMessage());
 				}
 		}
-		deleteResult = true;
-		return deleteResult;
+		updateresult = true;
+		return updateresult;
 	}
 
-	public boolean idCheck(String id){	//id중복
+	public boolean idCheck(String id){	//id중복 KAK
 		PreparedStatement custmt = null;
 		ResultSet rsCusto = null;
 		boolean loginResult = false;
@@ -354,7 +357,7 @@ public class MemberDAO {
 
 	}
 
-	public boolean deleteCustomer(String id) { // 고객삭제
+	public boolean deleteCustomer(String id) { 	//회원 탈퇴
 		String SQL = "DELETE FROM MEMBERS WHERE MEM_ID = ?";
 
 		try {
@@ -384,6 +387,89 @@ public class MemberDAO {
 		}
 		deleteResult = true;
 		return deleteResult;
+	}
+
+	public String displayMyInfo(String inputMemId) { //내 정보 조회 요청
+		String SQL = "SELECT * FROM MEMBERS WHERE MEM_ID=?";
+
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, inputMemId);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result=result+rs.getString("MEM_ID")+"\\";
+				result=result+rs.getString("MEM_PASSWORD")+"\\";
+				result=result+rs.getString("MEM_NAME")+"\\";
+				result=result+rs.getString("MEM_PHONENUM")+"\\";
+				result=result+rs.getString("MEM_ACCOUNT")+"\\";
+				result=result+rs.getString("MEM_GENDER")+"\\";
+				result=result+rs.getString("MEM_MONEY")+"\\";
+				result=result+rs.getString("MEM_EMAIL")+"\\";
+				result=result+rs.getString("MEM_BIRTHDAY")+"|";
+			}
+		} catch (SQLException sqle) {
+			System.out.println("SELECT문에서 예외 발생");
+			sqle.printStackTrace();
+		} finally {
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		return result;
+	}
+
+	public String displayAccountInfo(String inputMemId) { //계좌 정보 조회 요청
+		String SQL = "SELECT MEM_ACCOUNT, MEM_MONEY FROM MEMBERS WHERE MEM_ID=?";
+
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, inputMemId);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result=result+rs.getString("MEM_ACCOUNT")+"\\";
+				result=result+rs.getString("MEM_MONEY")+"|";
+			}
+		} catch (SQLException sqle) {
+			System.out.println("SELECT문에서 예외 발생");
+			sqle.printStackTrace();
+		} finally {
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		return result;
 	}
 
 	public static Connection getConnection() {
