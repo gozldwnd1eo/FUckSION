@@ -734,13 +734,19 @@ public class Protocol implements Serializable {
 
 		int i = list.length();
 		int seqNum = 0;
+		packet = new byte[LEN_MAX];
 		for (; dataLength < i; i -= dataLength, seqNum++) {
 
 			srcEnd += dataLength + 1;
 			packetList = list.substring(srcBegin, srcEnd);
 			srcBegin += srcEnd;
 
-			this.setPacket(PT_RES_LOOKUP, CODE_PT_RES_LOOKUP_ALL_SCREEN_OK, dataLength, 1, 0, seqNum, this.packet);
+			packet[0] = PT_RES_LOOKUP;
+			packet[1] = CODE_PT_RES_LOOKUP_ALL_SCREEN_OK;
+			packet[3] = (byte) dataLength;
+			packet[5] = 1;
+			packet[6] = 0;
+			packet[7] = (byte) seqNum;
 
 			System.arraycopy(packetList.getBytes(), 0, packet, headLength, dataLength);
 
@@ -749,8 +755,13 @@ public class Protocol implements Serializable {
 		}
 		if (i < dataLength) {
 			packetList = list.substring(srcBegin);
-			this.setPacket(PT_RES_LOOKUP, CODE_PT_RES_LOOKUP_ALL_SCREEN_OK, packetList.getBytes().length, 1, 1, seqNum,
-					this.packet);
+
+			packet[0] = PT_RES_LOOKUP;
+			packet[1] = CODE_PT_RES_LOOKUP_ALL_SCREEN_OK;
+			packet[3] = (byte) dataLength;
+			packet[5] = 1;
+			packet[6] = 1;
+			packet[7] = (byte) seqNum;
 
 			System.arraycopy(packetList.getBytes(), 0, packet, headLength, packetList.getBytes().length);
 

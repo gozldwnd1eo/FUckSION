@@ -244,6 +244,7 @@ public class LoginServer {
 							ArrayList<Protocol> packetList = new ArrayList<Protocol>();
 							String filmResult = fdao.displayScreenList();
 							protocol = new Protocol(protocol.PT_RES_LOOKUP, protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
+
 							packetList = protocol.setScreenList(filmResult);
 							Iterator<Protocol> iterator = packetList.iterator();
 							int count = 0;
