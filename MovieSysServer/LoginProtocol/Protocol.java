@@ -743,7 +743,7 @@ public class Protocol implements Serializable {
 
 			packet[0] = PT_RES_LOOKUP;
 			packet[1] = CODE_PT_RES_LOOKUP_ALL_SCREEN_OK;
-			packet[3] = (byte) dataLength;
+			System.arraycopy(dataLength, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, 4);
 			packet[5] = 1;
 			packet[6] = 0;
 			packet[7] = (byte) seqNum;
