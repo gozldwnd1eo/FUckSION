@@ -190,12 +190,12 @@ public class LoginServer {
 							///////////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_AREA:
 							filmID = protocol.getFlimID();
-
-							// ArrayList<Protocol> arr_area = new ArrayList<Protocol>();
+							String areaResult = fdao.displayArea(filmID);
+							
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_AREA_OK);
-							String areaResult = fdao.displayArea(filmID);
-							// arr_area = protocol.setArea;
+					
+							protocol.setList(areaResult);
 							os.write(protocol.getPacket());
 
 							break;
@@ -209,7 +209,7 @@ public class LoginServer {
 							String theaterresult = cinemadao.displayTheaterByArea(area, filmID);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_THEATER_OK);
-							// protocol.set
+							protocol.setList(theaterresult);
 							os.write(protocol.getPacket());
 							break;
 
@@ -223,7 +223,7 @@ public class LoginServer {
 							String screenResult = cinemadao.displayScreen(filmID, theaterID);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_OK);
-							// protocol.set
+							protocol.setList(screenResult);
 							os.write(protocol.getPacket());
 
 							break;
@@ -233,7 +233,7 @@ public class LoginServer {
 						case Protocol.CODE_PT_REQ_LOOKUP_ALL_THEATER:
 							String theaterResult = cinemadao.displayTheater();
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_THEATER_OK);
-							// protocol.setTheaterList(theaterResult);
+							protocol.setList(theaterResult);
 							os.write(protocol.getPacket());
 							break;
 
@@ -245,7 +245,7 @@ public class LoginServer {
 							String screenresult = cinemadao.displayScreenTable(theaterID);
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
 									Protocol.CODE_PT_RES_LOOKUP_SCREEN_TABLE_OK);
-							// protocol.set
+							protocol.setList(screenresult);
 							os.write(protocol.getPacket());
 
 							break;
@@ -259,7 +259,7 @@ public class LoginServer {
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
 									Protocol.CODE_PT_RES_LOOKUP_SEAT_SITUATION_OK);
-							// protocol.setSeatNumList
+							protocol.setList(seatsituationResult);
 							os.write(protocol.getPacket());
 							break;
 
@@ -284,15 +284,7 @@ public class LoginServer {
 							System.out.println("영화상세정보 요청에 대한 응답 보냄");
 							break;
 
-						// filmID = protocol.getFlimID();
-
-						// filmdto = fdao.displayMovieDetail(filmID);
-
-						// protocol = new Protocol(Protocol.PT_RES_LOOKUP,
-						// Protocol.CODE_PT_RES_LOOKUP_FILM_DETAIL_OK);
-						// // protocol.setScreenDetails
-						// os.write(protocol.getPacket());
-						// break;
+						
 
 						// 내 정보 조회 요청 9
 						case Protocol.CODE_PT_REQ_LOOKUP_MY_INFO:
@@ -301,7 +293,7 @@ public class LoginServer {
 							String myInfoResult = mdao.displayMyInfo(id);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_MY_INFO_OK);
-							// protocol.setMemberDetails
+							protocol.setList(myInfoResult);
 							os.write(protocol.getPacket());
 							break;
 
@@ -310,10 +302,10 @@ public class LoginServer {
 							id = protocol.getID();
 
 							String myreviewResult = fdao.displayReviewDetail(id);
-							// reviewdto = fdao.displayReviewDetail(id);
+						
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_MY_REVIEWS_OK);
-							// protocol.setMemberReviews
+							protocol.setList(myreviewResult);
 							os.write(protocol.getPacket());
 							break;
 
@@ -324,7 +316,7 @@ public class LoginServer {
 							String resvResult = cinemadao.displayResvList(id);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_RESV_LIST_OK);
-							// protocol.set 없는데?
+							protocol.setList(resvResult);
 							os.write(protocol.getPacket());
 							break;
 
@@ -333,7 +325,7 @@ public class LoginServer {
 
 							System.out.println("현재상영조회요청 받음");
 
-							protocol = new Protocol(protocol.PT_RES_LOOKUP, protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
 
 							String filmResult = fdao.displayScreenList();
 							packetList = protocol.setScreenList(filmResult);
@@ -355,7 +347,7 @@ public class LoginServer {
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
 									Protocol.CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_OK);
-							// protocol.set
+							protocol.setList(theateradminResult);
 							os.write(protocol.getPacket());
 							break;
 
@@ -366,38 +358,55 @@ public class LoginServer {
 							String audiResult = cinemadao.displayAuditorium(theaterID);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_AUDI_OK);
-							// protocol.set
+							protocol.setList(audiResult);
 							os.write(protocol.getPacket());
 							break;
 
-						// 영화관별 매출 조회 요청 15
-						// case Protocol.CODE_PT_REQ_LOOKUP_THEATER_SALES:
-						// theaterID = protocol.getTheaterID();
+						//영화별 매출 조회 요청 15
+						case Protocol.CODE_PT_REQ_LOOKUP_SALES_PER_MOVIE :
+						filmID = protocol.getFlimID();
 
-						// break;
+						String salesPerMovieResult = cinemadao.displaySalesPerMovie();
+
+						protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_SALES_PER_MOVIE_OK);
+						protocol.setList(salesPerMovieResult);
+						os.write(protocol.getPacket());
+
+						break;
 
 						// 총 매출 조회 요청 16
 						case Protocol.CODE_PT_REQ_LOOKUP_TOTAL_SALES:
 							String allsales = cinemadao.displayAllSales();
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_TOTAL_SALES_OK);
-							// protocol.set
+							protocol.setList(allsales);
 							os.write(protocol.getPacket());
 							break;
 
 						// 영화별 취소율 조회 요청 17
 						case Protocol.CODE_PT_REQ_LOOKUP_THEATER_CANCEL_RATE:
 							String cancelrate = cinemadao.displayCancelRatePerMovie();
-							// protocol.set
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_OK);
+							protocol.setList(cancelrate);
 							os.write(protocol.getPacket());
 							break;
 
 						// 영화별 예매율 조회 요청 18
 						case Protocol.CODE_PT_REQ_LOOKUP_THEATER_RESV_RATE:
+							String resvrate = cinemadao.displayResvRatePerMovie();
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_OK);
+							protocol.setList(resvrate);
+							os.write(protocol.getPacket());
 							break;
 
 						// 계좌 조회 요청 19
 						case Protocol.CODE_PT_REQ_LOOKUP_ACCOUNT:
+							id = protocol.getID();
+
+							String accountResult = mdao.displayAccountInfo(id);
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ACCOUNT_OK);
+							protocol.setList(accountResult);
+							os.write(protocol.getPacket());
 							break;
 
 					}
@@ -702,7 +711,7 @@ public class LoginServer {
 							}
 
 							// 상영관 변경 14
-							////////////////////////////////////////////////// dao 미완성
+							
 						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_AUDI:
 							String[] audiID_audiNum_theaterID_seatcnt = protocol.getChange_Audi();
 							audiID = audiID_audiNum_theaterID_seatcnt[0];
@@ -710,7 +719,12 @@ public class LoginServer {
 							theaterID = audiID_audiNum_theaterID_seatcnt[2];
 							seatcnt = audiID_audiNum_theaterID_seatcnt[3];
 
-							boolean updateAudi = true;
+							audidto.setAudi_id(audiID);
+							audidto.setAudi_num(Integer.parseInt(audiNum));
+							audidto.setTheater_id(theaterID);
+							audidto.setAudi_seatCnt(Integer.parseInt(audiNum));
+
+							boolean updateAudi = cinemadao.updateAudi(audidto);
 							if (updateAudi == false) {
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_CHANGE_AUDI_NO);
@@ -768,7 +782,7 @@ public class LoginServer {
 							}
 
 							// 상영스케줄 변경 17
-							//////////////////////////////////////////////////////////
+							
 						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_SCREEN_TABLE:
 							String[] screenID_audiID_filmID_residualSeat_startTime_finalTime = protocol
 									.getChange_Screen();
@@ -779,7 +793,14 @@ public class LoginServer {
 							startTime = screenID_audiID_filmID_residualSeat_startTime_finalTime[4];
 							finalTime = screenID_audiID_filmID_residualSeat_startTime_finalTime[5];
 
-							boolean updateScreen = true;
+							screendto.setAudi_id(audiID);
+							screendto.setFilm_id(filmID);
+							screendto.setScreen_residualSeat(Integer.parseInt(residualSeat));
+							screendto.setScreen_startTime(startTime);
+							screendto.setScreen_finalTime(finalTime);
+							screendto.setScreen_id(screenID);
+
+							boolean updateScreen = cinemadao.updateScreen(screendto);
 							if (updateScreen == false) {
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_CHANGE_SCREEN_TABLE_NO);
