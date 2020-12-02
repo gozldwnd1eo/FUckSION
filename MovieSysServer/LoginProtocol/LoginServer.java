@@ -300,6 +300,7 @@ public class LoginServer {
 						// 현재 상영 중 영화 조회 요청 12
 						case Protocol.CODE_PT_REQ_LOOKUP_ALL_SCREEN:
 							ArrayList<Protocol> packetList = new ArrayList<Protocol>();
+							protocol = new Protocol(protocol.PT_RES_LOOKUP, protocol.CODE_PT_RES_LOOKUP_ALL_SCREEN_OK);
 							String filmResult = fdao.displayScreenList();
 							packetList = protocol.setScreenList(filmResult);
 							Iterator<Protocol> iterator = packetList.iterator();
