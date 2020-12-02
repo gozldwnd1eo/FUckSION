@@ -5,6 +5,7 @@ public class Userchoice {
     public static String area;
     public static String theater;
     public static String schedule;
+    public static String selectSeat;
 
     public static String getFilmID() {
         return filmID;
@@ -38,5 +39,11 @@ public class Userchoice {
         Userchoice.schedule = schedule;
     }
 
+    public static String getSelectSeat() {
+        return selectSeat;
+    }
 
+    public static void setSelectSeat(String selectSeat) {
+        Userchoice.selectSeat = selectSeat;
+    }
 }
