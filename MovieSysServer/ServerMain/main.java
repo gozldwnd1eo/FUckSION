@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import MovieSysServer.Film.FilmDAO;
 import MovieSysServer.Film.FilmDTO;
 import MovieSysServer.Member.*;
+import MovieSysServer.Film.*;
 
 public class main {
 	public static void main(String[] args) {
@@ -15,7 +16,7 @@ public class main {
 		// dto.setrev_date("202011101700");
 		// dto.setrev_content("123");
 		// dto.setrev_starPoint(1);
-		// FilmDAO dao=new FilmDAO();
+		FilmDAO dao = new FilmDAO();
 		// FilmDTO dto =new FilmDTO();
 		// dto.setFilm_name("gd");
 		// boolean result =dao.insertFilm(dto);
@@ -33,18 +34,17 @@ public class main {
 		// dto.setBirthday("1111");
 		// dto.setFlag("C");
 
-
 		// boolean result = dao.insertCustomer(dto);
 		// System.out.println(result);
-		//
-		// dto=new ReviewDTO();
-		// dto.setCus_id("js");
-		// dto.setFilm_id("4");
-		// dto.setrev_date("202011101710");
-		// dto.setrev_content("���ó����̴� ���ְ� ���������� ����");
-		// dto.setrev_starPoint(10);
-		// result =dao.insertReview(dto);
-		// System.out.println(result);
+
+		ReviewDTO dto = new ReviewDTO();
+		dto.setCus_id("a");
+		dto.setFilm_id("4");
+		dto.setRev_starPoint(10);
+		dto.setRev_content("caa");
+
+		boolean result = dao.insertReview(dto);
+		System.out.println(result);
 
 		// ArrayList<ReviewDTO> arr=dao.displayReview("4");
 
@@ -81,12 +81,12 @@ public class main {
 		// dao.insertAuditorium(dto)
 		// ArrayList<TheaterDTO>arr=dao.TheaterDisplay();
 		// ArrayList<AuditoriumDTO>arr=dao.AuditoriumDisplay("2");
-		FilmDAO dao=new FilmDAO();
-		FilmDTO dto=new FilmDTO();
-		dto.setFilm_id("21");
-		dto.setFilm_name("우가우가");
-		dto.setFilm_info("z~x~c~");
-		boolean result=dao.updateFilm(dto);
-		System.out.println(result);
+		// FilmDAO dao=new FilmDAO();
+		// FilmDTO dto=new FilmDTO();
+		// dto.setFilm_id("21");
+		// dto.setFilm_name("우가우가");
+		// dto.setFilm_info("z~x~c~");
+		// boolean result=dao.updateFilm(dto);
+		// System.out.println(result);
 	}
 }
