@@ -262,6 +262,10 @@ public class Protocol implements Serializable {
 					break;
 				case PT_REQ_LOOKUP:
 					switch (typeCode) {
+						case CODE_PT_REQ_LOOKUP_AUDI:
+						case CODE_PT_REQ_LOOKUP_SCREEN_TABLE:
+							packet = new byte[LEN_MAX];
+							break;
 						case CODE_PT_REQ_LOOKUP_ALL_THEATER:
 						case CODE_PT_REQ_LOOKUP_ALL_SCREEN:
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
@@ -290,11 +294,7 @@ public class Protocol implements Serializable {
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
 									+ LEN_BODY_SEPARATOR + LEN_THEATER_ID + LEN_FILM_ID];
 							break;
-						case CODE_PT_REQ_LOOKUP_SCREEN_TABLE:
-						case CODE_PT_REQ_LOOKUP_AUDI:
-							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
-									+ LEN_THEATER_ID];
-							break;
+
 						case CODE_PT_REQ_LOOKUP_SEAT_SITUATION:
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_SCREEN_ID];
 							break;
