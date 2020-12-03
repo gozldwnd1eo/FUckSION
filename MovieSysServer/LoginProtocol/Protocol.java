@@ -976,16 +976,17 @@ public class Protocol implements Serializable {
 		byte[] b = new byte[2];
 		b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
 		b[1] = (byte) (bodyLen & 0x000000ff);
+		protocolBodyLen = bodyLen;
 		System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
 		System.arraycopy(finalStr.trim().getBytes(), 0, packet,
 				LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, finalStr.trim().getBytes().length);
-		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + 7 * LEN_BODY_SEPARATOR
-				+ finalStr.trim().getBytes().length] = '\0';
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
 	}
 
 	public String[] getMemberJoin()// 위에꺼 세트 by 규철
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
