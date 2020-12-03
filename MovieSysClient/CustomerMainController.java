@@ -263,6 +263,13 @@ public class CustomerMainController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        theaterFilmName.setOnMouseClicked(event->{
+            String selectedThater=theaterCombox.getValue();
+            String selectedFilmname=theaterFilmName.getSelectionModel().getSelectedItem();
+
+            Protocol protocol=new Protocol(Protocol.PT_REQ_LOOKUP,Protocol.codeptreqlookup)
+        });
     }
 
     @FXML
@@ -294,18 +301,26 @@ public class CustomerMainController implements Initializable {
         for(int i=0;i<bodylist.size();i++){
             body+=bodylist.get(i);
         }
-        String[] bodydiv=body.split("\\|");
-        ArrayList<String[]> filmlist=new ArrayList<String[]>();
-        for(int i=0;i<bodydiv.length;i++){
-            filmlist.add(bodydiv[i].split("\\\\"));
-        }
+        String[] bodydiv=body.split("\\\\");
         ObservableList<String> filmlistview=FXCollections.observableArrayList();
-        for(int i=0;i<filmlist.size();i++){
-            filmlistview.add(filmlist.get(i)[2]);
+        for(int i=0;i<bodydiv.length;i++){
+            filmlistview.add(bodydiv[i]);
         }
-        film_list.setItems(filmlistview);
+
+        // ArrayList<String[]> filmlist=new ArrayList<String[]>();
+        // for(int i=0;i<bodydiv.length;i++){
+        //     filmlist.add(bodydiv[i].split("\\\\"));
+        // }
+        // ObservableList<String> filmlistview=FXCollections.observableArrayList();
+        // for(int i=0;i<filmlist.size();i++){
+        //     filmlistview.add(filmlist.get(i));
+        // }
+        // for(int i=0;i<filmlist.size();i++){
+        //     filmlistview.add(filmlist.get(i));
+        // }
+        theaterFilmName.setItems(filmlistview);
         }catch(IOException e){
             e.printStackTrace();
-        }    
+        }
     }
 }
