@@ -79,7 +79,7 @@ public class CinemaDAO {
 
 	public boolean checkMoney(ResvDTO dto) {
 		MemberDAO dao = new MemberDAO();
-		String[] AccountInfo = dao.displayAccountInfo(dto.getCus_id()).split("\\");
+		String[] AccountInfo = dao.displayAccountInfo(dto.getCus_id()).split("\\\\");
 		if (dto.getResv_depositAmount() > Integer.parseInt(AccountInfo[1])) {
 			return false;
 		} else {

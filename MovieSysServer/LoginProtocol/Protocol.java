@@ -532,14 +532,6 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + ok.trim().getBytes().length] = '\0';
 	}
 
-	public void setProtocolType(int protocolType) {
-		this.protocolType = protocolType;
-	}
-
-	public int getProtocolType() {
-		return protocolType;
-	}
-
 	public byte[] getPacket() {
 		return packet;
 	}
@@ -1373,8 +1365,16 @@ public class Protocol implements Serializable {
 		return origin;
 	}
 
+	public void setProtocolType(int protocolType) {
+		this.protocolType = protocolType;
+	}
+
+	public int getProtocolType() {
+		return packet[0];
+	}
+
 	public int getProtocolCode() {
-		return protocolCode;
+		return packet[1];
 	}
 
 	public void setProtocolCode(int protocolCode) {

@@ -530,6 +530,7 @@ public class LoginServer {
 
 							// 결제 요청 5(예매)
 						case Protocol.CODE_PT_REQ_UPDATE_ADD_PAY_RESV:
+							System.out.println("결제 요청");
 							String[] id_screenID_seatNum_peopleNum_amount = protocol.getAdd_Pay_Resv();
 							id = id_screenID_seatNum_peopleNum_amount[0];
 							screenID = id_screenID_seatNum_peopleNum_amount[1];
@@ -547,24 +548,31 @@ public class LoginServer {
 										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO2);
 
 								os.write(protocol.getPacket());
+								System.out.println("결제 거지 응답 보냄");
 								break;
 							} else if (insertresult.equals("2")) { // 좌석없음
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO1);
 
 								os.write(protocol.getPacket());
+								System.out.println("결제 좌석업음 응답 보냄");
+
 								break;
 							} else if (insertresult.equals("4")) {// 좌석도 없고 돈도 없음
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO3);
 
 								os.write(protocol.getPacket());
+								System.out.println("결제 돈이랑 좌석업음 응답 보냄");
+
 								break;
 							} else {
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_OK);
 
 								os.write(protocol.getPacket());
+								System.out.println("결제 성공 응답 보냄");
+
 								break;
 							}
 
