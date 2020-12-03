@@ -393,9 +393,7 @@ public class Protocol implements Serializable {
 									+ LEN_LOGIN_PASSWORD];
 							break;
 						case CODE_PT_REQ_UPDATE_ADD_PAY_RESV:
-							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
-									+ 4 * LEN_BODY_SEPARATOR + LEN_LOGIN_ID + LEN_SCREEN_ID + LEN_RESV_SEATNUM
-									+ LEN_RESV_PEOPLENUM + LEN_RESV_DEPOSITAMOUNT];
+							packet = new byte[LEN_MAX];
 							break;
 						case CODE_PT_REQ_UPDATE_DELETE_PAY_RESV:
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
@@ -988,7 +986,8 @@ public class Protocol implements Serializable {
 
 	public String[] getMemberJoin()// 위에꺼 세트 by 규철
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1026,7 +1025,8 @@ public class Protocol implements Serializable {
 
 	public String getID_ResevID()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		return origin;
 	}
 
@@ -1044,7 +1044,8 @@ public class Protocol implements Serializable {
 
 	public String getChangePwd()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		return origin;
 	}
 
@@ -1062,7 +1063,8 @@ public class Protocol implements Serializable {
 
 	public String[] getAdd_Pay_Resv()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1081,7 +1083,8 @@ public class Protocol implements Serializable {
 
 	public String[] getDel_Pay_Resv()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1105,8 +1108,8 @@ public class Protocol implements Serializable {
 
 	public String[] getAccountInfo()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen())
-				.trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1125,7 +1128,8 @@ public class Protocol implements Serializable {
 
 	public String[] getAdd_Review()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1144,7 +1148,8 @@ public class Protocol implements Serializable {
 
 	public String[] getChange_Review()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1163,7 +1168,8 @@ public class Protocol implements Serializable {
 
 	public String getDel_Review()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		return origin;
 	}
 
@@ -1181,7 +1187,8 @@ public class Protocol implements Serializable {
 
 	public String[] getAdd_Theater()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1200,7 +1207,8 @@ public class Protocol implements Serializable {
 
 	public String[] getChange_Theater()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1219,7 +1227,8 @@ public class Protocol implements Serializable {
 
 	public String getDel_Theater()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		return origin;
 	}
 
@@ -1237,7 +1246,8 @@ public class Protocol implements Serializable {
 
 	public String[] getAdd_Audi()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1256,7 +1266,8 @@ public class Protocol implements Serializable {
 
 	public String[] getChange_Audi()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1275,7 +1286,8 @@ public class Protocol implements Serializable {
 
 	public String getDel_Audi()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		return origin;
 	}
 
@@ -1294,7 +1306,8 @@ public class Protocol implements Serializable {
 
 	public String[] getAdd_Screen()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1313,7 +1326,8 @@ public class Protocol implements Serializable {
 
 	public String[] getChange_Screen()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1332,7 +1346,8 @@ public class Protocol implements Serializable {
 
 	public String getDel_Screen()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		return origin;
 	}
 
@@ -1353,7 +1368,8 @@ public class Protocol implements Serializable {
 
 	public String getDel_Film()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen()).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		return origin;
 	}
 
@@ -1374,8 +1390,13 @@ public class Protocol implements Serializable {
 		return len;
 	}
 
-	public void setProtocolBodyLen(int protocolBodyLen) {
-		this.protocolBodyLen = protocolBodyLen;
+	public void setProtocolBodyLen(int len, byte[] p) {
+
+		byte[] b = new byte[2];
+		b[0] = (byte) ((len & 0x0000ff00) >> 8);
+		b[1] = (byte) (len & 0x000000ff);
+
+		System.arraycopy(b, 0, p, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
 	}
 
 	public int getProtocolFlag() {
