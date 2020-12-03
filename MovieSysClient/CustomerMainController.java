@@ -211,7 +211,7 @@ public class CustomerMainController implements Initializable {
 
         change_imf_btn.setOnAction(event -> {
             try {
-                Parent parent = FXMLLoader.load(getClass().getResource("reservation.fxml"));
+                Parent parent = FXMLLoader.load(getClass().getResource("informupdate.fxml"));
                 Scene scene = new Scene(parent);
                 Stage primaryStage = (Stage) change_imf_btn.getScene().getWindow();
                 primaryStage.setScene(scene);
@@ -220,5 +220,47 @@ public class CustomerMainController implements Initializable {
 
             }
         });
+
+        try {
+            Protocol protocol = new Protocol(Protocol.PT_REQ_LOOKUP, Protocol.CODE_PT_REQ_LOOKUP_ALL_THEATER);
+            byte[] buf = protocol.getPacket();
+            Myconn.os.write(protocol.getPacket());
+
+            protocol = new Protocol();
+            buf = protocol.getPacket();
+
+            Myconn.is.read(buf);
+
+            int ptType = buf[0];
+            int ptCode = buf[1];
+            int frag = buf[5];
+            protocol.setPacket(ptType, ptCode, buf);
+            buf = protocol.getPacket();
+            String body = "";
+            if (frag == 1) {
+                ArrayList<String> bodylist = new ArrayList<String>();
+                int last = buf[6];
+                while (last != 1) {
+                    bodylist.add(protocol.getListBody());
+                }
+                for (int i = 0; i < bodylist.size(); i++) {
+                    body += bodylist.get(i);
+                }
+            } else {
+                body += protocol.getListBody();
+            }
+            String[] bodydiv = body.split("\\|");
+            ArrayList<String[]> theaterlist = new ArrayList<String[]>();
+            for (int i = 0; i < bodydiv.length; i++) {
+                theaterlist.add(bodydiv[i].split("\\\\"));
+            }
+            ObservableList<String> theaterlistview = FXCollections.observableArrayList();
+            for (int i = 0; i < theaterlist.size(); i++) {
+                theaterlistview.add(theaterlist.get(i)[1]);
+            }
+            theaterCombox.setItems(theaterlistview);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
