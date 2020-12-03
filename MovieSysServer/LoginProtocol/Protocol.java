@@ -101,6 +101,7 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_REQ_LOOKUP_ACCOUNT = 19; // 계좌 조회 요청 코드번호
 	public static final int CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE = 20; // 모든 상영영화 조회 조회 요청 코드번호
 	public static final int CODE_PT_REQ_LOOKUP_ACCOUNT_CUS = 21; // 고객 계좌 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_SCREEN_TIME_AT_TAB = 22; // 상영시간(영화관 탭) 조회 요청 코드번호
 	// TYPE 6 CODE
 	public static final int CODE_PT_RES_LOOKUP_FIND_CUS_ID_OK = 1; // 고객 아이디 찾기 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_FIND_CUS_ID_NO = 2; // 고객 아이디 찾기 요청 거절 코드번호
@@ -146,6 +147,8 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_RES_LOOKUP_ALL_SCREEN_SCHEDULE_NO = 42; // 모든 상영영화 조회 요청 거절 코드번호
 	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_CUS_OK = 43; // 고객 계좌 조회 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_CUS_NO = 44; // 고객 계좌 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_SCREEN_TIME_AT_TAB_OK = 45; // 상영시간(영화관 탭) 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_SCREEN_TIME_AT_TAB_NO = 46; // 상영시간(영화관 탭) 조회 요청 거절 코드번호
 	// TYPE 7 CODE
 	public static final int CODE_PT_REQ_UPDATE_ADD_MEM = 1; // 회원 추가 요청 코드번호
 	public static final int CODE_PT_REQ_UPDATE_CHANGE_MEM_INFO = 2; // 회원 정보 수정 요청 코드번호
@@ -310,6 +313,9 @@ public class Protocol implements Serializable {
 						case CODE_PT_REQ_LOOKUP_ACCOUNT_CUS:
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_LOGIN_ID];
 							break;
+						case CODE_PT_REQ_LOOKUP_SCREEN_TIME_AT_TAB:
+							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
+									+ LEN_BODY_SEPARATOR + LEN_THEATER_AREA + LEN_FILM_ID];
 					}
 					break;
 				case PT_RES_LOOKUP:
@@ -325,6 +331,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_MY_REVIEWS_NO:
 						case CODE_PT_RES_LOOKUP_RESV_LIST_NO:
 						case CODE_PT_RES_LOOKUP_ALL_SCREEN_NO:
+						case CODE_PT_RES_LOOKUP_SCREEN_TIME_AT_TAB_NO:
 						case CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_NO:
 						case CODE_PT_RES_LOOKUP_SALES_PER_MOVIE_NO:
 						case CODE_PT_RES_LOOKUP_TOTAL_SALES_NO:
@@ -346,7 +353,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_MY_REVIEWS_OK:
 						case CODE_PT_RES_LOOKUP_RESV_LIST_OK:
 						case CODE_PT_RES_LOOKUP_ALL_SCREEN_OK:
-
+						case CODE_PT_RES_LOOKUP_SCREEN_TIME_AT_TAB_OK:
 						case CODE_PT_RES_LOOKUP_THEATER_FOR_ADMIN_OK:
 						case CODE_PT_RES_LOOKUP_SALES_PER_MOVIE_OK:
 						case CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_OK:
