@@ -100,6 +100,7 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_REQ_LOOKUP_THEATER_RESV_RATE = 18; // 영화별 예매율 조회 요청 코드번호
 	public static final int CODE_PT_REQ_LOOKUP_ACCOUNT = 19; // 계좌 조회 요청 코드번호
 	public static final int CODE_PT_REQ_LOOKUP_ALL_SCREEN_SCHEDULE = 20; // 모든 상영영화 조회 조회 요청 코드번호
+	public static final int CODE_PT_REQ_LOOKUP_ACCOUNT_CUS = 21; // 고객 계좌 조회 요청 코드번호
 	// TYPE 6 CODE
 	public static final int CODE_PT_RES_LOOKUP_FIND_CUS_ID_OK = 1; // 고객 아이디 찾기 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_FIND_CUS_ID_NO = 2; // 고객 아이디 찾기 요청 거절 코드번호
@@ -143,6 +144,8 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_NO = 32; // 계좌 조회 요청 거절 코드번호
 	public static final int CODE_PT_RES_LOOKUP_ALL_SCREEN_SCHEDULE_OK = 41; // 모든 상영영화 조회 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_ALL_SCREEN_SCHEDULE_NO = 42; // 모든 상영영화 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_CUS_OK = 43; //고객 계좌 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_CUS_NO = 44; //고객 계좌 조회 요청 거절 코드번호
 	// TYPE 7 CODE
 	public static final int CODE_PT_REQ_UPDATE_ADD_MEM = 1; // 회원 추가 요청 코드번호
 	public static final int CODE_PT_REQ_UPDATE_CHANGE_MEM_INFO = 2; // 회원 정보 수정 요청 코드번호
@@ -304,6 +307,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_REQ_LOOKUP_RESV_LIST:
 						case CODE_PT_REQ_LOOKUP_THEATER_FOR_ADMIN:
 						case CODE_PT_REQ_LOOKUP_ACCOUNT:
+						case CODE_PT_REQ_LOOKUP_ACCOUNT_CUS:
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_LOGIN_ID];
 							break;
 					}
@@ -327,6 +331,7 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_THEATER_CANCEL_RATE_NO:
 						case CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_NO:
 						case CODE_PT_RES_LOOKUP_ACCOUNT_NO:
+						case CODE_PT_RES_LOOKUP_ACCOUNT_CUS_NO:
 						case CODE_PT_RES_LOOKUP_AREA_NO:
 						case CODE_PT_RES_LOOKUP_SCREEN_TIME_NO:
 						case CODE_PT_RES_LOOKUP_ALL_THEATER_NO:
@@ -366,6 +371,10 @@ public class Protocol implements Serializable {
 						case CODE_PT_RES_LOOKUP_ACCOUNT_OK:
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
 									+ LEN_BODY_SEPARATOR + LEN_MEM_ACCOUNT + LEN_MEM_MONEY];
+							break;
+						case CODE_PT_RES_LOOKUP_ACCOUNT_CUS_OK:
+							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
+									+ LEN_MEM_ACCOUNT];
 							break;
 						case CODE_PT_RES_LOOKUP_FIND_CUS_ID_OK:
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_LOGIN_ID];
@@ -1352,6 +1361,44 @@ public class Protocol implements Serializable {
 	}
 
 	public String getDel_Film()// 위에꺼 세트
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
+		return origin;
+	}
+
+	public void setCus_id_for_account(String cusId) {// 조회요청코드21(고객ID)
+		String finalStr = cusId;
+		int bodyLen = finalStr.getBytes().length;
+		byte[] b = new byte[2];
+		b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
+		b[1] = (byte) (bodyLen & 0x000000ff);
+		System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet,
+				LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String getCus_id_for_account()// 위에꺼 세트
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
+		return origin;
+	}
+
+	public void setCus_Account(String account) {// 조회요청응답코드21(계좌번호)
+		String finalStr = account;
+		int bodyLen = finalStr.getBytes().length;
+		byte[] b = new byte[2];
+		b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
+		b[1] = (byte) (bodyLen & 0x000000ff);
+		System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
+		System.arraycopy(finalStr.trim().getBytes(), 0, packet,
+				LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, finalStr.trim().getBytes().length);
+		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
+	}
+
+	public String getCus_Account()// 위에꺼 세트
 	{
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
 				getProtocolBodyLen()).trim();
