@@ -246,6 +246,7 @@ public class CinemaDAO {
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, inputID);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				result = result + rs.getString("AUDI_ID") + "\\";

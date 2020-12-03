@@ -258,7 +258,7 @@ public class FilmDAO {
 	}
 
 	public boolean deleteFilm(String filmId) { // 영화 삭제
-		String SQL = "DELETE FROM FILMS WHERE FILM_NAME = ?";
+		String SQL = "DELETE FROM FILMS WHERE FILM_ID = ?";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
@@ -289,7 +289,7 @@ public class FilmDAO {
 
 	public boolean insertReview(ReviewDTO dto) { // 리뷰 추가
 
-		String SQL = "INSERT INTO REVIEWS(CUS_ID,FILM_ID,REV_STARPOINT,REV_CONTENT,REV_DATE)" + "VALUES (?,?,?,?,?)";
+		String SQL = "INSERT INTO REVIEWS(MEM_ID,FILM_ID,REV_STARPOINT,REV_CONTENT,REV_DATE)" + "VALUES (?,?,?,?,SYSDATE)";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
@@ -297,7 +297,7 @@ public class FilmDAO {
 			pstmt.setString(2, dto.getFilm_id());
 			pstmt.setInt(3, dto.getRev_starPoint());
 			pstmt.setString(4, dto.getRev_content());
-			pstmt.setString(5, dto.getRev_date());
+			
 			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
 			System.out.println("INSERT문에서 예외 발생");
