@@ -1,13 +1,13 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.base.jar",
-        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.controls.jar",
-        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.fxml.jar",
-        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.graphics.jar",
-        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
-        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
-        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
-        "c:\\Program Files\\Java\\jdk-14.0.2\\lib\\fx\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar"
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.base.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.controls.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.fxml.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.graphics.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar"
     ]
 }
