@@ -207,10 +207,11 @@ public class reservationController implements Initializable {
     @FXML
     private Button beforebtn;
 
+    ArrayList<CheckBox> btnlist = new ArrayList<CheckBox>();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            ArrayList<CheckBox> btnlist = new ArrayList<CheckBox>();
             btnlist.add(a1);
             btnlist.add(a2);
             btnlist.add(a3);
@@ -329,6 +330,19 @@ public class reservationController implements Initializable {
             areacomboxlist.setAll(arealist);
             localcombox.setItems(areacomboxlist);
 
+            beforebtn.setOnAction(event -> {
+
+                Parent parent;
+                try {
+                    parent = FXMLLoader.load(getClass().getResource("reservation.fxml"));
+                    Scene scene = new Scene(parent);
+                    Stage primaryStage = (Stage) beforebtn.getScene().getWindow();
+                    primaryStage.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
             nextbtn.setOnAction(event -> {
                 ArrayList<String> selectedSeat = new ArrayList<String>();
                 Iterator<CheckBox> it = btnlist.iterator();
@@ -342,9 +356,12 @@ public class reservationController implements Initializable {
                 }
                 Userchoice.setMannum(Integer.toString(mannum));
                 String seatstring = "";
-                for (int i = 0; i < selectedSeat.size(); i++) {
-                    seatstring += selectedSeat.get(i);
+                int i = 0;
+                for (; i < selectedSeat.size() - 1; i++) {
+                    seatstring += selectedSeat.get(i) + "~";
                 }
+                seatstring += selectedSeat.get(i);
+
                 if (seatstring.length() < 1) {
                     return;
                 }
@@ -495,6 +512,9 @@ public class reservationController implements Initializable {
     @FXML
     void selectschedule(ActionEvent event) {
         try {
+            for (int i = 0; i < btnlist.size(); i++) {
+                btnlist.get(i).setDisable(false);
+            }
             schedcombox.setPromptText(schedcombox.getValue().getListDisplay());
             Userchoice.setSchedule(schedcombox.getValue().getScreenID());
             Protocol protocol = new Protocol(Protocol.PT_REQ_LOOKUP, Protocol.CODE_PT_REQ_LOOKUP_SEAT_SITUATION);
@@ -531,255 +551,339 @@ public class reservationController implements Initializable {
                 switch (seatlist[i]) {
                     case "A1":
                         a1.setDisable(true);
+                        a1.setSelected(false);
                         break;
                     case "A2":
                         a2.setDisable(true);
+                        a2.setSelected(false);
                         break;
                     case "A3":
                         a3.setDisable(true);
+                        a3.setSelected(false);
                         break;
                     case "A4":
                         a4.setDisable(true);
+                        a4.setSelected(false);
                         break;
                     case "A5":
                         a5.setDisable(true);
+                        a5.setSelected(false);
                         break;
                     case "A6":
                         a6.setDisable(true);
+                        a6.setSelected(false);
                         break;
                     case "A7":
                         a7.setDisable(true);
+                        a7.setSelected(false);
                         break;
                     case "A8":
                         a8.setDisable(true);
+                        a8.setSelected(false);
                         break;
                     case "A9":
                         a9.setDisable(true);
+                        a9.setSelected(false);
                         break;
                     case "A10":
                         a10.setDisable(true);
+                        a10.setSelected(false);
                         break;
                     case "A11":
                         a11.setDisable(true);
+                        a11.setSelected(false);
                         break;
                     case "A12":
                         a12.setDisable(true);
+                        a12.setSelected(false);
                         break;
                     case "A13":
                         a13.setDisable(true);
+                        a13.setSelected(false);
                         break;
                     case "A14":
                         a14.setDisable(true);
+                        a14.setSelected(false);
                         break;
                     case "B1":
                         b1.setDisable(true);
+                        b1.setSelected(false);
                         break;
                     case "B2":
                         b2.setDisable(true);
+                        b2.setSelected(false);
                         break;
                     case "B3":
                         b3.setDisable(true);
+                        b3.setSelected(false);
                         break;
                     case "B4":
                         b4.setDisable(true);
+                        b4.setSelected(false);
                         break;
                     case "B5":
                         b5.setDisable(true);
+                        b5.setSelected(false);
                         break;
                     case "B6":
                         b6.setDisable(true);
+                        b6.setSelected(false);
                         break;
                     case "B7":
                         b7.setDisable(true);
+                        b7.setSelected(false);
                         break;
                     case "B8":
                         b8.setDisable(true);
+                        b8.setSelected(false);
                         break;
                     case "B9":
                         b9.setDisable(true);
+                        b9.setSelected(false);
                         break;
                     case "B10":
                         b10.setDisable(true);
+                        b10.setSelected(false);
                         break;
                     case "B11":
                         b11.setDisable(true);
+                        b11.setSelected(false);
                         break;
                     case "B12":
                         b12.setDisable(true);
+                        b12.setSelected(false);
                         break;
                     case "B13":
                         b13.setDisable(true);
+                        b13.setSelected(false);
                         break;
                     case "B14":
                         b14.setDisable(true);
+                        b14.setSelected(false);
                         break;
                     case "C1":
                         c1.setDisable(true);
+                        c1.setSelected(false);
                         break;
                     case "C2":
                         c2.setDisable(true);
+                        c2.setSelected(false);
                         break;
                     case "C3":
                         c3.setDisable(true);
+                        c3.setSelected(false);
                         break;
                     case "C4":
                         c4.setDisable(true);
+                        c4.setSelected(false);
                         break;
                     case "C5":
                         c5.setDisable(true);
+                        c5.setSelected(false);
                         break;
                     case "C6":
                         c6.setDisable(true);
+                        c6.setSelected(false);
                         break;
                     case "C7":
                         c7.setDisable(true);
+                        c7.setSelected(false);
                         break;
                     case "C8":
                         c8.setDisable(true);
+                        c8.setSelected(false);
                         break;
                     case "C9":
                         c9.setDisable(true);
+                        c9.setSelected(false);
                         break;
                     case "C10":
                         c10.setDisable(true);
+                        c10.setSelected(false);
                         break;
                     case "C11":
                         c11.setDisable(true);
+                        c11.setSelected(false);
                         break;
                     case "C12":
                         c12.setDisable(true);
+                        c12.setSelected(false);
                         break;
                     case "C13":
                         c13.setDisable(true);
+                        c13.setSelected(false);
                         break;
                     case "C14":
                         c14.setDisable(true);
+                        c14.setSelected(false);
                         break;
                     case "D1":
                         d1.setDisable(true);
+                        d1.setSelected(false);
                         break;
                     case "D2":
                         d2.setDisable(true);
+                        d2.setSelected(false);
                         break;
                     case "D3":
                         d3.setDisable(true);
+                        d3.setSelected(false);
                         break;
                     case "D4":
                         d4.setDisable(true);
+                        d4.setSelected(false);
                         break;
                     case "D5":
                         d5.setDisable(true);
+                        d5.setSelected(false);
                         break;
                     case "D6":
                         d6.setDisable(true);
+                        d6.setSelected(false);
                         break;
                     case "D7":
                         d7.setDisable(true);
+                        d7.setSelected(false);
                         break;
                     case "D8":
                         d8.setDisable(true);
+                        d8.setSelected(false);
                         break;
                     case "D9":
                         d9.setDisable(true);
+                        d9.setSelected(false);
                         break;
                     case "D10":
                         d10.setDisable(true);
+                        d10.setSelected(false);
                         break;
                     case "D11":
                         d11.setDisable(true);
+                        d11.setSelected(false);
                         break;
                     case "D12":
                         d12.setDisable(true);
+                        d12.setSelected(false);
                         break;
                     case "D13":
                         d13.setDisable(true);
+                        d13.setSelected(false);
                         break;
                     case "D14":
                         d14.setDisable(true);
+                        d14.setSelected(false);
                         break;
                     case "E1":
                         e1.setDisable(true);
+                        e1.setSelected(false);
                         break;
                     case "E2":
                         e2.setDisable(true);
+                        e2.setSelected(false);
                         break;
                     case "E3":
                         e3.setDisable(true);
+                        e3.setSelected(false);
                         break;
                     case "E4":
                         e4.setDisable(true);
+                        e4.setSelected(false);
                         break;
                     case "E5":
                         e5.setDisable(true);
+                        e5.setSelected(false);
                         break;
                     case "E6":
                         e6.setDisable(true);
+                        e6.setSelected(false);
                         break;
                     case "E7":
                         e7.setDisable(true);
+                        e7.setSelected(false);
                         break;
                     case "E8":
                         e8.setDisable(true);
+                        e8.setSelected(false);
                         break;
                     case "E9":
                         e9.setDisable(true);
+                        e9.setSelected(false);
                         break;
                     case "E10":
                         e10.setDisable(true);
+                        e10.setSelected(false);
                         break;
                     case "E11":
                         e11.setDisable(true);
+                        e11.setSelected(false);
                         break;
                     case "E12":
                         e12.setDisable(true);
+                        e12.setSelected(false);
                         break;
                     case "E13":
                         e13.setDisable(true);
+                        e13.setSelected(false);
                         break;
                     case "E14":
                         e14.setDisable(true);
+                        e14.setSelected(false);
                         break;
                     case "F1":
                         f1.setDisable(true);
+                        f1.setSelected(false);
                         break;
                     case "F2":
                         f2.setDisable(true);
+                        f2.setSelected(false);
                         break;
                     case "F3":
                         f3.setDisable(true);
+                        f3.setSelected(false);
                         break;
                     case "F4":
                         f4.setDisable(true);
+                        f4.setSelected(false);
                         break;
                     case "F5":
                         f5.setDisable(true);
+                        f5.setSelected(false);
                         break;
                     case "F6":
                         f6.setDisable(true);
+                        f6.setSelected(false);
                         break;
                     case "F7":
                         f7.setDisable(true);
+                        f7.setSelected(false);
                         break;
                     case "F8":
                         f8.setDisable(true);
+                        f8.setSelected(false);
                         break;
                     case "F9":
                         f9.setDisable(true);
+                        f9.setSelected(false);
                         break;
                     case "F10":
                         f10.setDisable(true);
+                        f10.setSelected(false);
                         break;
                     case "F11":
                         f11.setDisable(true);
+                        f11.setSelected(false);
                         break;
                     case "F12":
                         f12.setDisable(true);
+                        f12.setSelected(false);
                         break;
                     case "F13":
                         f13.setDisable(true);
+                        f13.setSelected(false);
                         break;
                     case "F14":
                         f14.setDisable(true);
+                        f14.setSelected(false);
                         break;
                 }
             }

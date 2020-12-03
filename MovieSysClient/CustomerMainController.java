@@ -196,5 +196,29 @@ public class CustomerMainController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        pwchek_btn.setOnAction(event -> {
+            if (pwcheckfd.getText().trim().equals(Myconn.SessionUserPW)) {
+                change_imf_btn.setDisable(false);
+                myrevhis_btn.setDisable(false);
+                myreview_btn.setDisable(false);
+                dropuser_btn.setDisable(false);
+
+                pwcheckfd.setDisable(true);
+                pwchek_btn.setDisable(true);
+            }
+        });
+
+        change_imf_btn.setOnAction(event -> {
+            try {
+                Parent parent = FXMLLoader.load(getClass().getResource("reservation.fxml"));
+                Scene scene = new Scene(parent);
+                Stage primaryStage = (Stage) change_imf_btn.getScene().getWindow();
+                primaryStage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
+        });
     }
 }

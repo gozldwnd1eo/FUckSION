@@ -5,36 +5,41 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="MovieSysClient.imformupdateController">
    <children>
-      <Label layoutX="145.0" layoutY="14.0" prefHeight="33.0" prefWidth="110.0" text="회원가입">
+      <Label layoutX="145.0" layoutY="14.0" prefHeight="33.0" prefWidth="110.0" text="정보수정">
          <font>
             <Font size="27.0" />
          </font>
       </Label>
       <Label layoutX="92.0" layoutY="81.0" text="ID" />
-      <TextField editable="false" layoutX="168.0" layoutY="77.0" />
-      <PasswordField layoutX="168.0" layoutY="113.0" />
-      <PasswordField layoutX="168.0" layoutY="152.0" />
+      <TextField fx:id="idfd" disable="true" layoutX="168.0" layoutY="77.0" />
+      <PasswordField fx:id="pwfd" layoutX="168.0" layoutY="113.0" />
+      <PasswordField fx:id="pwcnffd" layoutX="168.0" layoutY="152.0" />
       <Label layoutX="89.0" layoutY="117.0" text="PW" />
       <Label layoutX="76.0" layoutY="156.0" text="PW 확인" />
       <Label layoutX="87.0" layoutY="193.0" text="이름" />
-      <TextField editable="false" layoutX="168.0" layoutY="189.0" />
+      <TextField fx:id="namefd" disable="true" layoutX="168.0" layoutY="189.0" />
       <Label layoutX="81.0" layoutY="228.0" text="이메일" />
-      <TextField layoutX="168.0" layoutY="224.0" />
+      <TextField fx:id="emailfd" layoutX="168.0" layoutY="224.0" />
       <Label layoutX="75.0" layoutY="264.0" text="생년월일" />
-      <TextField editable="false" layoutX="168.0" layoutY="260.0" />
+      <TextField fx:id="birthfd" disable="true" layoutX="168.0" layoutY="260.0" />
       <Label layoutX="76.0" layoutY="299.0" text="휴대전화" />
-      <TextField layoutX="168.0" layoutY="295.0" />
+      <TextField fx:id="phonefd" layoutX="168.0" layoutY="295.0" />
       <Label layoutX="87.0" layoutY="332.0" text="성별" />
-      <RadioButton layoutX="168.0" layoutY="331.0" mnemonicParsing="false" text="남" />
-      <RadioButton layoutX="209.0" layoutY="331.0" mnemonicParsing="false" text="여" />
-      <Button layoutX="55.0" layoutY="464.0" mnemonicParsing="false" text="이전" />
-      <Button layoutX="265.0" layoutY="464.0" mnemonicParsing="false" text="가입하기" />
+      <RadioButton fx:id="radio_man" layoutX="168.0" layoutY="331.0" mnemonicParsing="false" text="남">
+         <toggleGroup>
+            <ToggleGroup fx:id="gender" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="radio_woman" layoutX="209.0" layoutY="331.0" mnemonicParsing="false" text="여" toggleGroup="$gender" />
+      <Button fx:id="before_btn" layoutX="55.0" layoutY="464.0" mnemonicParsing="false" text="이전" />
+      <Button fx:id="rev_btn" layoutX="265.0" layoutY="464.0" mnemonicParsing="false" text="수정하기" />
       <Label layoutX="76.0" layoutY="364.0" text="계좌번호" />
-      <TextField layoutX="168.0" layoutY="360.0" />
+      <TextField fx:id="accountfd" layoutX="168.0" layoutY="360.0" />
    </children>
 </AnchorPane>
