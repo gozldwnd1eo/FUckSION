@@ -272,7 +272,7 @@ public class LoginServer {
 						///////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TABLE:
 							System.out.println("상영시간표 조회 요청 받음");
-							theaterName = protocol.getTheaterID();
+							theaterName = protocol.getListBody();
 
 							String screenresult = cinemadao.displayScreenTable(theaterName);
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
