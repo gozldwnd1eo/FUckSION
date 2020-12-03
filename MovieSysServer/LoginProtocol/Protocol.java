@@ -175,7 +175,9 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_RES_UPDATE_CHANGE_PASSWORD_OK = 41; // 비밀번호 재설정 요청 승인 코드번호
 	public static final int CODE_PT_RES_UPDATE_CHANGE_PASSWORD_NO = 42; // 비밀번호 재설정 요청 거절 코드번호
 	public static final int CODE_PT_RES_UPDATE_ADD_PAY_RESV_OK = 7; // 결제 요청 승인 코드번호
-	public static final int CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO = 8; // 결제 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO1 = 8; // 결제 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO2 = 43; // 결제 요청 거절 코드번호
+	public static final int CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO3 = 44; // 결제 요청 거절 코드번호
 	public static final int CODE_PT_RES_UPDATE_DELETE_PAY_RESV_OK = 15; // 예매 취소 요청 승인 코드번호
 	public static final int CODE_PT_RES_UPDATE_DELETE_PAY_RESV_NO = 16; // 예매 취소 요청 거절 코드번호
 	public static final int CODE_PT_RES_UPDATE_ADD_REVIEW_OK = 9; // 리뷰 추가 요청 승인 코드번호
