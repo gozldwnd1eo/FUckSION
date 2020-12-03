@@ -960,6 +960,7 @@ public class LoginServer {
 								os.write(protocol.getPacket());
 								break;
 							}
+
 					}
 
 			}// end switch
