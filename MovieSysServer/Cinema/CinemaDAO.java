@@ -241,11 +241,12 @@ public class CinemaDAO {
 
 	public String displayAuditorium(String inputID) {// 상영관 조회
 
-		String SQL = "SELECT * FROM AUDITORUMS WHERE " + inputID + " = AUDITORUMS.THEATER_ID";
+		String SQL = "SELECT * FROM AUDITORUMS WHERE AUDITORUMS.THEATER_ID = ?";
 
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, inputID);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				result = result + rs.getString("AUDI_ID") + "\\";
@@ -642,7 +643,7 @@ public class CinemaDAO {
 	}
 
 	public String displayScreenTable(String inputTheaterId) { // 해당 영화관의 상영시간표 조회 요청
-		String SQL = "SELECT * FROM SCREENS WHERE AUDI_ID IN(SELECT AUDI_ID FROM AUDITORIUMS WHERE THEATER_ID=?)ORDER BY SCREEN_STARTTIME";
+		String SQL = "SELECT * FROM SCREENS WHERE AUDI_ID IN(SELECT AUDI_ID FROM AUDITORIUMS WHERE THEATER_ID=?) AND SCREEN_STARTTIME>SYSDATE ORDER BY SCREEN_STARTTIME";
 
 		try {
 			conn = getConnection();
@@ -720,7 +721,7 @@ public class CinemaDAO {
 	}
 
 	public String displayResvList(String inputMemId) { // 예매 내역 조회 요청
-		String SQL = "SELECT RESV_NUM,FILM_NAME,RESV_PEOPLENUM,RESV_SEATNUM,RESV_DEPOSITAMOUNT,RESV_DEPOSITDATE FROM RESERVATIONS,SCREENS,FILMS WHERE SCREENS.FILM_ID=FILMS.FILM_ID AND RESERVATIONS.SCREEN_ID=SCREENS.SCREEN_ID AND MEM_ID='hg0099' AND RESV_CANCELDATE IS NULL";
+		String SQL = "SELECT RESV_NUM,FILM_NAME,RESV_PEOPLENUM,RESV_SEATNUM,RESV_DEPOSITAMOUNT,RESV_DEPOSITDATE FROM RESERVATIONS,SCREENS,FILMS WHERE SCREENS.FILM_ID=FILMS.FILM_ID AND RESERVATIONS.SCREEN_ID=SCREENS.SCREEN_ID AND MEM_ID= ? AND RESV_CANCELDATE IS NULL";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);

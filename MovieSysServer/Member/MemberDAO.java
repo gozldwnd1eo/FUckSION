@@ -122,6 +122,8 @@ public class MemberDAO {
 		try {
 			conn = getConnection();
 			custmt = conn.prepareStatement(SQLcu);
+			// custmt.setString(1, name);
+			// custmt.setString(2, email);
 			rsCusto = custmt.executeQuery();
 
 			if (rsCusto.next()) {
@@ -209,6 +211,9 @@ public class MemberDAO {
 		try {
 			conn = getConnection();
 			custmt = conn.prepareStatement(SQLcu);
+			// custmt.setString(1, id);
+			// custmt.setString(2, name);
+			// custmt.setString(3, email);
 			rsCusto = custmt.executeQuery();
 
 			if (rsCusto.next()) {
@@ -248,8 +253,8 @@ public class MemberDAO {
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, id);
-			pstmt.setString(2, password);
+			// pstmt.setString(1, id);
+			// pstmt.setString(2, password);
 	
 
 			pstmt.executeUpdate();
@@ -283,11 +288,11 @@ public class MemberDAO {
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, id);
-			pstmt.setString(2, password);
-			pstmt.setString(3, phone);
-			pstmt.setString(4, email);
-			pstmt.setString(5, account);
+			// pstmt.setString(1, id);
+			// pstmt.setString(2, password);
+			// pstmt.setString(3, phone);
+			// pstmt.setString(4, email);
+			// pstmt.setString(5, account);
 
 			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
@@ -323,6 +328,7 @@ public class MemberDAO {
 		try {
 			conn = getConnection();
 			custmt = conn.prepareStatement(SQL);
+			// custmt.setString(1, id);
 			rsCusto = custmt.executeQuery();
 
 			if (rsCusto.next()) {

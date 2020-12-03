@@ -646,7 +646,7 @@ public class Protocol implements Serializable {
 	}
 
 	public String[] getID_Name_Email() {
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1067,6 +1067,29 @@ public class Protocol implements Serializable {
 		return splited;
 	}
 
+	public void setAccountInfo(String data) {// 계좌정보 조회 요청코드(계좌번호\잔액)
+		int srcBegin = 0;
+		String packetList = "";
+		protocolBodyLen = data.getBytes().length;
+
+		byte[] b = new byte[2];
+		packetList = data.substring(srcBegin);
+
+		packet[0] = (byte) protocolType;
+		packet[1] = (byte) protocolCode;
+		b[0] = (byte) ((protocolBodyLen & 0x0000ff00) >> 8);
+		b[1] = (byte) (protocolBodyLen & 0x000000ff);
+		System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
+		System.arraycopy(packetList.getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+ LEN_PROTOCOL_BODYLEN, packetList.getBytes().length);
+	}
+
+	public String[] getAccountInfo()// 위에꺼 세트
+	{
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, protocolBodyLen).trim();
+		String[] splited = origin.split("\\\\");
+		return splited;
+	}
+
 	public void setAdd_Review(String[] data) {// 갱신요청코드7(고객id\영화id\리뷰내용\별점)
 		String finalStr = data[0] + "\\" + data[1] + "\\" + data[2] + "\\" + data[3];
 		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
@@ -1263,8 +1286,8 @@ public class Protocol implements Serializable {
 		return origin;
 	}
 
-	// 갱신요청코드19(영화명\티저\정보(감독~출연진1~2~3)\장르\개봉일\줄거리\포스터\예매율)
-	// 갱신요청코드20(영화ID\영화명\티저\정보(감독~출연진1~2~3)\장르\개봉일\줄거리\포스터\예매율)
+	// 갱신요청코드19(영화명\티저\정보(감독~출연진1~2~3)\장르\개봉일\줄거리\포스터)
+	// 갱신요청코드20(영화ID\영화명\티저\정보(감독~출연진1~2~3)\장르\개봉일\줄거리\포스터)
 
 	public void setDel_Film(String filmId) {// 갱신요청코드21(영화ID)
 		String finalStr = filmId;
@@ -1290,6 +1313,9 @@ public class Protocol implements Serializable {
 	}
 
 	public int getProtocolBodyLen() {
+		byte[] b = new byte[2];
+		System.arraycopy(packet, LEN_PROTOCOL_TYPE+LEN_TYPE_CODE, b, 0, LEN_PROTOCOL_BODYLEN);
+		protocolBodyLen = b.length;
 		return protocolBodyLen;
 	}
 
