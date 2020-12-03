@@ -93,7 +93,7 @@ public class LoginServer {
 			Iterator<Protocol> iterator; // 분할된패킷리스트에 사용될 iterator
 			int count = 0; // 패킷리스트의 접근 인덱스
 
-			is.read(buf); // 클라이언트로부터 로그인정보 (ID와 PWD) 수신
+			is.read(buf);
 			int packetType = buf[0]; // 수신 데이터에서 패킷 타입 얻음
 			int packetCode = buf[1]; // 수신 데이터에서 패킷 코드 얻음
 			protocol.setPacket(packetType, packetCode, buf); // 패킷 타입을 Protocol 객체의 packet 멤버변수에 buf를 복사
@@ -414,12 +414,15 @@ public class LoginServer {
 
 						// 계좌 조회 요청 19
 						case Protocol.CODE_PT_REQ_LOOKUP_ACCOUNT:
+							System.out.println("계좌요청받음");
 							id = protocol.getID();
 
 							String accountResult = mdao.displayAccountInfo(id);
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ACCOUNT_OK);
 							protocol.setList(accountResult);
 							os.write(protocol.getPacket());
+							System.out.println("계좌요청에 대한 응답 보냄");
+
 							break;
 
 					}
@@ -543,14 +546,14 @@ public class LoginServer {
 							resvdto.setResv_peopleNum(Integer.parseInt(peopleNum));
 							resvdto.setResv_depositAmount(Integer.parseInt(amount));
 							String insertresult = cinemadao.insertResvation(resvdto);
-							if (insertresult.equals("3")) { // 돈없음
+							if (insertresult.equals("2")) { // 돈없음
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO2);
 
 								os.write(protocol.getPacket());
 								System.out.println("결제 거지 응답 보냄");
 								break;
-							} else if (insertresult.equals("2")) { // 좌석없음
+							} else if (insertresult.equals("3")) { // 좌석없음
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO1);
 
@@ -563,6 +566,7 @@ public class LoginServer {
 										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO3);
 
 								os.write(protocol.getPacket());
+
 								System.out.println("결제 돈이랑 좌석업음 응답 보냄");
 
 								break;
