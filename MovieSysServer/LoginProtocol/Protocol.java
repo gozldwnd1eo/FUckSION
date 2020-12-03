@@ -793,29 +793,31 @@ public class Protocol implements Serializable {
 		return arr;
 	}
 
-	public String[] getScreenList(String list) {// 조회영회리스트// "영화id\영화제목\영화포스터\예매율\별점"
-		int headLength = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
-				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM;
-		int dataLength = LEN_MAX - headLength;
-		int srcBegin = headLength;
-		int srcEnd = LEN_MAX + 1;
-		String packetList = "";
-		String resultStr = "";
-		int i = list.length();
-		for (; LEN_MAX < i; i -= LEN_MAX) {
-			packetList = list.substring(srcBegin, srcEnd);
-			srcBegin += LEN_MAX;
-			srcEnd += LEN_MAX;
-			resultStr += new String(packetList.getBytes(), headLength, dataLength);
-		}
-		if (i <= LEN_MAX) {
-			packetList = list.substring(srcBegin);
-			resultStr += new String(packetList.getBytes(), headLength, packetList.length() - headLength);
-		}
-		String[] splited = resultStr.split("|");
-		return splited;
+	// public String[] getList() {
+	// int headLength = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN +
+	// LEN_PROTOCOL_FRAG
+	// + LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM;
+	// int dataLength = LEN_MAX - headLength;
+	// int srcBegin = headLength;
+	// int srcEnd = LEN_MAX + 1;
+	// String packetList = "";
+	// String resultStr = "";
+	// int i = list.length();
+	// for (; LEN_MAX < i; i -= LEN_MAX) {
+	// packetList = list.substring(srcBegin, srcEnd);
+	// srcBegin += LEN_MAX;
+	// srcEnd += LEN_MAX;
+	// resultStr += new String(packetList.getBytes(), headLength, dataLength);
+	// }
+	// if (i <= LEN_MAX) {
+	// packetList = list.substring(srcBegin);
+	// resultStr += new String(packetList.getBytes(), headLength,
+	// packetList.length() - headLength);
+	// }
+	// String[] splited = resultStr.split("|");
+	// return splited;
 
-	}
+	// }
 
 	public String getScreenList()// "영화제목\영화포스터\예매율\별점"
 	{
