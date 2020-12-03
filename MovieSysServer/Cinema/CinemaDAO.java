@@ -272,20 +272,17 @@ public class CinemaDAO {
 		return insertResult;
 	}
 
-	public String displayAuditorium(String inputID) {// 상영관 조회
+	public String displayAuditorium(String inputName) {// 상영관 조회
 
-		String SQL = "SELECT * FROM AUDITORUMS WHERE ? = AUDITORUMS.THEATER_ID";
+		String SQL = "SELECT DISTINCT AUDI_NUM FROM AUDITORIUMS, THEATERS WHERE THEATERS.THEATER_NAME = ? AND AUDITORIUMS.THEATER_ID=THEATERS.THEATER_ID";
 
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, inputID);
+			pstmt.setString(1, inputName);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				result = result + rs.getString("AUDI_ID") + "\\";
-				result = result + rs.getString("AUDI_NUM") + "\\";
-				result = result + rs.getString("THEATER_ID") + "\\";
-				result = result + rs.getString("AUDI_SEATCNT") + "|";
+				result = result + rs.getString("AUDI_NUM") + "|";
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -351,23 +348,23 @@ public class CinemaDAO {
 	}
 
 	public boolean deleteResv(String id, String resvnum) {// 예매 취소
-		String SQL = "EXEC RESERV_CNACEL_EXEC (?,?)";
+		String SQL = "CALL RESERV_CNACEL_EXEC (?,?)";
 
 		try {
 			conn = getConnection();
-			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, id);
-			pstmt.setString(2, resvnum);
-			pstmt.executeUpdate();
+			cstmt = conn.prepareCall(SQL);
+			cstmt.setString(1, id);
+			cstmt.setString(2, resvnum);
+			cstmt.executeUpdate();
 		} catch (SQLException sqle) {
 			System.out.println("DELETE문에서 예외 발생");
 			sqle.printStackTrace();
 			deleteResult = false;
 			return deleteResult;
 		} finally {
-			if (pstmt != null)
+			if (cstmt != null)
 				try {
-					pstmt.close();
+					cstmt.close();
 				} catch (Exception e) {
 					throw new RuntimeException(e.getMessage());
 				}
@@ -790,19 +787,23 @@ public class CinemaDAO {
 	}
 
 	public String displayResvList(String inputMemId) { // 예매 내역 조회 요청
-		String SQL = "SELECT RESV_NUM,FILM_NAME,RESV_PEOPLENUM,RESV_SEATNUM,RESV_DEPOSITAMOUNT,RESV_DEPOSITDATE FROM RESERVATIONS,SCREENS,FILMS WHERE SCREENS.FILM_ID=FILMS.FILM_ID AND RESERVATIONS.SCREEN_ID=SCREENS.SCREEN_ID AND MEM_ID='hg0099' AND RESV_CANCELDATE IS NULL";
+		String SQL = "SELECT FILM_NAME, THEATER_NAME ,AUDI_NUM,SCREEN_STARTTIME,SCREEN_FINALTIME,RESV_SEATNUM,RESV_DEPOSITAMOUNT,RESV_DEPOSITDATE,RESV_CANCELDATE, RESV_NUM FROM RESERVATIONS,SCREENS,FILMS,AUDITORIUMS,THEATERS WHERE SCREENS.FILM_ID=FILMS.FILM_ID AND RESERVATIONS.SCREEN_ID=SCREENS.SCREEN_ID AND SCREENS.AUDI_ID=AUDITORIUMS.AUDI_ID AND THEATERS.THEATER_ID=AUDITORIUMS.THEATER_ID AND RESERVATIONS.MEM_ID=?";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, inputMemId);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				result = result + rs.getString("RESV_NUM") + "\\";
 				result = result + rs.getString("FILM_NAME") + "\\";
-				result = result + rs.getString("RESV_PEOPLENUM") + "\\";
+				result = result + rs.getString("THEATER_NAME") + "\\";
+				result = result + rs.getString("AUDI_NUM") + "\\";
+				result = result + rs.getString("SCREEN_STARTTIME") + "\\";
+				result = result + rs.getString("SCREEN_FINALTIME") + "\\";
 				result = result + rs.getString("RESV_SEATNUM") + "\\";
 				result = result + rs.getString("RESV_DEPOSITAMOUNT") + "\\";
-				result = result + rs.getString("RESV_DEPOSITDATE") + "|";
+				result = result + rs.getString("RESV_DEPOSITDATE") + "\\";
+				result = result + rs.getString("RESV_CANCELDATE") + "\\";
+				result = result + rs.getString("RESV_NUM") + "|";
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -980,6 +981,42 @@ public class CinemaDAO {
 	}
 
 	public String displayCancelRatePerMovie() { // 영화별 취소율 조회 요청
+		String SQL = "SELECT * FROM TABLE(PRINT_CANCELRATE_PER_MOVIE)";
+		try {
+			conn = getConnection();
+			cstmt = conn.prepareCall(SQL);
+			rs = cstmt.executeQuery();
+			while (rs.next()) {
+				result = result + rs.getString("영화ID") + "\\";
+				result = result + rs.getString("영화별취소율") + "|";
+			}
+		} catch (SQLException sqle) {
+			System.out.println("SELECT문에서 예외 발생");
+			sqle.printStackTrace();
+		} finally {
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (cstmt != null)
+				try {
+					cstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		return result;
+	}
+
+	public String UpdateResvcRatePerMovi() { // 영화별 예매율 갱신 요청 KKL
 		String SQL = "SELECT * FROM TABLE(PRINT_CANCELRATE_PER_MOVIE)";
 		try {
 			conn = getConnection();

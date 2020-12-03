@@ -141,6 +141,7 @@ public class LoginServer {
 																													// 로그인
 																													// 요청
 							os.write(protocol.getPacket());
+							System.out.println("서버가 고객 로그인 정보를 보냈습니다");
 							break;
 						}
 
@@ -152,6 +153,7 @@ public class LoginServer {
 																														// 로그인
 																														// 요청
 							os.write(protocol.getPacket());
+							System.out.println("서버가 담당자 로그인 정보를 보냈습니다");
 							break;
 						}
 
@@ -254,12 +256,13 @@ public class LoginServer {
 							System.out.println("탭에서 상영시간 조회 요청 받음");
 							String theatername_filmname = protocol.getListBody();
 							String[] splited = theatername_filmname.split("\\\\");
-							theaterID = splited[0];
-							filmID = splited[1];
+							theaterName = splited[0];
+							filmName = splited[1];
 
-							String screenResulttab = cinemadao.displayAudiRuntimeAtTab(filmID, theaterID);
+							String screenResulttab = cinemadao.displayAudiRuntimeAtTab(theaterName, filmName);
 
-							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_OK);
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
+									Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_AT_TAB_OK);
 							protocol.setList(screenResulttab);
 							os.write(protocol.getPacket());
 							System.out.println("상영시간 조회 요청에 대한 응답보냄");
@@ -361,6 +364,7 @@ public class LoginServer {
 
 						// 예매 내역 조회 요청 11
 						case Protocol.CODE_PT_REQ_LOOKUP_RESV_LIST:
+							System.out.println("예매 내역 요청 수신");
 							id = protocol.getID();
 
 							String resvResult = cinemadao.displayResvList(id);
@@ -368,6 +372,7 @@ public class LoginServer {
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_RESV_LIST_OK);
 							protocol.setList(resvResult);
 							os.write(protocol.getPacket());
+							System.out.println("예매내역 응답 발신");
 							break;
 
 						// 현재 상영 중 영화 조회 요청 12
@@ -403,9 +408,9 @@ public class LoginServer {
 
 						// 상영관 조회 요청 14
 						case Protocol.CODE_PT_REQ_LOOKUP_AUDI:
-							theaterID = protocol.getTheaterID();
+							theaterName = protocol.getListBody();
 
-							String audiResult = cinemadao.displayAuditorium(theaterID);
+							String audiResult = cinemadao.displayAuditorium(theaterName);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_AUDI_OK);
 							protocol.setList(audiResult);

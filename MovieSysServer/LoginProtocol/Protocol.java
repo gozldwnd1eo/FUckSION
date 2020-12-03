@@ -315,7 +315,8 @@ public class Protocol implements Serializable {
 							break;
 						case CODE_PT_REQ_LOOKUP_SCREEN_TIME_AT_TAB:
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
-									+ LEN_BODY_SEPARATOR + LEN_THEATER_AREA + LEN_FILM_ID];
+									+ LEN_BODY_SEPARATOR + LEN_THEATER_NAME + LEN_FILM_NAME];
+							break;
 					}
 					break;
 				case PT_RES_LOOKUP:
@@ -849,6 +850,75 @@ public class Protocol implements Serializable {
 		return splited;// (상영관~상영시간)이므로 한번 더 잘라야함
 	}
 
+	// public ArrayList<Protocol> setList(String list) {
+	// ArrayList<Protocol> arr = new ArrayList<Protocol>();
+
+	// int headLength = LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN +
+	// LEN_PROTOCOL_FRAG
+	// + LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM;
+	// int maxBodyLen = LEN_MAX - headLength;
+	// int srcBegin = 0;
+	// int srcEnd = 0;
+	// String packetList = "";
+	// int bodyLen = list.getBytes().length;
+
+	// byte[] b = new byte[2];
+	// byte[] s = new byte[2];
+
+	// int seqNum = 0;
+	// packet = new byte[LEN_MAX];
+	// for (; maxBodyLen < bodyLen; bodyLen -= maxBodyLen, seqNum++) {
+
+	// srcEnd += maxBodyLen + 1;
+	// packetList = list.substring(srcBegin, srcEnd);
+	// srcBegin += srcEnd;
+
+	// packet[0] = (byte) protocolType;
+	// packet[1] = (byte) protocolCode;
+	// b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
+	// b[1] = (byte) (bodyLen & 0x000000ff);
+	// System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+	// LEN_PROTOCOL_BODYLEN);
+	// packet[5] = 1;
+	// packet[6] = 0;
+	// s[0] = (byte) ((seqNum & 0x0000ff00) >> 8);
+	// s[1] = (byte) (seqNum & 0x000000ff);
+	// System.arraycopy(s, 0, packet,
+	// LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
+	// + LEN_PROTOCOL_LAST,
+	// LEN_PROTOCOL_SEQNUM);
+
+	// System.arraycopy(packetList.getBytes(), 0, packet, headLength, maxBodyLen);
+
+	// arr.add(this);
+	// }
+	// if (bodyLen <= maxBodyLen) {
+
+	// packetList = list.substring(srcBegin);
+
+	// packet[0] = (byte) protocolType;
+	// packet[1] = (byte) protocolCode;
+	// b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
+	// b[1] = (byte) (bodyLen & 0x000000ff);
+	// System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+	// LEN_PROTOCOL_BODYLEN);
+	// packet[5] = 1;
+	// packet[6] = 1;
+	// s[0] = (byte) ((seqNum & 0x0000ff00) >> 8);
+	// s[1] = (byte) (seqNum & 0x000000ff);
+	// System.arraycopy(s, 0, packet,
+	// LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
+	// + LEN_PROTOCOL_LAST,
+	// LEN_PROTOCOL_SEQNUM);
+
+	// System.arraycopy(packetList.getBytes(), 0, packet, headLength,
+	// packetList.getBytes().length);
+
+	// arr.add(this);
+	// }
+	// return arr;
+	// }
+
 	public ArrayList<Protocol> setList(String list) {
 		ArrayList<Protocol> arr = new ArrayList<Protocol>();
 
@@ -865,30 +935,8 @@ public class Protocol implements Serializable {
 
 		int seqNum = 0;
 		packet = new byte[LEN_MAX];
-		for (; maxBodyLen < bodyLen; bodyLen -= maxBodyLen, seqNum++) {
 
-			srcEnd += maxBodyLen + 1;
-			packetList = list.substring(srcBegin, srcEnd);
-			srcBegin += srcEnd;
-
-			packet[0] = (byte) protocolType;
-			packet[1] = (byte) protocolCode;
-			b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
-			b[1] = (byte) (bodyLen & 0x000000ff);
-			System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
-			packet[5] = 1;
-			packet[6] = 0;
-			s[0] = (byte) ((seqNum & 0x0000ff00) >> 8);
-			s[1] = (byte) (seqNum & 0x000000ff);
-			System.arraycopy(s, 0, packet,
-					LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST,
-					LEN_PROTOCOL_SEQNUM);
-
-			System.arraycopy(packetList.getBytes(), 0, packet, headLength, maxBodyLen);
-
-			arr.add(this);
-		}
-		if (bodyLen < maxBodyLen) {
+		if (bodyLen <= maxBodyLen) {
 
 			packetList = list.substring(srcBegin);
 
@@ -897,17 +945,56 @@ public class Protocol implements Serializable {
 			b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
 			b[1] = (byte) (bodyLen & 0x000000ff);
 			System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
-			packet[5] = 1;
-			packet[6] = 1;
-			s[0] = (byte) ((seqNum & 0x0000ff00) >> 8);
-			s[1] = (byte) (seqNum & 0x000000ff);
-			System.arraycopy(s, 0, packet,
-					LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST,
-					LEN_PROTOCOL_SEQNUM);
-
+			packet[5] = 0;
+			packet[6] = 0;
+			s[0] = 0;
+			s[1] = 0;
 			System.arraycopy(packetList.getBytes(), 0, packet, headLength, packetList.getBytes().length);
-
 			arr.add(this);
+		} else {
+
+			for (; maxBodyLen < bodyLen; bodyLen -= maxBodyLen, seqNum++) {
+
+				srcEnd += maxBodyLen + 1;
+				packetList = list.substring(srcBegin, srcEnd);
+				srcBegin += srcEnd;
+
+				packet[0] = (byte) protocolType;
+				packet[1] = (byte) protocolCode;
+				b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
+				b[1] = (byte) (bodyLen & 0x000000ff);
+				System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
+				packet[5] = 1;
+				packet[6] = 0;
+				s[0] = (byte) ((seqNum & 0x0000ff00) >> 8);
+				s[1] = (byte) (seqNum & 0x000000ff);
+				System.arraycopy(s, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
+						+ LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST, LEN_PROTOCOL_SEQNUM);
+
+				System.arraycopy(packetList.getBytes(), 0, packet, headLength, maxBodyLen);
+
+				arr.add(this);
+			}
+			if (bodyLen <= maxBodyLen) {
+
+				packetList = list.substring(srcBegin);
+
+				packet[0] = (byte) protocolType;
+				packet[1] = (byte) protocolCode;
+				b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
+				b[1] = (byte) (bodyLen & 0x000000ff);
+				System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
+				packet[5] = 1;
+				packet[6] = 1;
+				s[0] = (byte) ((seqNum & 0x0000ff00) >> 8);
+				s[1] = (byte) (seqNum & 0x000000ff);
+				System.arraycopy(s, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN
+						+ LEN_PROTOCOL_FRAG + LEN_PROTOCOL_LAST, LEN_PROTOCOL_SEQNUM);
+
+				System.arraycopy(packetList.getBytes(), 0, packet, headLength, packetList.getBytes().length);
+
+				arr.add(this);
+			}
 		}
 		return arr;
 	}
