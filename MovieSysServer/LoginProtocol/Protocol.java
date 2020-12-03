@@ -228,7 +228,7 @@ public class Protocol implements Serializable {
 		getPacket(protocolType, protocolCode);
 	}
 
-	public Protocol(int protocolType, int protocolCode) { // 코드가 있는 타입 생성자..by 규철
+	public Protocol(int protocolType, int protocolCode) { // 코드가 있는 타입 생성자
 		this.protocolType = protocolType;
 		this.protocolCode = protocolCode;
 		getPacket(protocolType, protocolCode);
@@ -617,7 +617,7 @@ public class Protocol implements Serializable {
 		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_THEATER_AREA).trim();
 	}
 
-	public void setName_Email(String name, String email) { // 조회요청코드0 아이디 찾기 요청시 name,email 입력..by 규철
+	public void setName_Email(String name, String email) { // 조회요청코드0 아이디 찾기 요청시 name,email 입력
 		this.protocolCode = 0;
 		String finalStr = name + "\\" + email;
 		System.arraycopy(finalStr.trim().getBytes(), 0, packet,
@@ -632,8 +632,7 @@ public class Protocol implements Serializable {
 		return splited;
 	}
 
-	public void setID_Name_Email(String id, String name, String email) { // 조회요청코드1 비밀번호 찾기 요청시 로그인id,name,email 입력..by
-																			// 규철
+	public void setID_Name_Email(String id, String name, String email) { // 조회요청코드1 비밀번호 찾기 요청시 로그인id,name,email 입력
 		String finalStr = id + "\\" + name + "\\" + email;
 		System.arraycopy(finalStr.trim().getBytes(), 0, packet,
 				LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, finalStr.trim().getBytes().length);
@@ -646,7 +645,7 @@ public class Protocol implements Serializable {
 		return splited;
 	}
 
-	public void setFlimID(String id) { // 조회요청코드2 지역 조회 요청시 영화id 입력..by 규철
+	public void setFlimID(String id) { // 조회요청코드2 지역 조회 요청시 영화id 입력
 		System.arraycopy(id.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
 				id.trim().getBytes().length);
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + id.trim().getBytes().length] = '\0';
@@ -656,7 +655,7 @@ public class Protocol implements Serializable {
 		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_FILM_ID).trim();
 	}
 
-	public void setTheaterArea_FlimID(String area, String flimID) { // 조회요청코드3 영화관 조회 요청시 지역, 영화id 입력..by 규철
+	public void setTheaterArea_FlimID(String area, String flimID) { // 조회요청코드3 영화관 조회 요청시 지역, 영화id 입력
 		String finalStr = area + "\\" + flimID;
 		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
 				finalStr.trim().getBytes().length);
@@ -670,7 +669,7 @@ public class Protocol implements Serializable {
 		return splited;
 	}
 
-	public void setTheaterID_FlimID(String theaterID, String flimID) { // 조회요청코드4 상영시간 조회 요청시 영화관id, 영화id 입력..by 규철
+	public void setTheaterID_FlimID(String theaterID, String flimID) { // 조회요청코드4 상영시간 조회 요청시 영화관id, 영화id 입력
 		String finalStr = theaterID + "\\" + flimID;
 		System.arraycopy(finalStr.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
 				finalStr.trim().getBytes().length);
@@ -684,7 +683,7 @@ public class Protocol implements Serializable {
 		return splited;
 	}
 
-	public void setTheaterID(String id) { // 조회요청코드6 조회요청코드8 조회요청코드E 영화관id 입력..by 규철
+	public void setTheaterID(String id) { // 조회요청코드6 조회요청코드8 조회요청코드E 영화관id 입력
 		System.arraycopy(id.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
 				id.trim().getBytes().length);
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + id.trim().getBytes().length] = '\0';
@@ -695,7 +694,7 @@ public class Protocol implements Serializable {
 				.trim();
 	}
 
-	public void setScreenID(String id) { // 조회요청코드7 영화관id 입력..by 규철
+	public void setScreenID(String id) { // 조회요청코드7 영화관id 입력
 		System.arraycopy(id.trim().getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
 				id.trim().getBytes().length);
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + id.trim().getBytes().length] = '\0';
@@ -826,8 +825,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getTheScreenList()// 위에꺼 세트 by 규철
-	{
+	public String[] getTheScreenList() {
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;// (상영관~상영시간)이므로 한번 더 잘라야함
@@ -907,8 +905,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getSeatNumList()// 위에꺼 세트 by 규철
-	{
+	public String[] getSeatNumList() {
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
 		String[] splited = origin.split("~");
 		return splited;
@@ -925,8 +922,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String getListBody()// 위에꺼 세트 by 규철
-	{
+	public String getListBody() {
 		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_PROTOCOL_FRAG
 				+ LEN_PROTOCOL_LAST + LEN_PROTOCOL_SEQNUM, getProtocolBodyLen());
 	}
@@ -942,8 +938,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getMemberDetails()// 위에꺼 세트 by 규철
-	{
+	public String[] getMemberDetails() {
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
@@ -956,8 +951,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getMemberReviews()// 위에꺼 세트 by 규철
-	{
+	public String[] getMemberReviews() {
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
@@ -976,8 +970,7 @@ public class Protocol implements Serializable {
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
 	}
 
-	public String[] getMemberJoin()// 위에꺼 세트 by 규철
-	{
+	public String[] getMemberJoin() {
 		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
 				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
