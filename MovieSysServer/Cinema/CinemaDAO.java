@@ -210,7 +210,7 @@ public class CinemaDAO {
 				result = result + rs.getString("THEATER_NAME") + "\\";
 				result = result + rs.getString("THEATER_AREA") + "\\";
 				result = result + rs.getString("THEATER_ADDRESS") + "\\";
-				result = result + rs.getString("AD_ID") + "|";
+				result = result + rs.getString("MEM_ID") + "|";
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");

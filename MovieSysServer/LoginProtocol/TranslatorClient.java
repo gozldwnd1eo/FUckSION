@@ -1,4 +1,4 @@
-package test;
+package MovieSysServer.LoginProtocol;
 
 import java.io.BufferedReader;
 import java.io.IOException;
