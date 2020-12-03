@@ -646,7 +646,7 @@ public class Protocol implements Serializable {
 	}
 
 	public String[] getID_Name_Email() {
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -971,8 +971,11 @@ public class Protocol implements Serializable {
 	public void setMemberJoin(String[] data) {// 갱신요청코드1(아이디\비밀번호\성명\휴대전화번호\계좌번호\성별\이메일\생년월일)
 		String finalStr = data[0] + "\\" + data[1] + "\\" + data[2] + "\\" + data[3] + "\\" + data[4] + "\\" + data[5]
 				+ "\\" + data[6] + "\\" + data[7];
-		System.arraycopy(finalStr.trim().getBytes().length, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
-				LEN_PROTOCOL_BODYLEN);
+		int bodyLen = finalStr.getBytes().length;
+		byte[] b = new byte[2];
+		b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
+		b[1] = (byte) (bodyLen & 0x000000ff);
+		System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
 		System.arraycopy(finalStr.trim().getBytes(), 0, packet,
 				LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, finalStr.trim().getBytes().length);
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + 7 * LEN_BODY_SEPARATOR
@@ -1080,12 +1083,14 @@ public class Protocol implements Serializable {
 		b[0] = (byte) ((protocolBodyLen & 0x0000ff00) >> 8);
 		b[1] = (byte) (protocolBodyLen & 0x000000ff);
 		System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
-		System.arraycopy(packetList.getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE+ LEN_PROTOCOL_BODYLEN, packetList.getBytes().length);
+		System.arraycopy(packetList.getBytes(), 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				packetList.getBytes().length);
 	}
 
 	public String[] getAccountInfo()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, protocolBodyLen).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, protocolBodyLen)
+				.trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -1314,7 +1319,7 @@ public class Protocol implements Serializable {
 
 	public int getProtocolBodyLen() {
 		byte[] b = new byte[2];
-		System.arraycopy(packet, LEN_PROTOCOL_TYPE+LEN_TYPE_CODE, b, 0, LEN_PROTOCOL_BODYLEN);
+		System.arraycopy(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, b, 0, LEN_PROTOCOL_BODYLEN);
 		protocolBodyLen = b.length;
 		return protocolBodyLen;
 	}
