@@ -144,8 +144,8 @@ public class Protocol implements Serializable {
 	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_NO = 32; // 계좌 조회 요청 거절 코드번호
 	public static final int CODE_PT_RES_LOOKUP_ALL_SCREEN_SCHEDULE_OK = 41; // 모든 상영영화 조회 요청 승인 코드번호
 	public static final int CODE_PT_RES_LOOKUP_ALL_SCREEN_SCHEDULE_NO = 42; // 모든 상영영화 조회 요청 거절 코드번호
-	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_CUS_OK = 43; //고객 계좌 조회 요청 승인 코드번호
-	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_CUS_NO = 44; //고객 계좌 조회 요청 거절 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_CUS_OK = 43; // 고객 계좌 조회 요청 승인 코드번호
+	public static final int CODE_PT_RES_LOOKUP_ACCOUNT_CUS_NO = 44; // 고객 계좌 조회 요청 거절 코드번호
 	// TYPE 7 CODE
 	public static final int CODE_PT_REQ_UPDATE_ADD_MEM = 1; // 회원 추가 요청 코드번호
 	public static final int CODE_PT_REQ_UPDATE_CHANGE_MEM_INFO = 2; // 회원 정보 수정 요청 코드번호
@@ -988,11 +988,7 @@ public class Protocol implements Serializable {
 
 	public void setMember_Modify_Info(String[] data) {// 갱신요청코드2(비밀번호\휴대전화번호\이메일 주소\계좌번호)
 		String finalStr = data[0] + "\\" + data[1] + "\\" + data[2] + "\\" + data[3];
-		int bodyLen = finalStr.getBytes().length;
-		byte[] b = new byte[2];
-		b[0] = (byte) ((bodyLen & 0x0000ff00) >> 8);
-		b[1] = (byte) (bodyLen & 0x000000ff);
-		System.arraycopy(b, 0, packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_PROTOCOL_BODYLEN);
+		setProtocolBodyLen(finalStr.length(), packet);
 		System.arraycopy(finalStr.trim().getBytes(), 0, packet,
 				LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, finalStr.trim().getBytes().length);
 		packet[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + finalStr.trim().getBytes().length] = '\0';
@@ -1000,7 +996,8 @@ public class Protocol implements Serializable {
 
 	public String[] getMember_Modify_Inf()// 위에꺼 세트
 	{
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_MAX).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN,
+				getProtocolBodyLen()).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
