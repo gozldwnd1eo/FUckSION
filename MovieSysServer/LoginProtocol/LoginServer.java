@@ -1,6 +1,14 @@
 package MovieSysServer.LoginProtocol;
 
 import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.io.*;
@@ -213,7 +221,7 @@ public class LoginServer {
 						// 영화관 조회 3
 						/////////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_THEATER:
-							System.out.println("영화관 조회 요청 받음");
+							System.out.println("예매시 영화관 조회 요청 받음");
 							String[] area_filmID = protocol.getTheaterArea_FlimID();
 							area = area_filmID[0];
 							filmID = area_filmID[1];
@@ -222,7 +230,7 @@ public class LoginServer {
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_THEATER_OK);
 							protocol.setList(theaterresult);
 							os.write(protocol.getPacket());
-							System.out.println("영화관 조회 요청에 대한 응답보냄");
+							System.out.println("예매시 영화관 조회 요청에 대한 응답보냄");
 							break;
 
 						// 상영시간 조회4
@@ -244,23 +252,35 @@ public class LoginServer {
 						// 모든 영화관 조회 5
 						///////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_ALL_THEATER:
+							System.out.println("모든 영화관 조회 요청 받음");
+
 							String theaterResult = cinemadao.displayTheater();
+
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_THEATER_OK);
-							protocol.setList(theaterResult);
-							os.write(protocol.getPacket());
+							packetList = protocol.setList(theaterResult);
+
+							iterator = packetList.iterator();
+							while (iterator.hasNext()) {
+								Protocol temp = iterator.next();
+								temp = packetList.get(count++);
+								os.write(temp.getPacket());
+							}
+							System.out.println("모든 영화관 조회 요청에 대한 응답보냄");
 							break;
 
 						// 해당 영화관의 상영시간표 조회 6
 						///////////////////////////////////////////////////////
 						case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TABLE:
-							theaterID = protocol.getTheaterID();
+							System.out.println("상영시간표 조회 요청 받음");
+							theaterName = protocol.getTheaterID();
 
-							String screenresult = cinemadao.displayScreenTable(theaterID);
+							String screenresult = cinemadao.displayScreenTable(theaterName);
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
 									Protocol.CODE_PT_RES_LOOKUP_SCREEN_TABLE_OK);
 							protocol.setList(screenresult);
 							os.write(protocol.getPacket());
 
+							System.out.println("상영시간표 조회 요청에 대한 응답보냄");
 							break;
 
 						// 현재 좌석 상황 조회 요청 7
@@ -299,6 +319,8 @@ public class LoginServer {
 
 						// 내 정보 조회 요청 9
 						case Protocol.CODE_PT_REQ_LOOKUP_MY_INFO:
+							System.out.println("회원 정보 조회 요청 받음");
+
 							id = protocol.getID();
 
 							String myInfoResult = mdao.displayMyInfo(id);
@@ -306,6 +328,8 @@ public class LoginServer {
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_MY_INFO_OK);
 							protocol.setList(myInfoResult);
 							os.write(protocol.getPacket());
+							System.out.println("회원 정보 조회 결과보냄");
+
 							break;
 
 						// 자신이 작성한 리뷰 리스트 조회 10
@@ -480,7 +504,9 @@ public class LoginServer {
 
 							// 회원 정보 수정 요청 2
 						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_MEM_INFO:
-							String[] password_phone_email_account = protocol.getMember_Modify_Inf();
+							System.out.println("회원 정보 수정 요청 받음");
+							String infoBody = protocol.getListBody();
+							String[] password_phone_email_account = infoBody.split("\\\\");
 							password = password_phone_email_account[0];
 							phone = password_phone_email_account[1];
 							email = password_phone_email_account[2];
@@ -491,11 +517,15 @@ public class LoginServer {
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_CHANGE_MEM_INFO_NO);
 								os.write(protocol.getPacket());
+								System.out.println("회원 정보 수정 실패 응답 보냄");
+
 								break;
 							} else { // 성공
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_CHANGE_MEM_INFO_OK);
 								os.write(protocol.getPacket());
+								System.out.println("회원 정보 수정 성공 응답 보냄");
+
 								break;
 							}
 
