@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import MovieSysServer.Member.MemberDAO;
+
 public class CinemaDAO {
 	private boolean insertResult = false;
 	private boolean deleteResult = false;
@@ -17,7 +19,25 @@ public class CinemaDAO {
 	private ResultSet rs = null;
 	String result = "";
 
-	public boolean insertResvation(ResvDTO dto) { // 예매 실행
+	public String insertResvation(ResvDTO dto) { // 예매 실행
+		String result="1";
+		if(checkSeat(dto)==true&&checkMoney(dto)==false)
+		{
+			result="2";
+			return result;
+		}
+	 	else if(checkSeat(dto)==false&&checkMoney(dto)==true)
+		{
+			result="3";
+			return result;
+		}
+		else if(checkSeat(dto)==false&&checkMoney(dto)==false)
+		{
+			result="4";
+			return result;
+		}
+
+
 
 		String SQL = "{call RESERV_EXEC(?,?,?,?,?)}";
 		try {
@@ -32,8 +52,7 @@ public class CinemaDAO {
 		} catch (SQLException sqle) {
 			System.out.println("프로시저문에서 예외 발생");
 			sqle.printStackTrace();
-			insertResult = false;
-			return insertResult;
+			return "false";
 		} finally {
 			if (cstmt != null)
 				try {
@@ -48,8 +67,39 @@ public class CinemaDAO {
 					throw new RuntimeException(e.getMessage());
 				}
 		}
-		insertResult = true;
-		return insertResult;
+		return result;
+	}
+
+	public boolean checkSeat(ResvDTO dto)
+	{
+		String[] unableSeat=displaySeatSituation(dto.getScreen_id()).split("~");
+		String[] resvSeat=dto.getResv_seatNum().split("~");
+		for(int i=0;i<resvSeat.length;i++)
+		{
+			for(int j=0;j<unableSeat.length;j++)
+			{
+				if(resvSeat[i]==unableSeat[j])
+				{
+					return false;
+				}
+			}
+
+		}
+		return true;
+	}
+
+	public boolean checkMoney(ResvDTO dto)
+	{
+		MemberDAO dao=new MemberDAO();
+		String[] AccountInfo=dao.displayAccountInfo(dto.getCus_id()).split("~");
+		if(dto.getResv_depositAmount()> Integer.parseInt(AccountInfo[1]))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 	public boolean insertScreen(ScreenDTO dto) { // 상영영화 추가
