@@ -458,6 +458,7 @@ public class Protocol implements Serializable {
 							packet = new byte[LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN + LEN_FILM_ID];
 							break;
 					}
+					break;
 				case PT_RES_UPDATE:
 					switch (typeCode) {
 						case CODE_PT_RES_UPDATE_ADD_MEM_OK:
