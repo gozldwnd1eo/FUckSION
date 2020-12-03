@@ -16,11 +16,11 @@
                <children>
                   <Label layoutX="76.0" layoutY="85.0" text="이름" />
                   <Label layoutX="70.0" layoutY="113.0" text="이메일" />
-                  <TextField layoutX="183.0" layoutY="81.0" />
-                  <TextField layoutX="183.0" layoutY="109.0" />
-                  <Button layoutX="180.0" layoutY="151.0" mnemonicParsing="false" text="조회" />
-                  <TextArea disable="true" layoutX="14.0" layoutY="186.0" prefHeight="241.0" prefWidth="373.0" />
-                  <Button layoutX="14.0" layoutY="435.0" mnemonicParsing="false" text="이전" />
+                  <TextField fx:id="id_namefd" layoutX="183.0" layoutY="81.0" />
+                  <TextField fx:id="id_emailfd" layoutX="183.0" layoutY="109.0" />
+                  <Button fx:id="id_lookupbtn" layoutX="180.0" layoutY="151.0" mnemonicParsing="false" text="조회" />
+                  <TextArea fx:id="id_lookupresult" disable="true" layoutX="14.0" layoutY="186.0" prefHeight="241.0" prefWidth="373.0" />
+                  <Button fx:id="before_btn" layoutX="14.0" layoutY="435.0" mnemonicParsing="false" text="이전" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -30,13 +30,13 @@
                <children>
                   <Label layoutX="76.0" layoutY="85.0" text="이름" />
                   <Label layoutX="70.0" layoutY="113.0" text="이메일" />
-                  <TextField layoutX="183.0" layoutY="81.0" />
-                  <TextField layoutX="183.0" layoutY="109.0" />
-                  <Button layoutX="180.0" layoutY="151.0" mnemonicParsing="false" text="조회" />
-                  <TextArea disable="true" layoutX="14.0" layoutY="186.0" prefHeight="241.0" prefWidth="373.0" />
-                  <Button layoutX="14.0" layoutY="435.0" mnemonicParsing="false" text="이전" />
+                  <TextField fx:id="pw_namefd" layoutX="183.0" layoutY="81.0" />
+                  <TextField fx:id="pw_emailfd" layoutX="183.0" layoutY="109.0" />
+                  <Button fx:id="pw_lookupbtn" layoutX="180.0" layoutY="151.0" mnemonicParsing="false" text="조회" />
+                  <TextArea fx:id="pw_lookupresult" disable="true" layoutX="14.0" layoutY="186.0" prefHeight="241.0" prefWidth="373.0" />
+                  <Button fx:id="before_btn2" layoutX="14.0" layoutY="435.0" mnemonicParsing="false" text="이전" />
                   <Label layoutX="70.0" layoutY="57.0" text="아이디" />
-                  <TextField layoutX="183.0" layoutY="53.0" />
+                  <TextField fx:id="pw_idfd" layoutX="183.0" layoutY="53.0" />
                </children>
             </AnchorPane>
          </content>
