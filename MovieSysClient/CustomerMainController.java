@@ -102,10 +102,10 @@ public class CustomerMainController implements Initializable {
                 Myconn.is.read(buf);
                 int packetType = buf[0];
                 int packetCode = buf[1];
-                byte[] b=new byte[2];
+                byte[] b = new byte[2];
                 System.arraycopy(buf, 3, b, 0, 2);
-                int packetBodyLen=(b[0]&0x000000ff<<8);
-                packetBodyLen+=(b[1]&0x000000ff);
+                int packetBodyLen = (b[0] & 0x000000ff << 8);
+                packetBodyLen += (b[1] & 0x000000ff);
                 // int packetBodyLen = buf[3];
                 int packetFlag = buf[5];
                 last = buf[6];
