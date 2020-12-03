@@ -1322,7 +1322,8 @@ public class Protocol implements Serializable {
 	public int getProtocolBodyLen() {
 		byte[] b = new byte[2];
 		System.arraycopy(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, b, 0, LEN_PROTOCOL_BODYLEN);
-		protocolBodyLen = b.length;
+		protocolBodyLen += (b[0] & 0xff) << 8;
+		protocolBodyLen += (b[1] & 0xff);
 		return protocolBodyLen;
 	}
 
