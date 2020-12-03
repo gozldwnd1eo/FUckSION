@@ -177,7 +177,7 @@ public class CinemaDAO {
 				result = result + rs.getString("THEATER_NAME") + "\\";
 				result = result + rs.getString("THEATER_AREA") + "\\";
 				result = result + rs.getString("THEATER_ADDRESS") + "\\";
-				result = result + rs.getString("AD_ID") + "|";
+				result = result + rs.getString("MEM_ID") + "|";
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
@@ -283,7 +283,7 @@ public class CinemaDAO {
 
 	public boolean updateTheater(TheaterDTO dto) {// 영화관 수정
 		boolean updateResult;
-		String SQL = "UPDATE THEATERS SET THEATER_NAME=?, THEATER_AREA=?, THEATER_ADDRESS=? WHERE THEATER_ID=? AND AD_ID=?";
+		String SQL = "UPDATE THEATERS SET THEATER_NAME=?, THEATER_AREA=?, THEATER_ADDRESS=? WHERE THEATER_ID=? AND MEM_ID=?";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);

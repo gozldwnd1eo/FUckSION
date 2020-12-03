@@ -439,10 +439,10 @@ public class LoginServer {
 							phone = id_password_name_phone_account_gender_money_email_birthday_flag[3];
 							account = id_password_name_phone_account_gender_money_email_birthday_flag[4];
 							gender = id_password_name_phone_account_gender_money_email_birthday_flag[5];
-							money = id_password_name_phone_account_gender_money_email_birthday_flag[6];
-							email = id_password_name_phone_account_gender_money_email_birthday_flag[7];
-							birthday = id_password_name_phone_account_gender_money_email_birthday_flag[8];
-							flag = id_password_name_phone_account_gender_money_email_birthday_flag[9];
+							email = id_password_name_phone_account_gender_money_email_birthday_flag[6];
+							birthday = id_password_name_phone_account_gender_money_email_birthday_flag[7];
+							money = "50000";
+							flag = "C";
 
 							boolean resultIDCheck = mdao.idCheck(id);
 							if (resultIDCheck == true) { // 아이디 중복
@@ -602,7 +602,11 @@ public class LoginServer {
 							REVcontent = reviewID_REVcontent_starpoint[1];
 							starpoint = reviewID_REVcontent_starpoint[2];
 
-							boolean updatereviewresult = true;/////////////// fafdsadfssdfsd미완성
+							reviewdto.setRev_id(reviewID);
+							reviewdto.setRev_content(REVcontent);
+							reviewdto.setRev_starPoint(Integer.parseInt(starpoint));
+
+							boolean updatereviewresult = fdao.updateReview(reviewdto);
 							if (updatereviewresult == false) {
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_CHANGE_REVIEW_NO);
