@@ -24,14 +24,17 @@ public class CinemaDAO {
 		if(checkSeat(dto)==true&&checkMoney(dto)==false)
 		{
 			result="2";
+			return result;
 		}
-		if(checkSeat(dto)==false&&checkMoney(dto)==true)
+	 	else if(checkSeat(dto)==false&&checkMoney(dto)==true)
 		{
 			result="3";
+			return result;
 		}
-		if(checkSeat(dto)==false&&checkMoney(dto)==false)
+		else if(checkSeat(dto)==false&&checkMoney(dto)==false)
 		{
 			result="4";
+			return result;
 		}
 
 
