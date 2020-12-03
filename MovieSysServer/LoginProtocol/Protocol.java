@@ -707,8 +707,7 @@ public class Protocol implements Serializable {
 	}
 
 	public String getScreenID() {
-		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, getProtocolBodyLen())
-				.trim();
+		return new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE + LEN_PROTOCOL_BODYLEN, LEN_SCREEN_ID).trim();
 	}
 
 	public void setTheaterList(String[] list) {// 조회응답코드5
