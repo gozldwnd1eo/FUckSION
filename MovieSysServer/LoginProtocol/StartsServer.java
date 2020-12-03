@@ -21,7 +21,7 @@ public class StartsServer {
         // TODO Auto-generated method stub
         try {
 
-            ServerSocket server = new ServerSocket(6000);
+            ServerSocket server = new ServerSocket(7127);
             while (true) {
                 Socket client = server.accept();
                 TransLator translator = new TransLator(client);
@@ -40,9 +40,6 @@ class TransLator extends Thread {
     TransLator(Socket client) {
         this.client = client;
     }
-
-    // OutputStream os = socket.getOutputStream();
-    // InputStream is = socket.getInputStream();
 
     String[] idpw;
     String id; // 아이디
@@ -91,14 +88,16 @@ class TransLator extends Thread {
     String reviewID; // 게시물 아이디
     String REVcontent; // 리뷰내용
     String starpoint; // 별점
+  
+
 
     public void run() {
         try {
 
             System.out.println(getTime() + "Client has accepted...");
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            PrintWriter pw = new PrintWriter(client.getOutputStream());
+            OutputStream os = client.getOutputStream();
+            InputStream is = client.getInputStream();
 
             boolean program_stop = false;
 
@@ -1047,8 +1046,23 @@ class TransLator extends Thread {
     
             is.close();
             os.close();
-            socket.close();
+            client.close();
     
+        }catch (IOException e) {
+            e.printStackTrace();
         }
-    
+    }  
+    public static String getTime() {
+        String threadName = Thread.currentThread().getName();
+        SimpleDateFormat f = new SimpleDateFormat("[hh:mm:ss]");
+        return f.format(new Date()) + threadName;
+    }
+
+    public static void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
