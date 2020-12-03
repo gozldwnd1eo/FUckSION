@@ -675,18 +675,18 @@ public class CinemaDAO {
 		return result;
 	}
 
-	public String displayScreenTable(String inputTheaterId) { // 해당 영화관의 상영시간표 조회 요청
-		String SQL = "SELECT * FROM SCREENS WHERE AUDI_ID IN(SELECT AUDI_ID FROM AUDITORIUMS WHERE THEATER_ID=?)ORDER BY SCREEN_STARTTIME";
+	public String displayScreenTable(String inputTheaterName) { // 해당 영화관의 상영시간표 조회 요청
+		String SQL = "SELECT SCREEN_ID, AUDI_ID,FILM_NAME, SCREEN_RESIDUALSEAT, SCREEN_STARTTIME, SCREEN_FINALTIME FROM SCREENS,FILMS WHERE SCREENS.FILM_ID=FILMS.FILM_ID AND AUDI_ID IN(SELECT AUDI_ID FROM AUDITORIUMS WHERE THEATER_ID IN(SELECT THEATER_ID FROM THEATERS WHERE THEATER_NAME=?))ORDER BY SCREEN_STARTTIME";
 
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, inputTheaterId);
+			pstmt.setString(1, inputTheaterName);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				result = result + rs.getString("SCREEN_ID") + "\\";
 				result = result + rs.getString("AUDI_ID") + "\\";
-				result = result + rs.getString("FILM_ID") + "\\";
+				result = result + rs.getString("FILM_NAME") + "\\";
 				result = result + rs.getString("SCREEN_RESIDUALSEAT") + "\\";
 				result = result + rs.getString("SCREEN_STARTTIME") + "\\";
 				result = result + rs.getString("SCREEN_FINALTIME") + "|";
