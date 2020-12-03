@@ -90,7 +90,7 @@ public class signupController implements Initializable {
                     String[] data = { idfield.getText().trim(), pwfield.getText().trim(), namefield.getText().trim(),
                             phonefield.getText().trim(), accountfield.getText().trim(), selected.getText().trim(),
                             emailfield.getText().trim(), birthfield.getText().trim() };// 아이디 비번 이름 폰번호 계좌번호 성별 이메일 생년월일
-                    if (data[5].equals("남자")) {
+                    if (data[5].equals("남")) {
                         data[5] = "M";
                     } else {
                         data[5] = "F";
@@ -102,68 +102,66 @@ public class signupController implements Initializable {
                         } else {
                             if (!pwfield.getText().trim().equals(pwconfirm.getText().trim())) {
                                 is_not_match_pw = true;
-                            } else {
-                                Protocol protocol = new Protocol(Protocol.PT_REQ_UPDATE,
-                                        Protocol.CODE_PT_REQ_UPDATE_ADD_MEM);
-                                byte[] buf = protocol.getPacket();
-                                protocol.setMemberJoin(data);
-                                Myconn.os.write(protocol.getPacket());
-
-                                protocol = new Protocol();
-                                buf = protocol.getPacket();
-                                Myconn.is.read(buf);
-
-                                protocol.setPacket(buf[0], buf[1], buf);
-                                if (protocol.getProtocolType() == Protocol.PT_RES_UPDATE
-                                        & protocol.getProtocolCode() == Protocol.CODE_PT_RES_UPDATE_ADD_MEM_OK) {
-                                    Stage dialog = new Stage(StageStyle.UTILITY);
-                                    dialog.initModality(Modality.WINDOW_MODAL);
-                                    dialog.initOwner(primaryStage);
-                                    dialog.setTitle("Success");
-                                    Parent parent = FXMLLoader.load(getClass().getResource("errordialog.fxml"));
-                                    Label dialogtext = (Label) parent.lookup("#dialogtext");
-                                    dialogtext.setText("성공");
-                                    Button ok_btn = (Button) parent.lookup("#ok_btn");
-                                    ok_btn.setOnAction(e -> {
-                                        try {
-                                            dialog.close();
-                                            Parent parent2 = FXMLLoader.load(getClass().getResource("root.fxml"));
-                                            Scene scene = new Scene(parent2);
-                                            primaryStage.setScene(scene);
-                                        } catch (IOException excep) {
-                                            excep.printStackTrace();
-                                        }
-                                    });
-                                    Scene scene = new Scene(parent);
-
-                                    dialog.setScene(scene);
-                                    dialog.setResizable(false);
-                                    dialog.show();
-                                } else {
-                                    Stage dialog = new Stage(StageStyle.UTILITY);
-                                    dialog.initModality(Modality.WINDOW_MODAL);
-                                    dialog.initOwner(primaryStage);
-                                    dialog.setTitle("error");
-                                    Parent parent = FXMLLoader.load(getClass().getResource("errordialog.fxml"));
-                                    Label dialogtext = (Label) parent.lookup("#dialogtext");
-                                    dialogtext.setText("중복된 아이디가 서버에 있습니다.");
-                                    Button ok_btn = (Button) parent.lookup("#ok_btn");
-                                    ok_btn.setOnAction(e -> {
-                                        dialog.close();
-                                        // Parent parent2 =
-                                        // FXMLLoader.load(getClass().getResource("root.fxml"));
-                                        // Scene scene = new Scene(parent2);
-                                        // primaryStage.setScene(scene);
-
-                                    });
-                                    Scene scene = new Scene(parent);
-
-                                    dialog.setScene(scene);
-                                    dialog.setResizable(false);
-                                    dialog.show();
-                                }
                             }
                         }
+                    }
+                    Protocol protocol = new Protocol(Protocol.PT_REQ_UPDATE, Protocol.CODE_PT_REQ_UPDATE_ADD_MEM);
+                    byte[] buf = protocol.getPacket();
+                    protocol.setMemberJoin(data);
+                    Myconn.os.write(protocol.getPacket());
+
+                    protocol = new Protocol();
+                    buf = protocol.getPacket();
+                    Myconn.is.read(buf);
+
+                    protocol.setPacket(buf[0], buf[1], buf);
+                    if (protocol.getProtocolType() == Protocol.PT_RES_UPDATE
+                            & protocol.getProtocolCode() == Protocol.CODE_PT_RES_UPDATE_ADD_MEM_OK) {
+                        Stage dialog = new Stage(StageStyle.UTILITY);
+                        dialog.initModality(Modality.WINDOW_MODAL);
+                        dialog.initOwner(primaryStage);
+                        dialog.setTitle("Success");
+                        Parent parent = FXMLLoader.load(getClass().getResource("errordialog.fxml"));
+                        Label dialogtext = (Label) parent.lookup("#dialogtext");
+                        dialogtext.setText("성공");
+                        Button ok_btn = (Button) parent.lookup("#ok_btn");
+                        ok_btn.setOnAction(e -> {
+                            try {
+                                dialog.close();
+                                Parent parent2 = FXMLLoader.load(getClass().getResource("root.fxml"));
+                                Scene scene = new Scene(parent2);
+                                primaryStage.setScene(scene);
+                            } catch (IOException excep) {
+                                excep.printStackTrace();
+                            }
+                        });
+                        Scene scene = new Scene(parent);
+
+                        dialog.setScene(scene);
+                        dialog.setResizable(false);
+                        dialog.show();
+                    } else {
+                        Stage dialog = new Stage(StageStyle.UTILITY);
+                        dialog.initModality(Modality.WINDOW_MODAL);
+                        dialog.initOwner(primaryStage);
+                        dialog.setTitle("error");
+                        Parent parent = FXMLLoader.load(getClass().getResource("errordialog.fxml"));
+                        Label dialogtext = (Label) parent.lookup("#dialogtext");
+                        dialogtext.setText("중복된 아이디가 서버에 있습니다.");
+                        Button ok_btn = (Button) parent.lookup("#ok_btn");
+                        ok_btn.setOnAction(e -> {
+                            dialog.close();
+                            // Parent parent2 =
+                            // FXMLLoader.load(getClass().getResource("root.fxml"));
+                            // Scene scene = new Scene(parent2);
+                            // primaryStage.setScene(scene);
+
+                        });
+                        Scene scene = new Scene(parent);
+
+                        dialog.setScene(scene);
+                        dialog.setResizable(false);
+                        dialog.show();
                     }
                 } else {
                     is_not_full = true;
@@ -198,6 +196,7 @@ public class signupController implements Initializable {
                     dialog.setResizable(false);
                     dialog.show();
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
