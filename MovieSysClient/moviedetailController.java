@@ -105,12 +105,12 @@ public class moviedetailController implements Initializable {
                 e.printStackTrace();
             }
         });
-        before_btn.setOnAction(event->{
+        before_btn.setOnAction(event -> {
             Parent parent;
             try {
                 parent = FXMLLoader.load(getClass().getResource("customerMain.fxml"));
                 Scene scene = new Scene(parent);
-                Stage primaryStage=(Stage)before_btn.getScene().getWindow();
+                Stage primaryStage = (Stage) before_btn.getScene().getWindow();
                 primaryStage.setScene(scene);
             } catch (IOException e) {
                 e.printStackTrace();

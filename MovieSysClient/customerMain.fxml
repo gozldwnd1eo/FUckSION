@@ -48,10 +48,10 @@
                   <PasswordField fx:id="pwcheckfd" layoutX="131.0" layoutY="41.0" />
                   <Label layoutX="49.0" layoutY="45.0" text="비밀번호 확인" />
                   <Button fx:id="pwchek_btn" layoutX="305.0" layoutY="41.0" mnemonicParsing="false" text="확인" />
-                  <Button fx:id="change_imf_btn" layoutX="49.0" layoutY="100.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내 정보 수정" />
-                  <Button fx:id="myreview_btn" layoutX="49.0" layoutY="135.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내가 작성한 리뷰" />
-                  <Button fx:id="myrevhis_btn" layoutX="49.0" layoutY="169.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내 예매 내역 확인" />
-                  <Button fx:id="dropuser_btn" layoutX="49.0" layoutY="203.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="회원 탈퇴" />
+                  <Button fx:id="change_imf_btn" disable="true" layoutX="49.0" layoutY="100.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내 정보 수정" />
+                  <Button fx:id="myreview_btn" disable="true" layoutX="49.0" layoutY="135.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내가 작성한 리뷰" />
+                  <Button fx:id="myrevhis_btn" disable="true" layoutX="49.0" layoutY="169.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="내 예매 내역 확인" />
+                  <Button fx:id="dropuser_btn" disable="true" layoutX="49.0" layoutY="203.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="110.0" text="회원 탈퇴" />
                </children></AnchorPane>
         </content>
       </Tab>
