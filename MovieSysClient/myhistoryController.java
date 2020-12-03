@@ -109,20 +109,43 @@ public class myhistoryController implements Initializable {
             }
             history.setItems(tablelist);
 
-            before_btn.setOnAction(event->{
-                try{
-                Parent parent = FXMLLoader.load(getClass().getResource("customerMain.fxml"));
-                Scene scene = new Scene(parent);
-                Stage primaryStage = (Stage) before_btn.getScene().getWindow();
-                primaryStage.setScene(scene);
-                }catch (IOException e){
+            before_btn.setOnAction(event -> {
+                try {
+                    Parent parent = FXMLLoader.load(getClass().getResource("customerMain.fxml"));
+                    Scene scene = new Scene(parent);
+                    Stage primaryStage = (Stage) before_btn.getScene().getWindow();
+                    primaryStage.setScene(scene);
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
 
             cancel_btn.setOnAction(event -> {
                 try {
+                    Stage primaryStage = (Stage) cancel_btn.getScene().getWindow();
                     myhistoryTableRowModel selected = history.getSelectionModel().getSelectedItem();
+                    if (!selected.refundProperty().getValue().equals("null")) {
+                        Stage dialog = new Stage(StageStyle.UTILITY);
+                        dialog.initModality(Modality.WINDOW_MODAL);
+                        dialog.initOwner(primaryStage);
+                        dialog.setTitle("error");
+                        Parent parent = FXMLLoader.load(getClass().getResource("errordialog.fxml"));
+                        Label dialogtext = (Label) parent.lookup("#dialogtext");
+                        dialogtext.setText("이미 환불된 항목입니다.");
+                        Button ok_btn = (Button) parent.lookup("#ok_btn");
+                        ok_btn.setOnAction(e -> {
+                            dialog.close();
+                        });
+                        Scene scene = new Scene(parent);
+
+                        dialog.setScene(scene);
+                        dialog.setResizable(false);
+                        dialog.show();
+                        Parent parent2 = FXMLLoader.load(getClass().getResource("myhistory.fxml"));
+                        Scene scene2 = new Scene(parent2);
+                        primaryStage.setScene(scene2);
+                        return;
+                    }
                     Protocol protocol2 = new Protocol(Protocol.PT_REQ_UPDATE,
                             Protocol.CODE_PT_REQ_UPDATE_DELETE_PAY_RESV);
                     byte[] buf2 = protocol2.getPacket();
@@ -142,7 +165,7 @@ public class myhistoryController implements Initializable {
                     protocol2.setPacket(ptType, ptCode, buf2);
                     buf2 = protocol2.getPacket();
                     if (ptCode2 == Protocol.CODE_PT_RES_UPDATE_DELETE_PAY_RESV_OK) {
-                        Stage primaryStage = (Stage) cancel_btn.getScene().getWindow();
+
                         Stage dialog = new Stage(StageStyle.UTILITY);
                         dialog.initModality(Modality.WINDOW_MODAL);
                         dialog.initOwner(primaryStage);
