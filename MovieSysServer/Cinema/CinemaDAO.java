@@ -20,24 +20,17 @@ public class CinemaDAO {
 	String result = "";
 
 	public String insertResvation(ResvDTO dto) { // 예매 실행
-		String result="1";
-		if(checkSeat(dto)==true&&checkMoney(dto)==false)
-		{
-			result="2";
+		String result = "1";
+		if (checkSeat(dto) == true && checkMoney(dto) == false) {
+			result = "2";
+			return result;
+		} else if (checkSeat(dto) == false && checkMoney(dto) == true) {
+			result = "3";
+			return result;
+		} else if (checkSeat(dto) == false && checkMoney(dto) == false) {
+			result = "4";
 			return result;
 		}
-	 	else if(checkSeat(dto)==false&&checkMoney(dto)==true)
-		{
-			result="3";
-			return result;
-		}
-		else if(checkSeat(dto)==false&&checkMoney(dto)==false)
-		{
-			result="4";
-			return result;
-		}
-
-
 
 		String SQL = "{call RESERV_EXEC(?,?,?,?,?)}";
 		try {
@@ -70,16 +63,12 @@ public class CinemaDAO {
 		return result;
 	}
 
-	public boolean checkSeat(ResvDTO dto)
-	{
-		String[] unableSeat=displaySeatSituation(dto.getScreen_id()).split("~");
-		String[] resvSeat=dto.getResv_seatNum().split("~");
-		for(int i=0;i<resvSeat.length;i++)
-		{
-			for(int j=0;j<unableSeat.length;j++)
-			{
-				if(resvSeat[i]==unableSeat[j])
-				{
+	public boolean checkSeat(ResvDTO dto) {
+		String[] unableSeat = displaySeatSituation(dto.getScreen_id()).split("~");
+		String[] resvSeat = dto.getResv_seatNum().split("~");
+		for (int i = 0; i < resvSeat.length; i++) {
+			for (int j = 0; j < unableSeat.length; j++) {
+				if (resvSeat[i] == unableSeat[j]) {
 					return false;
 				}
 			}
@@ -88,16 +77,12 @@ public class CinemaDAO {
 		return true;
 	}
 
-	public boolean checkMoney(ResvDTO dto)
-	{
-		MemberDAO dao=new MemberDAO();
-		String[] AccountInfo=dao.displayAccountInfo(dto.getCus_id()).split("~");
-		if(dto.getResv_depositAmount()> Integer.parseInt(AccountInfo[1]))
-		{
+	public boolean checkMoney(ResvDTO dto) {
+		MemberDAO dao = new MemberDAO();
+		String[] AccountInfo = dao.displayAccountInfo(dto.getCus_id()).split("~");
+		if (dto.getResv_depositAmount() > Integer.parseInt(AccountInfo[1])) {
 			return false;
-		}
-		else
-		{
+		} else {
 			return true;
 		}
 	}

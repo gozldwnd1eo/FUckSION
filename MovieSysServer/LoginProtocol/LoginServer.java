@@ -541,15 +541,29 @@ public class LoginServer {
 							resvdto.setResv_seatNum(seatNum);
 							resvdto.setResv_peopleNum(Integer.parseInt(peopleNum));
 							resvdto.setResv_depositAmount(Integer.parseInt(amount));
-							boolean insertresult = cinemadao.insertResvation(resvdto);
-							if (insertresult == false) {
+							String insertresult = cinemadao.insertResvation(resvdto);
+							if (insertresult.equals("3")) { // 돈없음
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
-										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO);
+										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO2);
+
+								os.write(protocol.getPacket());
+								break;
+							} else if (insertresult.equals("2")) { // 좌석없음
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO1);
+
+								os.write(protocol.getPacket());
+								break;
+							} else if (insertresult.equals("4")) {// 좌석도 없고 돈도 없음
+								protocol = new Protocol(Protocol.PT_RES_UPDATE,
+										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_NO3);
+
 								os.write(protocol.getPacket());
 								break;
 							} else {
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_ADD_PAY_RESV_OK);
+
 								os.write(protocol.getPacket());
 								break;
 							}
