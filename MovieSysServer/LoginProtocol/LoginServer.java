@@ -248,6 +248,22 @@ public class LoginServer {
 							os.write(protocol.getPacket());
 							System.out.println("상영시간 조회 요청에 대한 응답보냄");
 							break;
+						// 탭에서 상영시간 조회21
+						////////////////////////////////////////////////////////
+						case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TIME_AT_TAB:
+							System.out.println("탭에서 상영시간 조회 요청 받음");
+							String theatername_filmname = protocol.getListBody();
+							String[] splited = theatername_filmname.split("\\\\");
+							theaterID = splited[0];
+							filmID = splited[1];
+
+							String screenResulttab = cinemadao.displayAudiRuntimeAtTab(filmID, theaterID);
+
+							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_OK);
+							protocol.setList(screenResulttab);
+							os.write(protocol.getPacket());
+							System.out.println("상영시간 조회 요청에 대한 응답보냄");
+							break;
 
 						// 모든 영화관 조회 5
 						///////////////////////////////////////////////////////

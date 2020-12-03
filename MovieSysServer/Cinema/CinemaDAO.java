@@ -675,8 +675,49 @@ public class CinemaDAO {
 		return result;
 	}
 
+	public String displayAudiRuntimeAtTab(String inputTheaterName, String inputFilmName) { // 상영시간(영화관탭에서) 조회 요청
+		String SQL = "SELECT SCREEN_ID ,AUDI_NUM,SCREEN_STARTTIME,SCREEN_FINALTIME FROM FILMS,SCREENS, AUDITORIUMS, THEATERS WHERE FILM_NAME=? AND THEATER_NAME=? AND THEATERS.THEATER_ID=AUDITORIUMS.THEATER_ID AND SCREENS.FILM_ID=FILMS.FILM_ID AND SCREENS.AUDI_ID=AUDITORIUMS.AUDI_ID";
+
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, inputFilmName);
+			pstmt.setString(2, inputTheaterName);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result = result + rs.getString("SCREEN_ID") + "\\";
+				result = result + rs.getString("AUDI_NUM") + "\\";
+				result = result + rs.getString("SCREEN_STARTTIME") + "\\";
+				result = result + rs.getString("SCREEN_FINALTIME") + "|";
+			}
+		} catch (SQLException sqle) {
+			System.out.println("SELECT문에서 예외 발생");
+			sqle.printStackTrace();
+		} finally {
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+		}
+		return result;
+	}
+
 	public String displayScreenTable(String inputTheaterName) { // 해당 영화관의 상영시간표 조회 요청
-		String SQL = "SELECT SCREEN_ID, AUDI_ID,FILM_NAME, SCREEN_RESIDUALSEAT, SCREEN_STARTTIME, SCREEN_FINALTIME FROM SCREENS,FILMS WHERE SCREENS.FILM_ID=FILMS.FILM_ID AND AUDI_ID IN(SELECT AUDI_ID FROM AUDITORIUMS WHERE THEATER_ID IN(SELECT THEATER_ID FROM THEATERS WHERE THEATER_NAME=?))ORDER BY SCREEN_STARTTIME";
+		String SQL = "SELECT DISTINCT FILM_NAME FROM SCREENS,FILMS WHERE SCREENS.FILM_ID=FILMS.FILM_ID AND AUDI_ID IN(SELECT AUDI_ID FROM AUDITORIUMS WHERE THEATER_ID IN(SELECT THEATER_ID FROM THEATERS WHERE THEATER_NAME=?))";
 
 		try {
 			conn = getConnection();
@@ -684,12 +725,7 @@ public class CinemaDAO {
 			pstmt.setString(1, inputTheaterName);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				result = result + rs.getString("SCREEN_ID") + "\\";
-				result = result + rs.getString("AUDI_ID") + "\\";
 				result = result + rs.getString("FILM_NAME") + "\\";
-				result = result + rs.getString("SCREEN_RESIDUALSEAT") + "\\";
-				result = result + rs.getString("SCREEN_STARTTIME") + "\\";
-				result = result + rs.getString("SCREEN_FINALTIME") + "|";
 			}
 		} catch (SQLException sqle) {
 			System.out.println("SELECT문에서 예외 발생");
