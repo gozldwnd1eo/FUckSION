@@ -63,6 +63,7 @@ public class imformupdateController implements Initializable {
         try {
             Protocol protocol = new Protocol(Protocol.PT_REQ_LOOKUP, Protocol.CODE_PT_REQ_LOOKUP_MY_INFO);
             byte[] buf = protocol.getPacket();
+            protocol.setID(Myconn.SessionUserID);
 
             Myconn.os.write(protocol.getPacket());
 
@@ -81,7 +82,8 @@ public class imformupdateController implements Initializable {
 
             idfd.setText(bodydiv[0]);
             pwfd.setText(bodydiv[1]);
-            pwcnffd.setText(bodydiv[2]);
+            pwcnffd.setText(bodydiv[1]);
+            namefd.setText(bodydiv[2]);
             phonefd.setText(bodydiv[3]);
             accountfd.setText(bodydiv[4]);
             if (bodydiv[5].equals("남")) {
@@ -163,7 +165,7 @@ public class imformupdateController implements Initializable {
                     }
                 }
             } catch (IOException e) {
-
+                e.printStackTrace();
             }
         });
     }
