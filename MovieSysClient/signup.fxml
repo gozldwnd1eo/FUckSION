@@ -5,6 +5,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -16,25 +17,28 @@
          </font>
       </Label>
       <Label layoutX="92.0" layoutY="81.0" text="ID" />
-      <TextField layoutX="168.0" layoutY="77.0" />
-      <PasswordField layoutX="168.0" layoutY="113.0" />
-      <PasswordField layoutX="168.0" layoutY="152.0" />
+      <TextField fx:id="idfield" layoutX="168.0" layoutY="77.0" />
+      <PasswordField fx:id="pwfield" layoutX="168.0" layoutY="113.0" />
+      <PasswordField fx:id="pwconfirm" layoutX="168.0" layoutY="152.0" />
       <Label layoutX="89.0" layoutY="117.0" text="PW" />
       <Label layoutX="76.0" layoutY="156.0" text="PW 확인" />
       <Label layoutX="87.0" layoutY="193.0" text="이름" />
-      <TextField layoutX="168.0" layoutY="189.0" />
+      <TextField fx:id="namefield" layoutX="168.0" layoutY="189.0" />
       <Label layoutX="81.0" layoutY="228.0" text="이메일" />
-      <TextField layoutX="168.0" layoutY="224.0" />
+      <TextField fx:id="emailfield" layoutX="168.0" layoutY="224.0" />
       <Label layoutX="75.0" layoutY="264.0" text="생년월일" />
-      <TextField layoutX="168.0" layoutY="260.0" />
+      <TextField fx:id="birthfield" layoutX="168.0" layoutY="260.0" />
       <Label layoutX="76.0" layoutY="299.0" text="휴대전화" />
-      <TextField layoutX="168.0" layoutY="295.0" />
+      <TextField fx:id="phonefield" layoutX="168.0" layoutY="295.0" />
       <Label layoutX="87.0" layoutY="332.0" text="성별" />
-      <RadioButton layoutX="168.0" layoutY="331.0" mnemonicParsing="false" text="남" />
-      <RadioButton layoutX="209.0" layoutY="331.0" mnemonicParsing="false" text="여" />
-      <Button layoutX="55.0" layoutY="464.0" mnemonicParsing="false" text="이전" />
-      <Button layoutX="265.0" layoutY="464.0" mnemonicParsing="false" text="가입하기" />
+      <RadioButton fx:id="radio_man" layoutX="168.0" layoutY="331.0" mnemonicParsing="false" text="남">
+         <toggleGroup>
+            <ToggleGroup fx:id="gender" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="radio_woman" layoutX="209.0" layoutY="331.0" mnemonicParsing="false" text="여" toggleGroup="$gender" />
+      <Button fx:id="before_btn" layoutX="55.0" layoutY="464.0" mnemonicParsing="false" text="이전" />
+      <Button fx:id="next_btn" layoutX="265.0" layoutY="464.0" mnemonicParsing="false" text="가입하기" />
+      <TextField fx:id="accountfield" layoutX="168.0" layoutY="360.0" />
       <Label layoutX="76.0" layoutY="364.0" text="계좌번호" />
-      <TextField layoutX="168.0" layoutY="360.0" />
    </children>
 </AnchorPane>

@@ -332,12 +332,15 @@ public class reservationController implements Initializable {
             nextbtn.setOnAction(event -> {
                 ArrayList<String> selectedSeat = new ArrayList<String>();
                 Iterator<CheckBox> it = btnlist.iterator();
+                int mannum = 0;
                 while (it.hasNext()) {
                     CheckBox temp = it.next();
                     if (temp.isSelected()) {
                         selectedSeat.add(temp.getText());
+                        mannum++;
                     }
                 }
+                Userchoice.setMannum(Integer.toString(mannum));
                 String seatstring = "";
                 for (int i = 0; i < selectedSeat.size(); i++) {
                     seatstring += selectedSeat.get(i);
@@ -396,10 +399,10 @@ public class reservationController implements Initializable {
                 }
             }
             String[] theaterlist = theaters.split("\\|");
-            ArrayList<theaterListModel> theatermodel=new ArrayList<theaterListModel>();
-            for(int i=0;i<theaterlist.length;i++){
-                String[] temp=theaterlist[i].split("\\\\");
-                theaterListModel model=new theaterListModel();
+            ArrayList<theaterListModel> theatermodel = new ArrayList<theaterListModel>();
+            for (int i = 0; i < theaterlist.length; i++) {
+                String[] temp = theaterlist[i].split("\\\\");
+                theaterListModel model = new theaterListModel();
                 model.setTheaterID(temp[0]);
                 model.setTheaterName(temp[1]);
                 model.setArea(temp[2]);
@@ -410,14 +413,13 @@ public class reservationController implements Initializable {
             ObservableList<theaterListModel> theatercomboxlist = FXCollections.observableArrayList();
             theatercomboxlist.addAll(theatermodel);
             theatercombox.setItems(theatercomboxlist);
-            theatercombox.setCellFactory(parma->new ListCell<theaterListModel>(){
+            theatercombox.setCellFactory(parma -> new ListCell<theaterListModel>() {
                 @Override
-                protected void updateItem(theaterListModel item, boolean empty){
+                protected void updateItem(theaterListModel item, boolean empty) {
                     super.updateItem(item, empty);
-                    if(empty||item==null||item.getTheaterName()==null){
+                    if (empty || item == null || item.getTheaterName() == null) {
                         setText(null);
-                    }
-                    else{
+                    } else {
                         setText(item.getTheaterName());
                     }
                 }
@@ -429,15 +431,16 @@ public class reservationController implements Initializable {
 
     @FXML
     void selecttheater(ActionEvent event) {
-        try{
+        try {
+            theatercombox.setPromptText(theatercombox.getValue().getTheaterName());
             Userchoice.setTheater(theatercombox.getValue().getTheaterID());
-            Protocol protocol=new Protocol(Protocol.PT_REQ_LOOKUP,Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TIME);
-            byte[] buf=protocol.getPacket();
-            protocol.setTheaterID_FlimID(Userchoice.getTheater(),Userchoice.getFilmID());
+            Protocol protocol = new Protocol(Protocol.PT_REQ_LOOKUP, Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TIME);
+            byte[] buf = protocol.getPacket();
+            protocol.setTheaterID_FlimID(Userchoice.getTheater(), Userchoice.getFilmID());
             Myconn.os.write(protocol.getPacket());
 
-            protocol=new Protocol(Protocol.PT_RES_LOOKUP,Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_OK);
-            buf=protocol.getPacket();
+            protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_OK);
+            buf = protocol.getPacket();
 
             String scheds = "";
             byte last = 0;
@@ -460,33 +463,31 @@ public class reservationController implements Initializable {
                 }
             }
             String[] schedlist = scheds.split("\\|");
-            ArrayList<String[]> scheddivide=new ArrayList<String[]>();
-            ArrayList<scheduleListModel> schedulemodel=new ArrayList<scheduleListModel>();
-            for(int i=0;i<schedlist.length;i++){
-                String[] temp=schedlist[i].split("\\\\");
-                scheduleListModel model=new scheduleListModel();
+            ArrayList<scheduleListModel> schedulemodel = new ArrayList<scheduleListModel>();
+            for (int i = 0; i < schedlist.length; i++) {
+                String[] temp = schedlist[i].split("\\\\");
+                scheduleListModel model = new scheduleListModel();
                 model.setScreenID(temp[0]);
                 model.setAudiNum(temp[1]);
                 model.setStartTime(temp[2]);
                 model.setEndTime(temp[3]);
                 schedulemodel.add(model);
-            }//0:상영영화id 1:상영관번호 2:시작시간 3:종료시간
+            } // 0:상영영화id 1:상영관번호 2:시작시간 3:종료시간
             ObservableList<scheduleListModel> schedcomboxlist = FXCollections.observableArrayList();
             schedcomboxlist.addAll(schedulemodel);
             schedcombox.setItems(schedcomboxlist);
-            schedcombox.setCellFactory(parma->new ListCell<scheduleListModel>(){
+            schedcombox.setCellFactory(parma -> new ListCell<scheduleListModel>() {
                 @Override
-                protected void updateItem(scheduleListModel item,boolean empty) {
+                protected void updateItem(scheduleListModel item, boolean empty) {
                     super.updateItem(item, empty);
-                    if(empty||item==null||item.getListDisplay()==null){
+                    if (empty || item == null || item.getListDisplay() == null) {
                         setText(null);
-                    }
-                    else{
+                    } else {
                         setText(item.getListDisplay());
                     }
                 }
             });
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -494,6 +495,7 @@ public class reservationController implements Initializable {
     @FXML
     void selectschedule(ActionEvent event) {
         try {
+            schedcombox.setPromptText(schedcombox.getValue().getListDisplay());
             Userchoice.setSchedule(schedcombox.getValue().getScreenID());
             Protocol protocol = new Protocol(Protocol.PT_REQ_LOOKUP, Protocol.CODE_PT_REQ_LOOKUP_SEAT_SITUATION);
             byte[] buf = protocol.getPacket();
@@ -524,7 +526,7 @@ public class reservationController implements Initializable {
                 }
             }
 
-            String[] seatlist=seats.split("~");
+            String[] seatlist = seats.split("~");
             for (int i = 0; i < seatlist.length; i++) {
                 switch (seatlist[i]) {
                     case "A1":

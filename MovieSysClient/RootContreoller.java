@@ -54,26 +54,38 @@ public class RootContreoller implements Initializable {
                 int packetCode = buf[1];
 
                 protocol.setPacket(packetType, packetCode, buf);
-                
+
                 // String result = protocol.getLoginResult();
 
-                if (packetCode==1) { // 고객 로그인
+                if (packetCode == 1) { // 고객 로그인
                     Parent second = FXMLLoader.load(getClass().getResource("customerMain.fxml"));
                     Scene scene = new Scene(second);
                     Stage primaryStage = (Stage) loginbtn.getScene().getWindow();
                     primaryStage.setScene(scene);
                 }
-                if (packetCode==2) { // 담당자 로그인
-                    Parent third=FXMLLoader.load(getClass().getResource("adminMain.java"));
-                    Scene scene=new Scene(third);
-                    Stage primaryStage = (Stage)loginbtn.getScene().getWindow();
+                if (packetCode == 2) { // 담당자 로그인
+                    Parent third = FXMLLoader.load(getClass().getResource("adminMain.java"));
+                    Scene scene = new Scene(third);
+                    Stage primaryStage = (Stage) loginbtn.getScene().getWindow();
                     primaryStage.setScene(scene);
                 }
-                if (packetCode==3) { // 로그인 실패
+                if (packetCode == 3) { // 로그인 실패
                     idfield.clear();
                     pwfield.clear();
                 }
             } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        signup.setOnAction(event -> {
+            try {
+                Parent parent = FXMLLoader.load(getClass().getResource("signup.fxml"));
+                Scene scene=new Scene(parent);
+                Stage primaryStage =(Stage)signup.getScene().getWindow();
+                primaryStage.setScene(scene);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         });
