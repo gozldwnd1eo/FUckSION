@@ -223,7 +223,7 @@ public class LoginServer {
 							theaterID = theaterID_filmID[0];
 							filmID = theaterID_filmID[1];
 
-							String screenResult = cinemadao.displayScreen(filmID, theaterID);
+							String screenResult = cinemadao.displayAudiRuntime(filmID, theaterID);
 
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_OK);
 							protocol.setList(screenResult);
