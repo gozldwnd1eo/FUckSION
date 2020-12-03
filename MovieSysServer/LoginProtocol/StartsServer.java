@@ -41,6 +41,9 @@ class TransLator extends Thread {
         this.client = client;
     }
 
+    // OutputStream os = socket.getOutputStream();
+    // InputStream is = socket.getInputStream();
+
     String[] idpw;
     String id; // 아이디
     String password; // 비밀번호
