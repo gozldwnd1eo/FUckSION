@@ -683,7 +683,8 @@ public class Protocol implements Serializable {
 	}
 
 	public String[] getTheaterID_FlimID() {
-		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE, LEN_MAX).trim();
+		String origin = new String(packet, LEN_PROTOCOL_TYPE + LEN_TYPE_CODE,
+				LEN_THEATER_ID + LEN_BODY_SEPARATOR + LEN_FILM_ID).trim();
 		String[] splited = origin.split("\\\\");
 		return splited;
 	}
@@ -837,6 +838,7 @@ public class Protocol implements Serializable {
 		String[] splited = origin.split("\\\\");
 		return splited;// (상영관~상영시간)이므로 한번 더 잘라야함
 	}
+
 	public ArrayList<Protocol> setList(String list) {
 		ArrayList<Protocol> arr = new ArrayList<Protocol>();
 
