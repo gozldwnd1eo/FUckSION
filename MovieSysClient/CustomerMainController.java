@@ -265,10 +265,52 @@ public class CustomerMainController implements Initializable {
         }
 
         theaterFilmName.setOnMouseClicked(event->{
+            try{
             String selectedThater=theaterCombox.getValue();
             String selectedFilmname=theaterFilmName.getSelectionModel().getSelectedItem();
 
-            Protocol protocol=new Protocol(Protocol.PT_REQ_LOOKUP,Protocol.codeptreqlookup)
+            Protocol protocol=new Protocol(Protocol.PT_REQ_LOOKUP,Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TIME_AT_TAB);
+            byte[] buf=protocol.getPacket();
+            protocol.setList(selectedThater+"\\"+selectedFilmname);
+            Myconn.os.write(protocol.getPacket());
+            protocol=new Protocol();
+            buf=protocol.getPacket();
+
+            Myconn.is.read(buf);
+
+            int ptType = buf[0];
+            int ptCode = buf[1];
+            int frag = buf[5];
+            protocol.setPacket(ptType, ptCode, buf);
+            buf = protocol.getPacket();
+            String body = "";
+            if (frag == 1) {
+                ArrayList<String> bodylist = new ArrayList<String>();
+                int last = buf[6];
+                bodylist.add(protocol.getListBody());
+                while (last != 1) {
+                    bodylist.add(protocol.getListBody());
+                }
+                for (int i = 0; i < bodylist.size(); i++) {
+                    body += bodylist.get(i);
+                }
+            } else {
+                body += protocol.getListBody();
+            }
+            String[] bodydiv = body.split("\\|");
+            ArrayList<String[]> screenlist = new ArrayList<String[]>();
+            for (int i = 0; i < bodydiv.length; i++) {
+                screenlist.add(bodydiv[i].split("\\\\"));
+            }
+            ObservableList<String> screenlistview = FXCollections.observableArrayList();
+            for (int i = 0; i < screenlist.size(); i++) {
+                screenlistview.add(screenlist.get(i)[1]);
+            }
+            theaterFilmSchdule.setItems(screenlistview);
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         });
     }
 
