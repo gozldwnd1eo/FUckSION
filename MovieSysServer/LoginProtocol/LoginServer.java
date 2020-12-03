@@ -38,6 +38,14 @@ public class LoginServer {
 		String area; // 지역
 
 		String filmID; // 영화 아이디
+		String filmName; // 영화 제목
+		String teaser; // 티저
+		String filmInfo; // 영화정보
+
+		String genre; // 장르
+		String openingDate; // 개봉일
+		String summary; // 줄거리
+		String poster; // 포스터
 
 		String screenID; // 상영영화 아이디
 		String residualSeat; // 잔여좌석수
@@ -62,6 +70,9 @@ public class LoginServer {
 		String starpoint; // 별점
 
 		while (true) {
+			byte last;
+			boolean stopread;
+			String[] body;
 			MemberDAO mdao = new MemberDAO();
 			CustomerDTO cdto = new CustomerDTO();
 
@@ -103,7 +114,6 @@ public class LoginServer {
 
 					String result = mdao.loginRequest(cid, password);
 					if (result.equals("false")) { // 로그인 실패
-						// 로그인 실패창이 클라이언트에서 뜨게해줌
 
 						protocol = new Protocol(Protocol.PT_RES_LOGIN, Protocol.CODE_PT_RES_LOGIN_FAIL);// 코드3 다시 로그인 요청
 						os.write(protocol.getPacket());
@@ -142,7 +152,7 @@ public class LoginServer {
 				case Protocol.PT_REQ_LOOKUP: // 조회 요청 수신
 
 					switch (packetCode) {
-						case Protocol.CODE_PT_REQ_LOOKUP_FIND_CUS_ID: // ID조회
+						case Protocol.CODE_PT_REQ_LOOKUP_FIND_CUS_ID: // ID 찾기
 							String[] name_email = protocol.getName_Email();
 							name = name_email[0];
 							email = name_email[1];
@@ -420,6 +430,8 @@ public class LoginServer {
 					switch (packetCode) {
 						// 회원 추가(가입) 요청 1
 						case Protocol.CODE_PT_REQ_UPDATE_ADD_MEM:
+
+							System.out.println("회원 가입 요청");
 							String[] id_password_name_phone_account_gender_money_email_birthday_flag = protocol
 									.getMemberJoin();
 							id = id_password_name_phone_account_gender_money_email_birthday_flag[0];
@@ -428,10 +440,10 @@ public class LoginServer {
 							phone = id_password_name_phone_account_gender_money_email_birthday_flag[3];
 							account = id_password_name_phone_account_gender_money_email_birthday_flag[4];
 							gender = id_password_name_phone_account_gender_money_email_birthday_flag[5];
-							money = id_password_name_phone_account_gender_money_email_birthday_flag[6];
-							email = id_password_name_phone_account_gender_money_email_birthday_flag[7];
-							birthday = id_password_name_phone_account_gender_money_email_birthday_flag[8];
-							flag = id_password_name_phone_account_gender_money_email_birthday_flag[9];
+							email = id_password_name_phone_account_gender_money_email_birthday_flag[6];
+							birthday = id_password_name_phone_account_gender_money_email_birthday_flag[7];
+							money = "50000";
+							flag = "C";
 
 							boolean resultIDCheck = mdao.idCheck(id);
 							if (resultIDCheck == true) { // 아이디 중복
@@ -454,10 +466,12 @@ public class LoginServer {
 							if (signupresult == false) { // 회원가입 실패
 								protocol = new Protocol(Protocol.PT_RES_UPDATE, Protocol.CODE_PT_RES_UPDATE_ADD_MEM_NO);
 								os.write(protocol.getPacket());
+								System.out.println("회원가입 실패 보냄");
 								break;
 							} else {
 								protocol = new Protocol(Protocol.PT_RES_UPDATE, Protocol.CODE_PT_RES_UPDATE_ADD_MEM_OK);
 								os.write(protocol.getPacket());
+								System.out.println("회원가입 성공 보냄");
 								break;
 							}
 
@@ -591,7 +605,11 @@ public class LoginServer {
 							REVcontent = reviewID_REVcontent_starpoint[1];
 							starpoint = reviewID_REVcontent_starpoint[2];
 
-							boolean updatereviewresult = true;/////////////// fafdsadfssdfsd미완성
+							reviewdto.setRev_id(reviewID);
+							reviewdto.setRev_content(REVcontent);
+							reviewdto.setRev_starPoint(Integer.parseInt(starpoint));
+
+							boolean updatereviewresult = fdao.updateReview(reviewdto);
 							if (updatereviewresult == false) {
 								protocol = new Protocol(Protocol.PT_RES_UPDATE,
 										Protocol.CODE_PT_RES_UPDATE_CHANGE_REVIEW_NO);
@@ -834,12 +852,97 @@ public class LoginServer {
 
 							// 영화 추가 19
 						case Protocol.CODE_PT_REQ_UPDATE_ADD_FILM:
-							protocol = new Protocol(Protocol.PT_RES_UPDATE,Protocol.CODE_PT_REQ_UPDATE_ADD_FILM);
-							//protocol.setList(list)
+							// String[] filmName_teaser_info_genre_openingdate_summary_poster_resvRate =
+							// protocol.get
+							String filmInfos = "";
+							last = 0;
+							stopread = false;
+							while (!stopread) {
+								is.read(buf);
+								packetType = buf[0];
+								packetCode = buf[1];
+								byte[] b = new byte[2];
+								System.arraycopy(buf, 3, b, 0, 2);
+								int packetBodyLen = (b[0] & 0x000000ff << 8);
+								packetBodyLen += (b[1] & 0x000000ff);
+								int packetFlag = buf[5];
+								last = buf[6];
+								int packetSeqNum = buf[7];
+								protocol.setPacket(packetType, packetCode, packetBodyLen, packetFlag, last,
+										packetSeqNum, buf);
+								filmInfos += protocol.getListBody();
+								if (last == 1) {
+									stopread = true;
+								}
+							}
+							body = filmInfos.split("\\\\");
+							filmName = body[0];
+							teaser = body[1];
+							filmInfo = body[2];
+							// actors.setText(staffs[1] + ", " + staffs[2] + ", " + staffs[3]);
+							genre = body[3];
+							openingDate = body[4];
+							summary = body[5];
+							poster = body[6];
+
+							filmdto.setFilm_name(filmName);
+							filmdto.setFilm_teaser(teaser);
+							filmdto.setFilm_info(filmInfo);
+							filmdto.setFilm_genre(genre);
+							filmdto.setFilm_openingDate(openingDate);
+							filmdto.setFilm_summary(summary);
+							filmdto.setFilm_poster(poster);
+							boolean insertFilm = fdao.insertFilm(filmdto);
+							protocol = new Protocol(Protocol.PT_RES_UPDATE, Protocol.CODE_PT_RES_UPDATE_ADD_FILM_OK);
+							os.write(protocol.getPacket());
 							break;
 
 						// 영화 수정 20
 						case Protocol.CODE_PT_REQ_UPDATE_CHANGE_FILM:
+
+							String updateFilm = "";
+							last = 0;
+							stopread = false;
+							while (!stopread) {
+								is.read(buf);
+								packetType = buf[0];
+								packetCode = buf[1];
+								byte[] b = new byte[2];
+								System.arraycopy(buf, 3, b, 0, 2);
+								int packetBodyLen = (b[0] & 0x000000ff << 8);
+								packetBodyLen += (b[1] & 0x000000ff);
+								int packetFlag = buf[5];
+								last = buf[6];
+								int packetSeqNum = buf[7];
+								protocol.setPacket(packetType, packetCode, packetBodyLen, packetFlag, last,
+										packetSeqNum, buf);
+								updateFilm += protocol.getListBody();
+								if (last == 1) {
+									stopread = true;
+								}
+							}
+							body = updateFilm.split("\\\\");
+							filmID = body[0];
+							filmName = body[1];
+							teaser = body[2];
+							filmInfo = body[3];
+							// actors.setText(staffs[1] + ", " + staffs[2] + ", " + staffs[3]);
+							genre = body[4];
+							openingDate = body[5];
+							summary = body[6];
+							poster = body[7];
+
+							filmdto.setFilm_id(filmID);
+							filmdto.setFilm_name(filmName);
+							filmdto.setFilm_teaser(teaser);
+							filmdto.setFilm_info(filmInfo);
+							filmdto.setFilm_genre(genre);
+							filmdto.setFilm_openingDate(openingDate);
+							filmdto.setFilm_summary(summary);
+							filmdto.setFilm_poster(poster);
+							boolean updateFilmInfo = fdao.updateFilm(filmdto);
+							protocol = new Protocol(Protocol.PT_RES_UPDATE, Protocol.CODE_PT_RES_UPDATE_CHANGE_FILM_OK);
+							os.write(protocol.getPacket());
 							break;
 
 						// 영화 삭제 21
