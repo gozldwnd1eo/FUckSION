@@ -21,7 +21,7 @@ public class StartsServer {
         // TODO Auto-generated method stub
         try {
 
-            ServerSocket server = new ServerSocket(6000);
+            ServerSocket server = new ServerSocket(7127);
             while (true) {
                 Socket client = server.accept();
                 TransLator translator = new TransLator(client);
@@ -40,9 +40,6 @@ class TransLator extends Thread {
     TransLator(Socket client) {
         this.client = client;
     }
-
-    // OutputStream os = socket.getOutputStream();
-    // InputStream is = socket.getInputStream();
 
     String[] idpw;
     String id; // 아이디
@@ -91,18 +88,19 @@ class TransLator extends Thread {
     String reviewID; // 게시물 아이디
     String REVcontent; // 리뷰내용
     String starpoint; // 별점
+  
+
 
     public void run() {
         try {
 
             System.out.println(getTime() + "Client has accepted...");
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            PrintWriter pw = new PrintWriter(client.getOutputStream());
+            OutputStream os = client.getOutputStream();
+            InputStream is = client.getInputStream();
 
             boolean program_stop = false;
-
-    
+            
             while (true) {
                 byte last;
                 boolean stopread;
@@ -167,6 +165,7 @@ class TransLator extends Thread {
                                                                                                                         // 로그인
                                                                                                                         // 요청
                                 os.write(protocol.getPacket());
+                                System.out.println("서버가 고객 로그인 정보를 보냈습니다");
                                 break;
                             }
     
@@ -178,6 +177,7 @@ class TransLator extends Thread {
                                                                                                                             // 로그인
                                                                                                                             // 요청
                                 os.write(protocol.getPacket());
+                                System.out.println("서버가 담당자 로그인 정보를 보냈습니다");
                                 break;
                             }
     
@@ -247,7 +247,7 @@ class TransLator extends Thread {
                             // 영화관 조회 3
                             /////////////////////////////////////////////////////////
                             case Protocol.CODE_PT_REQ_LOOKUP_THEATER:
-                                System.out.println("영화관 조회 요청 받음");
+                                System.out.println("예매시 영화관 조회 요청 받음");
                                 String[] area_filmID = protocol.getTheaterArea_FlimID();
                                 area = area_filmID[0];
                                 filmID = area_filmID[1];
@@ -256,7 +256,7 @@ class TransLator extends Thread {
                                 protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_THEATER_OK);
                                 protocol.setList(theaterresult);
                                 os.write(protocol.getPacket());
-                                System.out.println("영화관 조회 요청에 대한 응답보냄");
+                                System.out.println("예매시 영화관 조회 요청에 대한 응답보냄");
                                 break;
     
                             // 상영시간 조회4
@@ -274,25 +274,48 @@ class TransLator extends Thread {
                                 os.write(protocol.getPacket());
                                 System.out.println("상영시간 조회 요청에 대한 응답보냄");
                                 break;
+                            // 탭에서 상영시간 조회21
+                            ////////////////////////////////////////////////////////
+                            case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TIME_AT_TAB:
+                                System.out.println("탭에서 상영시간 조회 요청 받음");
+                                String theatername_filmname = protocol.getListBody();
+                                String[] splited = theatername_filmname.split("\\\\");
+                                theaterName = splited[0];
+                                filmName = splited[1];
+    
+                                String screenResulttab = cinemadao.displayAudiRuntimeAtTab(theaterName, filmName);
+    
+                                protocol = new Protocol(Protocol.PT_RES_LOOKUP,
+                                        Protocol.CODE_PT_RES_LOOKUP_SCREEN_TIME_AT_TAB_OK);
+                                protocol.setList(screenResulttab);
+                                os.write(protocol.getPacket());
+                                System.out.println("상영시간 조회 요청에 대한 응답보냄");
+                                break;
     
                             // 모든 영화관 조회 5
                             ///////////////////////////////////////////////////////
                             case Protocol.CODE_PT_REQ_LOOKUP_ALL_THEATER:
-                                System.out.println("영화관 조회 요청 받음");
+                                System.out.println("모든 영화관 조회 요청 받음");
     
                                 String theaterResult = cinemadao.displayTheater();
-                                protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_THEATER_OK);
-                                protocol.setList(theaterResult);
-                                os.write(protocol.getPacket());
     
-                                System.out.println("영화관 조회 요청에 대한 응답보냄");
+                                protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_ALL_THEATER_OK);
+                                packetList = protocol.setList(theaterResult);
+    
+                                iterator = packetList.iterator();
+                                while (iterator.hasNext()) {
+                                    Protocol temp = iterator.next();
+                                    temp = packetList.get(count++);
+                                    os.write(temp.getPacket());
+                                }
+                                System.out.println("모든 영화관 조회 요청에 대한 응답보냄");
                                 break;
     
                             // 해당 영화관의 상영시간표 조회 6
                             ///////////////////////////////////////////////////////
                             case Protocol.CODE_PT_REQ_LOOKUP_SCREEN_TABLE:
                                 System.out.println("상영시간표 조회 요청 받음");
-                                theaterName = protocol.getTheaterID();
+                                theaterName = protocol.getListBody();
     
                                 String screenresult = cinemadao.displayScreenTable(theaterName);
                                 protocol = new Protocol(Protocol.PT_RES_LOOKUP,
@@ -365,6 +388,7 @@ class TransLator extends Thread {
     
                             // 예매 내역 조회 요청 11
                             case Protocol.CODE_PT_REQ_LOOKUP_RESV_LIST:
+                                System.out.println("예매 내역 요청 수신");
                                 id = protocol.getID();
     
                                 String resvResult = cinemadao.displayResvList(id);
@@ -372,6 +396,7 @@ class TransLator extends Thread {
                                 protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_RESV_LIST_OK);
                                 protocol.setList(resvResult);
                                 os.write(protocol.getPacket());
+                                System.out.println("예매내역 응답 발신");
                                 break;
     
                             // 현재 상영 중 영화 조회 요청 12
@@ -407,9 +432,9 @@ class TransLator extends Thread {
     
                             // 상영관 조회 요청 14
                             case Protocol.CODE_PT_REQ_LOOKUP_AUDI:
-                                theaterID = protocol.getTheaterID();
+                                theaterName = protocol.getListBody();
     
-                                String audiResult = cinemadao.displayAuditorium(theaterID);
+                                String audiResult = cinemadao.displayAuditorium(theaterName);
     
                                 protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_AUDI_OK);
                                 protocol.setList(audiResult);
@@ -1047,8 +1072,24 @@ class TransLator extends Thread {
     
             is.close();
             os.close();
-            socket.close();
+            client.close();
     
         }
-    
+    catch (IOException e) {
+            e.printStackTrace();
+        }
+    }  
+    public static String getTime() {
+        String threadName = Thread.currentThread().getName();
+        SimpleDateFormat f = new SimpleDateFormat("[hh:mm:ss]");
+        return f.format(new Date()) + threadName;
+    }
+
+    public static void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

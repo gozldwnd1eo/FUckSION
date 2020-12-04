@@ -9,9 +9,12 @@ import MovieSysServer.LoginProtocol.Protocol;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 
 public class adminMainController implements Initializable {
 
@@ -127,6 +130,23 @@ public class adminMainController implements Initializable {
                     e.printStackTrace();
                 }
             });
+
+            addTheater_btn.setOnAction(event -> {
+
+            });
+
+            revTheater_btn.setOnAction(event -> {
+                try {
+                    Userchoice.theater=theaterList.selectionModelProperty().getValue().getSelectedItem();
+                    Parent parent = FXMLLoader.load(getClass().getResource("adminsTheaterUpdate.fxml"));
+                    Scene scene = new Scene(parent);
+                    Stage primaryStage = (Stage) revTheater_btn.getScene().getWindow();
+                    primaryStage.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
         } catch (IOException e) {
             e.printStackTrace();
         }
