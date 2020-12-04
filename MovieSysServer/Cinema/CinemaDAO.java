@@ -1016,19 +1016,17 @@ public class CinemaDAO {
 		return result;
 	}
 
-	public String UpdateResvcRatePerMovi() { // 영화별 예매율 갱신 요청 KKL
-		String SQL = "SELECT * FROM TABLE(PRINT_CANCELRATE_PER_MOVIE)";
+	public boolean UpdateResvcRatePerMovie() { // 영화별 예매율 갱신 요청
+		boolean result = false;
+		String SQL = "CALL RENEWAL_OF_RESVRATE";
 		try {
 			conn = getConnection();
 			cstmt = conn.prepareCall(SQL);
-			rs = cstmt.executeQuery();
-			while (rs.next()) {
-				result = result + rs.getString("영화ID") + "\\";
-				result = result + rs.getString("영화별취소율") + "|";
-			}
+			cstmt.executeQuery();
 		} catch (SQLException sqle) {
-			System.out.println("SELECT문에서 예외 발생");
+			System.out.println("EXEC문에서 예외 발생");
 			sqle.printStackTrace();
+			result = false;
 		} finally {
 			if (rs != null)
 				try {
@@ -1049,6 +1047,7 @@ public class CinemaDAO {
 					throw new RuntimeException(e.getMessage());
 				}
 		}
+		result = true;
 		return result;
 	}
 

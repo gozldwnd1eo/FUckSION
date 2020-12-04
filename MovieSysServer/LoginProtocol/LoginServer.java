@@ -216,6 +216,7 @@ public class LoginServer {
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP, Protocol.CODE_PT_RES_LOOKUP_AREA_OK);
 
 							protocol.setList(areaResult);
+							String s = protocol.getListBody();
 							os.write(protocol.getPacket());
 							System.out.println("지역조회 요청에 대한 응답 보냄");
 							break;
@@ -451,6 +452,7 @@ public class LoginServer {
 						// 영화별 예매율 조회 요청 18
 						case Protocol.CODE_PT_REQ_LOOKUP_THEATER_RESV_RATE:
 							String resvrate = cinemadao.displayResvRatePerMovie();
+							cinemadao.UpdateResvcRatePerMovie();
 							protocol = new Protocol(Protocol.PT_RES_LOOKUP,
 									Protocol.CODE_PT_RES_LOOKUP_THEATER_RESV_RATE_OK);
 							protocol.setList(resvrate);
@@ -717,7 +719,7 @@ public class LoginServer {
 
 							// 영화관 추가 10
 						case Protocol.CODE_PT_REQ_UPDATE_ADD_THEATER:
-							String[] id_theatername_area_address = protocol.getAdd_Theater();
+							String[] id_theatername_area_address = protocol.getListBody().split("");
 							id = id_theatername_area_address[0];
 							theaterName = id_theatername_area_address[1];
 							area = id_theatername_area_address[2];
