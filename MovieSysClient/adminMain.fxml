@@ -7,20 +7,21 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="MovieSysClient.adminMainController">
   <tabs>
       <Tab text="영화관관리">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <ListView layoutX="6.0" layoutY="6.0" prefHeight="412.0" prefWidth="192.0" />
-                  <ListView layoutX="198.0" layoutY="6.0" prefHeight="200.0" prefWidth="193.0" />
-                  <Button layoutX="200.0" layoutY="224.0" mnemonicParsing="false" text="영화관추가" />
-                  <Button layoutX="283.0" layoutY="224.0" mnemonicParsing="false" text="영화관삭제" />
-                  <Button layoutX="200.0" layoutY="250.0" mnemonicParsing="false" text="영화관수정" />
-                  <Button layoutX="200.0" layoutY="302.0" mnemonicParsing="false" text="상영관추가" />
-                  <Button layoutX="283.0" layoutY="302.0" mnemonicParsing="false" text="상영관삭제" />
-                  <Button layoutX="200.0" layoutY="328.0" mnemonicParsing="false" text="상영관수정" />
+                  <ListView fx:id="theaterList" layoutX="6.0" layoutY="6.0" prefHeight="412.0" prefWidth="192.0" />
+                  <ListView fx:id="audiList" layoutX="198.0" layoutY="6.0" prefHeight="200.0" prefWidth="193.0" />
+                  <Button fx:id="addTheater_btn" layoutX="200.0" layoutY="224.0" mnemonicParsing="false" text="영화관추가" />
+                  <Button fx:id="delTheater_btn" layoutX="283.0" layoutY="224.0" mnemonicParsing="false" text="영화관삭제" />
+                  <Button fx:id="revTheater_btn" layoutX="200.0" layoutY="250.0" mnemonicParsing="false" text="영화관수정" />
+                  <Button fx:id="addAudi_btn" layoutX="200.0" layoutY="302.0" mnemonicParsing="false" text="상영관추가" />
+                  <Button fx:id="delAudi_btn" layoutX="283.0" layoutY="302.0" mnemonicParsing="false" text="상영관삭제" />
+                  <Button fx:id="revAudi_btn" layoutX="200.0" layoutY="328.0" mnemonicParsing="false" text="상영관수정" />
                </children>
             </AnchorPane>
         </content>

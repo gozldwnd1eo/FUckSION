@@ -64,7 +64,7 @@ public class RootContreoller implements Initializable {
                     primaryStage.setScene(scene);
                 }
                 if (packetCode == 2) { // 담당자 로그인
-                    Parent third = FXMLLoader.load(getClass().getResource("adminMain.java"));
+                    Parent third = FXMLLoader.load(getClass().getResource("adminMain.fxml"));
                     Scene scene = new Scene(third);
                     Stage primaryStage = (Stage) loginbtn.getScene().getWindow();
                     primaryStage.setScene(scene);

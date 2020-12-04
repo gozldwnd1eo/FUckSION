@@ -7,7 +7,6 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
@@ -34,10 +33,8 @@
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <ComboBox fx:id="theaterCombox" layoutX="14.0" layoutY="14.0" onAction="#selected" prefHeight="22.0" prefWidth="90.0" promptText="영화관" />
-                  <TextArea fx:id="theaterDetailTxtfd" editable="false" layoutX="117.0" layoutY="14.0" prefHeight="104.0" prefWidth="278.0" />
-                  <ListView fx:id="theaterFilmName" layoutX="4.0" layoutY="118.0" prefHeight="345.0" prefWidth="200.0" />
-                  <ListView fx:id="theaterFilmSchdule" layoutX="204.0" layoutY="118.0" prefHeight="345.0" prefWidth="191.0" />
-                  <Button fx:id="theat_rev_btn" layoutX="322.0" layoutY="485.0" mnemonicParsing="false" text="예약하기" />
+                  <ListView fx:id="theaterFilmName" layoutX="4.0" layoutY="65.0" prefHeight="398.0" prefWidth="169.0" />
+                  <ListView fx:id="theaterFilmSchdule" layoutX="173.0" layoutY="65.0" prefHeight="398.0" prefWidth="222.0" />
                </children></AnchorPane>
       </content>
     </Tab>
