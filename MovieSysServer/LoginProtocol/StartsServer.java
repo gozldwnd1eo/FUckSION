@@ -1,10 +1,6 @@
 package MovieSysServer.LoginProtocol;
 
-import java.net.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -104,7 +100,7 @@ class TransLator extends Thread {
                 boolean stopread;
                 String[] body;
                 MemberDAO mdao = new MemberDAO();
-                CustomerDTO cdto = new CustomerDTO();
+               MemberDTO cdto = new MemberDTO();
 
                 CinemaDAO cinemadao = new CinemaDAO();
                 ScreenDTO screendto = new ScreenDTO();

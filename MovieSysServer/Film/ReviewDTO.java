@@ -1,12 +1,12 @@
 package MovieSysServer.Film;
 
 public class ReviewDTO {
-	private String rev_id; // varchar2			����ID
-	private String cus_id; // varchar2			����ID
-	private String film_id; // varchar2			��ȭID
-	private int rev_starPoint; // number		����
-	private String rev_content; // varchar2		���䳻��
-	private String rev_date; // date			����Խó�¥
+	private String rev_id; // varchar2			예매ID
+	private String cus_id; // varchar2			고객ID
+	private String film_id; // varchar2			영화ID
+	private int rev_starPoint; // number		평점
+	private String rev_content; // varchar2		리뷰 내용
+	private String rev_date; // date			리뷰 날짜
 	
 	public String getRev_id() {
 		return rev_id;

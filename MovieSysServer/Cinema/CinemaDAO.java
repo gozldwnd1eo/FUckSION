@@ -32,7 +32,7 @@ public class CinemaDAO {
 			return result;
 		}
 
-		String SQL = "{call RESERV_EXEC(?,?,?,?,?)}";
+		String SQL = "{call RESERV_EXEC(?,?,?,?,?)}";	
 		try {
 			conn = getConnection();
 			cstmt = conn.prepareCall(SQL);
@@ -63,7 +63,7 @@ public class CinemaDAO {
 		return result;
 	}
 
-	public boolean checkSeat(ResvDTO dto) {
+	public boolean checkSeat(ResvDTO dto) {			//자리가 중복된지 확인함
 		String[] unableSeat = displaySeatSituation(dto.getScreen_id()).split("~");
 		String[] resvSeat = dto.getResv_seatNum().split("~");
 		for (int i = 0; i < resvSeat.length; i++) {
@@ -77,7 +77,7 @@ public class CinemaDAO {
 		return true;
 	}
 
-	public boolean checkMoney(ResvDTO dto) {
+	public boolean checkMoney(ResvDTO dto) {		//예매시 입금한 돈이 적은지 확인함
 		MemberDAO dao = new MemberDAO();
 		String[] AccountInfo = dao.displayAccountInfo(dto.getCus_id()).split("\\\\");
 		if (dto.getResv_depositAmount() > Integer.parseInt(AccountInfo[1])) {

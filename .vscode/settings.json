@@ -8,6 +8,14 @@
         "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
         "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
         "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
-        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar"
+        "d:\\코드모음집\\JAVA\\VSCODE\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar",
+        "c:\\Users\\kdjin\\Desktop\\java\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.base.jar",
+        "c:\\Users\\kdjin\\Desktop\\java\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.controls.jar",
+        "c:\\Users\\kdjin\\Desktop\\java\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.fxml.jar",
+        "c:\\Users\\kdjin\\Desktop\\java\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.graphics.jar",
+        "c:\\Users\\kdjin\\Desktop\\java\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
+        "c:\\Users\\kdjin\\Desktop\\java\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
+        "c:\\Users\\kdjin\\Desktop\\java\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
+        "c:\\Users\\kdjin\\Desktop\\java\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar"
     ]
 }

@@ -16,7 +16,7 @@ public class MemberDAO {
 	String result = "";
 	private ResultSet rs = null;
 
-	public boolean insertCustomer(CustomerDTO dto) { // 고객 추가
+	public boolean insertCustomer(MemberDTO dto) { // 고객 추가
 
 		String SQL = "INSERT INTO MEMBERS(MEM_ID,MEM_PASSWORD,MEM_NAME,MEM_PHONENUM,MEM_ACCOUNT,MEM_GENDER,MEM_MONEY,MEM_EMAIL,MEM_BIRTHDAY,MEM_FLAG)"
 				+ "VALUES (?,?,?,?,?,?,?,?,?,?)";
@@ -157,51 +157,7 @@ public class MemberDAO {
 		return loginResult;
 	}
 
-	// public String selectScreenList() {
-	// PreparedStatement pstmt = null;
-	// ResultSet rs = null;
-	// String result = "";
-
-	// String SQLcu = "select *,avg(rev_starpoint) from film where film_id=(select
-	// distinct film_id from screen)";
-	// try {
-	// conn = getConnection();
-	// pstmt = conn.prepareStatement(SQLcu);
-	// rs = pstmt.executeQuery();
-
-	// if (rs.next()) {
-	// result += rs.getString("film_name") + "\\"; // 안되면 getString 1
-	// result += rs.getString("film_poster") + "\\";
-	// result += rs.getString("film_resvrate") + "\\";
-	// result += rs.getString("rev_starpoint") + "|";
-	// }
-	// } catch (SQLException sqle) {
-	// System.out.println("SQL문에서 예외 발생");
-	// sqle.printStackTrace();
-	// } finally {
-
-	// if (rs != null)
-	// try {
-	// rs.close();
-	// } catch (Exception e) {
-	// throw new RuntimeException(e.getMessage());
-	// }
-	// if (pstmt != null)
-	// try {
-	// pstmt.close();
-	// } catch (Exception e) {
-	// throw new RuntimeException(e.getMessage());
-	// }
-	// if (conn != null)
-	// try {
-	// conn.close();
-	// } catch (Exception e) {
-	// throw new RuntimeException(e.getMessage());
-	// }
-	// }
-	// return result;
-	// }
-
+	
 	public boolean selectMemberPassword(String id, String name, String email) { // 비밀번호 조회
 		PreparedStatement custmt = null;
 		ResultSet rsCusto = null;
